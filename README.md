@@ -13,6 +13,6 @@ In response to this evolving need, countless professionals, personal trainers, n
 * Managing a customer base.
 * Ability to access and edit customer data.
 ### The app will support other features that support Core Features, including:
-* Ability of private users to rate service providers.
+* Ability of personal users to rate service providers.
 * Ability of users to give feedback to their personal trainer training.
 * The ability of an organization such as a gym to add content that will be displayed to the user by the app when the user uses the device   to scan NFC tags placed on devices in the gym.
