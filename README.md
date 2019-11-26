@@ -1,9 +1,9 @@
 # 2020a-FiTracker
 
 ## Elevator Pitch
-Nowadays, there is a growing trend across all levels of society on adopting an active lifestyle which includes fitness activity and proper nutrition.Those factors lead to an enormous growth in the number of individuals that are doing workouts weekly and trying to maintain a healthy lifestyle.Those individuals usually more healthy and feel comfortable with how they look.Another benefit of adopting an active lifestyle is that it helps an individual to relieve stress and enjoy a new hobby.
+Nowadays, there is a growing trend across all levels of society on adopting an active lifestyle which includes fitness activity and proper nutrition.Those factors lead to an enormous growth in the number of individuals that are doing workouts weekly and trying to maintain a healthy lifestyle.Those individuals usually more healthy and feel comfortable with how they look. Another benefit of adopting an active lifestyle is that it helps an individual to relieve stress and enjoy a new hobby.
 
-In response to this evolving need, countless professionals, personal trainers, nutritionists, organizations such as gyms or pilates, etc. are emerging. Everyone is engaged in training or providing the tools for the individual to fulfill their desire to develop such a lifestyle. Therefore, there is a real need for a platform that will facilitate the private trainee's program management in a simple and  effective way and will create an easy two-way communication between the former and the professionals.
+In response to this evolving need, countless professionals, personal trainers, nutritionists, organizations (such as gyms or pilates, etc.) are emerging. Everyone is engaged in training or providing the tools for the individual to fulfil their desire to develop such a lifestyle. Therefore, there is a real need for a platform that will facilitate the private trainee's program management in a simple and  effective way and will create an easy two-way communication between the former and the professionals.
 
 ## Therefore, the app will have the following key features:
 ### Personal user’s features:
