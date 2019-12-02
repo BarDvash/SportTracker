@@ -38,8 +38,8 @@
     <fragment
         android:id="@+id/signUpBusinessFragment"
         android:name="android.technion.fitracker.SignUpBusinessFragment"
-        android:label="fragment_sign_up_buisiness"
-        tools:layout="@layout/fragment_sign_up_buisiness" >
+        android:label="fragment_sign_up_business"
+        tools:layout="@layout/fragment_sign_up_business" >
         <action
             android:id="@+id/action_signUpBusinessFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />

@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/logo_transparent" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/sign_up_buisiness_email"
         android:layout_width="341dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -30,19 +30,19 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/sign_up_buisiness_pass"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="@string/password_hint"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/editText5"
-        app:layout_constraintStart_toStartOf="@+id/editText5"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintEnd_toEndOf="@+id/sign_up_buisiness_email"
+        app:layout_constraintStart_toStartOf="@+id/sign_up_buisiness_email"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_buisiness_email" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/sign_up_buisiness_sign_up_button"
         android:layout_width="166dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -51,23 +51,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText7" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_buisiness_phone" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/sign_up_buisiness_not_trainer_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/not_trainer_text"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_buisiness_regular_user_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_buisiness_sign_up_button"
         app:layout_constraintVertical_bias="0.956" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/sign_up_buisiness_regular_user_button"
         android:layout_width="266dp"
         android:layout_height="43dp"
         android:layout_marginBottom="16dp"
@@ -78,14 +78,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/sign_up_buisiness_phone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:ems="10"
         android:hint="@string/mobile_text"
         android:inputType="phone"
-        app:layout_constraintEnd_toEndOf="@+id/editText6"
-        app:layout_constraintStart_toStartOf="@+id/editText6"
-        app:layout_constraintTop_toBottomOf="@+id/editText6" />
+        app:layout_constraintEnd_toEndOf="@+id/sign_up_buisiness_pass"
+        app:layout_constraintStart_toStartOf="@+id/sign_up_buisiness_pass"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_buisiness_pass" />
 </androidx.constraintlayout.widget.ConstraintLayout>

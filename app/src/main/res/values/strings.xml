@@ -10,7 +10,7 @@
     <string name="personal_trainer_question">Personal trainer?</string>
     <string name="register_business_user_text">Sign up as a business user</string>
     <string name="not_trainer_text">Not a personal trainer?</string>
-    <string name="register_regular_user_text">Register as a regular user</string>
+    <string name="register_regular_user_text">Sign up as a regular user</string>
     <string name="mobile_text">Mobile phone</string>
 
     <!-- TODO: Remove or change this placeholder text -->
