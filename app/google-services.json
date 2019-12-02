@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "227928727350",
+    "firebase_url": "https://fitracker-cbd9b.firebaseio.com",
+    "project_id": "fitracker-cbd9b",
+    "storage_bucket": "fitracker-cbd9b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227928727350:android:1d7ae9b57a92415f259d97",
+        "android_client_info": {
+          "package_name": "android.technion.fitracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227928727350-o88klrn1on4sv4i42a5iuspvlogkur48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.technion.fitracker",
+            "certificate_hash": "a9a1a40f0dcc662e040d721e672a4e0d9c10c425"
+          }
+        },
+        {
+          "client_id": "227928727350-okbq0bdbqj44m608vlpcr8t6thf8fikv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqRxXIsFOEkerbsj641JR_ob5BGK1C7OM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227928727350-okbq0bdbqj44m608vlpcr8t6thf8fikv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
