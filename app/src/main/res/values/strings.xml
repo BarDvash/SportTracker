@@ -8,5 +8,8 @@
     <string name="sign_up_text">Sign up</string>
     <string name="app_logo_description">App logo</string>
     <string name="personal_trainer_question">Personal trainer?</string>
-    <string name="register_as_a_buisiness_user_text">Register as a buisiness user</string>
+    <string name="register_buisiness_user_text">Register as a buisiness user</string>
+    <string name="not_trainer_text">Not a personal trainer?</string>
+    <string name="register_regular_user_text">Register as a regular user</string>
+    <string name="mobile_text">Mobile phone</string>
 </resources>
