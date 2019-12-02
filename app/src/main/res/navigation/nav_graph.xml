@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_signInFragment_to_personalUser"
             app:destination="@id/personalUser" />
+        <action
+            android:id="@+id/action_signInFragment_self"
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
