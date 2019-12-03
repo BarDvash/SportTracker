@@ -92,7 +92,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
         when (v!!.id) {
             R.id.login_fragment_sign_in_with_google -> signIn()
             R.id.login_fragment_sign_in_button -> navController.navigate(
-                R.id.action_signInFragment_self
+                R.id.action_signInFragment_to_user_navigation_graph
             )
             R.id.login_fragment_sign_up_button -> navController.navigate(
                 R.id.action_signInFragment_to_signUpFragment
@@ -128,9 +128,10 @@ class SignInFragment : Fragment(), View.OnClickListener {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val userHome = Intent(context!!, UserActivity::class.java)
-                    startActivity(userHome)
-                    activity?.finish()
+                    navController.navigate(R.id.action_signInFragment_to_user_navigation_graph)
+//                    val userHome = Intent(context!!, UserActivity::class.java)
+//                    startActivity(userHome)
+//                    activity?.finish()
                 } else {
                     Toast.makeText(context,"Authentication failed, please check your internet connection and try again.",Toast.LENGTH_SHORT).show()
                 }
