@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.personal.HomeScreenFragment">
+    tools:context=".user.personal.MeasurementsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="That's personal users home screen" />
+        android:text="Measurements Fragment" />
 
 </FrameLayout>
