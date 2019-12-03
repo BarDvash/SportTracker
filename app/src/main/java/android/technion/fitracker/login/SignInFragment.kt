@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.user.UserActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,8 @@ class SignInFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
         view.findViewById<Button>(R.id.login_fragment_sign_in_button).setOnClickListener(this)
         view.findViewById<Button>(R.id.login_fragment_sign_up_button).setOnClickListener(this)
-        view.findViewById<SignInButton>(R.id.login_fragment_sign_in_with_google).setOnClickListener(this)
+        view.findViewById<SignInButton>(R.id.login_fragment_sign_in_with_google)
+            .setOnClickListener(this)
     }
 
     override fun onStart() {
@@ -65,8 +65,8 @@ class SignInFragment : Fragment(), View.OnClickListener {
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        if (auth.currentUser != null){
-            val userHome = Intent(context!!,UserActivity::class.java)
+        if (auth.currentUser != null) {
+            val userHome = Intent(context!!, UserActivity::class.java)
             startActivity(userHome)
             activity?.finish()
         }
@@ -74,7 +74,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
 
     private fun signIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent,RC_SIGN_IN)
+        startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     override fun onClick(v: View?) {
@@ -118,7 +118,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account!!)
         } catch (e: ApiException) {
-            Toast.makeText(context,"Authentication failed",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -132,7 +132,11 @@ class SignInFragment : Fragment(), View.OnClickListener {
                     startActivity(userHome)
                     activity?.finish()
                 } else {
-                    Toast.makeText(context,"Authentication failed, please check your internet connection and try again.",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Authentication failed, please check your internet connection and try again.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }
