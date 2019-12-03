@@ -37,7 +37,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private val RC_SIGN_IN = 9001
 
     //Google login token
-    private val idToken = "227928727350-okbq0bdbqj44m608vlpcr8t6thf8fikv.apps.googleusercontent.com"
+    private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
