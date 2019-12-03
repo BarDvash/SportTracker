@@ -37,7 +37,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private val RC_SIGN_IN = 9001
 
     //Google login token
-    private val idToken = "227928727350-okbq0bdbqj44m608vlpcr8t6thf8fikv.apps.googleusercontent.com"
+    private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,10 +128,9 @@ class SignInFragment : Fragment(), View.OnClickListener {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    navController.navigate(R.id.action_signInFragment_to_user_navigation_graph)
-//                    val userHome = Intent(context!!, UserActivity::class.java)
-//                    startActivity(userHome)
-//                    activity?.finish()
+                    val userHome = Intent(context!!, UserActivity::class.java)
+                    startActivity(userHome)
+                    activity?.finish()
                 } else {
                     Toast.makeText(context,"Authentication failed, please check your internet connection and try again.",Toast.LENGTH_SHORT).show()
                 }
