@@ -89,7 +89,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="421dp"
+        android:layout_width="0dp"
         android:layout_height="204dp"
         android:contentDescription="@string/app_logo_description"
         android:src="@drawable/logo_transparent"
