@@ -9,7 +9,7 @@
         android:id="@+id/signInFragment"
         android:name="android.technion.fitracker.login.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
@@ -17,11 +17,11 @@
             android:id="@+id/action_signInFragment_to_personalTrainer"
             app:destination="@id/personalTrainer" />
         <action
-            android:id="@+id/action_signInFragment_to_personalUser"
-            app:destination="@id/personalUser" />
-        <action
             android:id="@+id/action_signInFragment_self"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_user_navigation_graph"
+            app:destination="@id/user_navigation_graph" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -48,5 +48,5 @@
             app:destination="@id/signInFragment" />
     </fragment>
     <fragment android:id="@+id/personalTrainer" />
-    <fragment android:id="@+id/personalUser" />
+    <include app:graph="@navigation/user_navigation_graph" />
 </navigation>

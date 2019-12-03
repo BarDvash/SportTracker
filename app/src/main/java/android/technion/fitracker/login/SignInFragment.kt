@@ -61,7 +61,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
 
         when (v!!.id) {
             R.id.login_fragment_sign_in_button -> navController.navigate(
-                R.id.action_signInFragment_self
+                R.id.action_signInFragment_to_user_navigation_graph
             );
             R.id.login_fragment_sign_in_with_google -> navController.navigate(
                 R.id.action_signInFragment_self
