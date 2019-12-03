@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_navigation_graph"
-    app:startDestination="@id/homeScreen">
-
+    app:startDestination="@id/homeScreen2">
     <fragment
-        android:id="@+id/homeScreen"
-        android:name="android.technion.fitracker.user.HomeScreen"
-        android:label="fragment_home_screen"
+        android:id="@+id/homeScreen2"
+        android:name="android.technion.fitracker.user.personal.HomeScreen"
+        android:label="HomeScreen"
         tools:layout="@layout/fragment_home_screen" />
 </navigation>
