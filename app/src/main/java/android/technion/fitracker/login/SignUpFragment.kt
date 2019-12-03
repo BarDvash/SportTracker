@@ -1,7 +1,8 @@
-package android.technion.fitracker
+package android.technion.fitracker.login
 
 
 import android.os.Bundle
+import android.technion.fitracker.R
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,8 +35,12 @@ class SignUpFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v!!.id){
-            R.id.sign_up_fragment_sign_up_button -> navController.navigate(R.id.action_signUpFragment_to_signInFragment);
-            R.id.sign_up_fragment_trainer_sign_up_button -> navController.navigate(R.id.action_signUpFragment_to_signUpBusinessFragment);
+            R.id.sign_up_fragment_sign_up_button -> navController.navigate(
+                R.id.action_signUpFragment_to_signInFragment
+            );
+            R.id.sign_up_fragment_trainer_sign_up_button -> navController.navigate(
+                R.id.action_signUpFragment_to_signUpBusinessFragment
+            );
         }
     }
 

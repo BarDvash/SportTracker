@@ -1,7 +1,8 @@
-package android.technion.fitracker
+package android.technion.fitracker.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.technion.fitracker.R
 
 class LoginActivity : AppCompatActivity() {
 

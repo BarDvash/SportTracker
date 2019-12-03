@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="android.technion.fitracker.SignInFragment"
+        android:name="android.technion.fitracker.login.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="android.technion.fitracker.SignUpFragment"
+        android:name="android.technion.fitracker.login.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpBusinessFragment"
-        android:name="android.technion.fitracker.SignUpBusinessFragment"
+        android:name="android.technion.fitracker.login.SignUpBusinessFragment"
         android:label="fragment_sign_up_business"
         tools:layout="@layout/fragment_sign_up_business" >
         <action

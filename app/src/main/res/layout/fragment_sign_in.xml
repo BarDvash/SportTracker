@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInFragment">
+    tools:context=".login.SignInFragment">
 
     <EditText
         android:id="@+id/login_fragment_email"
@@ -47,7 +47,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_fragment_pass" />
 
-    <Button
+    <com.google.android.gms.common.SignInButton
         android:id="@+id/login_fragment_sign_in_with_google"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
