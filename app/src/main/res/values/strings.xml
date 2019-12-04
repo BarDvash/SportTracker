@@ -21,4 +21,10 @@
     <string name="measurements_title">Measurements</string>
     <string name="home_title">Home</string>
     <string name="user_avatar">User avatar</string>
+    <string name="weight_hint">Weight</string>
+    <string name="height_hint">Height</string>
+    <string name="chest_hint">Chest</string>
+    <string name="waist_hint">Waist</string>
+    <string name="hips_hint">Hips</string>
+    <string name="biceps_hint">Biceps</string>
 </resources>
