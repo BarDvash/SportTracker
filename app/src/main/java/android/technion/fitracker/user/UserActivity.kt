@@ -29,6 +29,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        navController.popBackStack()
         when (menuItem.itemId) {
             R.id.action_home -> navController.navigate(R.id.homeScreenFragment)
             R.id.action_workouts -> navController.navigate(R.id.workoutsFragment)
