@@ -32,8 +32,8 @@
             android:id="@+id/action_signUpFragment_to_signUpBusinessFragment"
             app:destination="@id/signUpBusinessFragment" />
         <action
-            android:id="@+id/action_signUpFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            android:id="@+id/action_signUpFragment_to_user_navigation_graph"
+            app:destination="@id/user_navigation_graph" />
     </fragment>
     <fragment
         android:id="@+id/signUpBusinessFragment"
