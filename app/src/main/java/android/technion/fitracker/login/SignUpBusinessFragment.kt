@@ -29,16 +29,16 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        view.findViewById<Button>(R.id.sign_up_buisiness_sign_up_button).setOnClickListener(this)
-        view.findViewById<Button>(R.id.sign_up_buisiness_regular_user_button).setOnClickListener(this)
+        view.findViewById<Button>(R.id.sign_up_business_sign_up_button).setOnClickListener(this)
+        view.findViewById<Button>(R.id.sign_up_business_regular_user_button).setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when(v!!.id){
-            R.id.sign_up_buisiness_sign_up_button -> navController.navigate(
+            R.id.sign_up_business_sign_up_button -> navController.navigate(
                 R.id.action_signUpBusinessFragment_to_signInFragment
             );
-            R.id.sign_up_buisiness_regular_user_button -> navController.navigate(
+            R.id.sign_up_business_regular_user_button -> navController.navigate(
                 R.id.action_signUpBusinessFragment_to_signUpFragment
             );
         }
