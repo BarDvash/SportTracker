@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
-        android:id="@+id/nav_host_fragment_user"
+        android:id="@+id/user_navigation_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,6 +26,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/login_navigation_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

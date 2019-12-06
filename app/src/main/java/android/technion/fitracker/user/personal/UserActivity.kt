@@ -1,11 +1,10 @@
-package android.technion.fitracker.user
+package android.technion.fitracker.user.personal
 
 import android.os.Bundle
 import android.technion.fitracker.R
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,9 +15,9 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
-        setSupportActionBar(findViewById(R.id.user_tool_bar))
-        navController = Navigation.findNavController(findViewById(R.id.nav_host_fragment_user))
-        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setOnNavigationItemSelectedListener(this)
+        setSupportActionBar(findViewById(R.id.user_toolbar))
+        navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
+        findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

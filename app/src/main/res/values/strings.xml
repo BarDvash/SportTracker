@@ -27,4 +27,11 @@
     <string name="waist_hint">Waist</string>
     <string name="hips_hint">Hips</string>
     <string name="biceps_hint">Biceps</string>
+    <string name="logout">Logout</string>
+    <string name="nutrition_title">Nutrition</string>
+    <string name="workouts_title">Workouts</string>
+    <string name="customers_title">My customers</string>
+    <string name="schedule_title">Schedule</string>
+    <string name="home_title">Home</string>
+    <string name="username_default">Username</string>
 </resources>

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.UserActivity">
+    tools:context=".user.personal.UserActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/user_tool_bar"
+        android:id="@+id/user_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -18,61 +18,63 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/user_activity_menu" />
 
-    <fragment
-        android:id="@+id/nav_host_fragment_user"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:navGraph="@navigation/user_navigation_graph" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment_user"
-        app:layout_constraintStart_toStartOf="@+id/nav_host_fragment_user"
-        app:menu="@menu/bottom_nav_menu" />
-
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/user_avatar"
         android:layout_width="120dp"
         android:layout_height="125dp"
         android:contentDescription="@string/user_avatar"
         android:src="@drawable/user_avatar"
-        app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment_user"
-        app:layout_constraintStart_toStartOf="@+id/user_tool_bar"
-        app:layout_constraintTop_toBottomOf="@+id/user_tool_bar"
-        app:layout_constraintVertical_bias="0.125" />
+        app:layout_constraintBottom_toTopOf="@+id/user_divider"
+        app:layout_constraintStart_toStartOf="@+id/user_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
+        app:layout_constraintVertical_bias="0.017" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/user_name"
         android:layout_width="0dp"
         android:layout_height="125dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="Username"
+        android:text="@string/username_default"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="@+id/user_tool_bar"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/user_tool_bar" />
+        app:layout_constraintBottom_toTopOf="@+id/user_divider"
+        app:layout_constraintEnd_toEndOf="@+id/user_toolbar"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
+        app:layout_constraintVertical_bias="0.017" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/user_divider"
         android:layout_width="0dp"
         android:layout_height="1dp"
+
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment_user"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintBottom_toTopOf="@+id/user_navigation_host"
+        app:layout_constraintEnd_toEndOf="@+id/user_name"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/user_avatar" />
+
+    <fragment
+        android:id="@+id/user_navigation_host"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="487dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@+id/user_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/user_avatar"
+        app:navGraph="@navigation/user_navigation_graph" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/user_bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/user_navigation_host"
+        app:layout_constraintStart_toStartOf="@+id/user_navigation_host"
+        app:menu="@menu/user_bottom_nav_menu" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,8 +4,7 @@ package android.technion.fitracker.login
 import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
-import android.technion.fitracker.user.UserActivity
-import android.util.Log
+import android.technion.fitracker.user.personal.UserActivity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
