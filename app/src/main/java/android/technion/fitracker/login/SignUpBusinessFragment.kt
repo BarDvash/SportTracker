@@ -24,6 +24,9 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
 
+    //Button
+    private lateinit var signUpButton: Button
+
     //Fields
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -53,7 +56,8 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        view.findViewById<Button>(R.id.sign_up_business_sign_up_button).setOnClickListener(this)
+        signUpButton = view.findViewById(R.id.sign_up_business_sign_up_button)
+        signUpButton.setOnClickListener(this)
         view.findViewById<Button>(R.id.sign_up_business_regular_user_button).setOnClickListener(this)
 
         emailEditText = view.findViewById(R.id.sign_up_business_email)
@@ -62,7 +66,10 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v!!.id){
-            R.id.sign_up_business_sign_up_button -> handleEmailSignUp()
+            R.id.sign_up_business_sign_up_button -> {
+                signUpButton.isEnabled = false
+                handleEmailSignUp()
+            }
             R.id.sign_up_business_regular_user_button -> navController.navigate(
                 R.id.action_signUpBusinessFragment_to_signUpFragment
             )
@@ -77,9 +84,11 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     //TODO add to DB that user is business user
                     // Sign up success
+                    signUpButton.isEnabled = true
                     startBusinessUserActivity()
                 } else {
                     // If sign in fails, display a message to the user.
+                    signUpButton.isEnabled = true
                     Toast.makeText(context, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
                 }
             }
