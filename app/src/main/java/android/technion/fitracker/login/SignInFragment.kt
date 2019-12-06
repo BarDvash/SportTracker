@@ -77,6 +77,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         if (auth.currentUser != null) {
+            //TODO add check for trainer
             startUserActivity()
         }
     }
@@ -102,8 +103,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
             R.id.login_fragment_sign_in_with_google -> signIn()
             R.id.login_fragment_sign_in_button -> {
                 signInButton.isEnabled = false
-                //TODO move to string.xml
-                signInButton.text = "LOGGING YOU IN..."
+                signInButton.text = getString(R.string.sign_in_progress)
                 firebaseAuthWithEmail()
             }
             R.id.login_fragment_sign_up_button -> navController.navigate(
@@ -130,7 +130,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account!!)
         } catch (e: ApiException) {
-            Toast.makeText(context, "Authentication failed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -140,11 +140,13 @@ class SignInFragment : Fragment(), View.OnClickListener {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    //TODO if user signs in first time need to check him as regular user
+                    //TODO add check for trainer
                     startUserActivity()
                 } else {
                     Toast.makeText(
                         context,
-                        "Authentication failed, please check your internet connection and try again.",
+                        getString(R.string.authentication_failed_internet),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -162,21 +164,22 @@ class SignInFragment : Fragment(), View.OnClickListener {
         val password = passwordEditText.text.toString()
         if (email.isEmpty() || password.isEmpty()){
             signInButton.isEnabled = true
-            signInButton.text = "SIGN IN"
+            signInButton.text = getString(R.string.sign_in_button_text)
             return
         }
 
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
+                    //TODO add check for trainer
                     startUserActivity()
                     signInButton.isEnabled = true
-                    signInButton.text = "SIGN IN"
+                    signInButton.text = getString(R.string.sign_in_button_text)
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(context!!, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context!!, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
                     signInButton.isEnabled = true
-                    signInButton.text = "SIGN IN"
+                    signInButton.text = getString(R.string.sign_in_button_text)
                 }
             }
     }

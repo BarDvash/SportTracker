@@ -75,11 +75,12 @@ class SignUpFragment : Fragment(), View.OnClickListener {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
+                    //TODO add to DB that user is regular user
                     // Sign up success
                     startUserActivity()
                 } else {
                     // If sign in fails, display a message to the user.
-                    Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
                 }
             }
     }
