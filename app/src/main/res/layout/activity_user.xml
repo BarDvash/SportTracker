@@ -24,10 +24,8 @@
         android:layout_height="125dp"
         android:contentDescription="@string/user_avatar"
         android:src="@drawable/user_avatar"
-        app:layout_constraintBottom_toTopOf="@+id/user_divider"
         app:layout_constraintStart_toStartOf="@+id/user_toolbar"
-        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintTop_toBottomOf="@+id/user_toolbar" />
 
     <TextView
         android:id="@+id/user_name"
@@ -37,12 +35,10 @@
         android:layout_marginLeft="8dp"
         android:text="@string/username_default"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/user_divider"
         app:layout_constraintEnd_toEndOf="@+id/user_toolbar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintTop_toBottomOf="@+id/user_toolbar" />
 
     <View
         android:id="@+id/user_divider"
@@ -50,21 +46,22 @@
         android:layout_height="1dp"
 
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/user_navigation_host"
         app:layout_constraintEnd_toEndOf="@+id/user_name"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/user_avatar" />
+        app:layout_constraintStart_toStartOf="@+id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/user_name" />
 
     <fragment
         android:id="@+id/user_navigation_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
-        android:layout_height="487dp"
+        android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/user_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/user_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/user_divider"
         app:navGraph="@navigation/user_navigation_graph" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -73,6 +70,7 @@
         android:layout_height="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/user_navigation_host"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/user_navigation_host"
         app:menu="@menu/user_bottom_nav_menu" />
 
