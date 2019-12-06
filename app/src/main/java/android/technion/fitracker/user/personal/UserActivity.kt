@@ -1,13 +1,16 @@
 package android.technion.fitracker.user.personal
 
+import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
+import android.technion.fitracker.login.LoginActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController: NavController
@@ -37,5 +40,25 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.action_measurements -> navController.navigate(R.id.measurementsFragment)
         }
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.user_menu_logout_ac -> {
+            FirebaseAuth.getInstance().signOut()
+            startLoginActivity()
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun startLoginActivity() {
+        val userHome = Intent(applicationContext, LoginActivity::class.java)
+        startActivity(userHome)
+        finish()
     }
 }
