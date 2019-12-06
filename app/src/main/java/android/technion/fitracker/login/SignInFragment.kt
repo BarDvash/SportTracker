@@ -3,6 +3,8 @@ package android.technion.fitracker.login
 import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
+import android.technion.fitracker.user.User
+import android.technion.fitracker.user.business.BusinessUserActivity
 import android.technion.fitracker.user.personal.UserActivity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 /**
@@ -32,6 +35,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var signInButton: Button
 
     //Fields
@@ -62,7 +66,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
         signInButton = view.findViewById(R.id.login_fragment_sign_in_button)
         signInButton.setOnClickListener(this)
-
+        firestore = FirebaseFirestore.getInstance()
         view.findViewById<Button>(R.id.login_fragment_sign_up_button).setOnClickListener(this)
         view.findViewById<SignInButton>(R.id.login_fragment_sign_in_with_google)
             .setOnClickListener(this)
@@ -77,8 +81,17 @@ class SignInFragment : Fragment(), View.OnClickListener {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         if (auth.currentUser != null) {
-            //TODO add check for trainer
-            startUserActivity()
+            val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
+            docRef.get().addOnSuccessListener {
+                document ->
+                val user = document.toObject(User::class.java)
+                if(user?.type == "personal"){
+                    startUserActivity()
+                }else{
+                    startBusinessUserActivity()
+                }
+
+            }
         }
     }
 
@@ -140,8 +153,9 @@ class SignInFragment : Fragment(), View.OnClickListener {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    //TODO if user signs in first time need to check him as regular user
-                    //TODO add check for trainer
+                    val uid = FirebaseAuth.getInstance().currentUser?.uid
+                    val user = User(type = "personal", name = auth.currentUser?.displayName)
+                    firestore.collection("users").document(uid!!).set(user)
                     startUserActivity()
                 } else {
                     Toast.makeText(
@@ -159,6 +173,12 @@ class SignInFragment : Fragment(), View.OnClickListener {
         activity?.finish()
     }
 
+    private fun startBusinessUserActivity() {
+        val userHome = Intent(context!!, BusinessUserActivity::class.java)
+        startActivity(userHome)
+        activity?.finish()
+    }
+
     private fun firebaseAuthWithEmail() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
@@ -171,10 +191,22 @@ class SignInFragment : Fragment(), View.OnClickListener {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
-                    //TODO add check for trainer
-                    startUserActivity()
                     signInButton.isEnabled = true
                     signInButton.text = getString(R.string.sign_in_button_text)
+                    if (auth.currentUser != null) {
+                        val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
+                        docRef.get().addOnSuccessListener {
+                                document ->
+                            val user = document.toObject(User::class.java)
+                            if(user?.type == "personal"){
+                                startUserActivity()
+                            }else{
+                                startBusinessUserActivity()
+                            }
+
+                        }
+                    }
+
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(context!!, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()

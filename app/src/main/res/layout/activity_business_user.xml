@@ -22,6 +22,8 @@
         android:id="@+id/business_user_avatar"
         android:layout_width="127dp"
         android:layout_height="136dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:contentDescription="@string/user_avatar"
         android:src="@drawable/user_avatar"
         app:layout_constraintStart_toStartOf="parent"
