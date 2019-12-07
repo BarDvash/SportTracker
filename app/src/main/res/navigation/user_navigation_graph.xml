@@ -28,5 +28,5 @@
         android:id="@+id/workoutsFragment"
         android:name="android.technion.fitracker.user.personal.WorkoutsFragment"
         android:label="fragment_workouts"
-        tools:layout="@layout/fragment_workouts" />
+        tools:layout="@layout/fragment_user_workouts" />
 </navigation>
