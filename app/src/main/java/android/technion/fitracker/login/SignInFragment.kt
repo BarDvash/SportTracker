@@ -37,6 +37,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var signInButton: Button
+    private lateinit var signInGoogleButton: SignInButton
 
     //Fields
     private lateinit var emailEditText: EditText
@@ -68,8 +69,8 @@ class SignInFragment : Fragment(), View.OnClickListener {
         signInButton.setOnClickListener(this)
         firestore = FirebaseFirestore.getInstance()
         view.findViewById<Button>(R.id.login_fragment_sign_up_button).setOnClickListener(this)
-        view.findViewById<SignInButton>(R.id.login_fragment_sign_in_with_google)
-            .setOnClickListener(this)
+        signInGoogleButton = view.findViewById(R.id.login_fragment_sign_in_with_google)
+        signInGoogleButton.setOnClickListener(this)
 
         emailEditText = view.findViewById(R.id.login_fragment_email)
         passwordEditText = view.findViewById(R.id.login_fragment_pass)
@@ -96,6 +97,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
     }
 
     private fun signIn() {
+        signInGoogleButton.isEnabled = false
         val signInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
@@ -143,6 +145,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account!!)
         } catch (e: ApiException) {
+            signInGoogleButton.isEnabled = true
             Toast.makeText(context, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
         }
 
@@ -156,8 +159,10 @@ class SignInFragment : Fragment(), View.OnClickListener {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
                     val user = User(type = "personal", name = auth.currentUser?.displayName)
                     firestore.collection("users").document(uid!!).set(user)
+                    signInGoogleButton.isEnabled = true
                     startUserActivity()
                 } else {
+                    signInGoogleButton.isEnabled = true
                     Toast.makeText(
                         context,
                         getString(R.string.authentication_failed_internet),
