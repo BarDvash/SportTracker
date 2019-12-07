@@ -57,6 +57,8 @@ class SignUpFragment : Fragment(), View.OnClickListener {
                     startBusinessUserActivity()
                 }
 
+            }.addOnFailureListener {
+                Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -102,9 +104,13 @@ class SignUpFragment : Fragment(), View.OnClickListener {
                 if (task.isSuccessful) {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
                     val user = User(type = "personal", name = userName)
-                    firestore.collection("users").document(uid!!).set(user)
-                    signUpButton.isEnabled = true
-                    startUserActivity()
+                    firestore.collection("users").document(uid!!).set(user).addOnSuccessListener {
+                        signUpButton.isEnabled = true
+                        startUserActivity()
+                    }.addOnFailureListener {
+                        signUpButton.isEnabled = true
+                        Toast.makeText(context, getString(R.string.database_write_error), Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     signUpButton.isEnabled = true

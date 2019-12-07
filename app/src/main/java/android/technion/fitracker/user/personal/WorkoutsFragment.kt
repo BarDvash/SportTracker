@@ -46,11 +46,6 @@ class WorkoutsFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val uid = mAuth.currentUser?.uid
         val query = firestore.collection("users").document(uid!!).collection("workouts").orderBy("name", Query.Direction.ASCENDING)
-        val query_result = firestore.collection("users").document(uid).collection("workouts").document("PLKO4Z2m33A7ezeWZB4h").get().addOnSuccessListener {
-                document ->
-
-            Log.e("gavno!", document.toObject(WorkoutFireStoreModel::class.java).toString())
-        }
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>().setQuery(query, WorkoutFireStoreModel::class.java).build()
         adapter = WorkoutsFireStoreAdapter(options)
         recyclerView.adapter = adapter

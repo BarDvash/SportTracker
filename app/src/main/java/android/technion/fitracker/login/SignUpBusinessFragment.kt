@@ -58,6 +58,8 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
                     startBusinessUserActivity()
                 }
 
+            }.addOnFailureListener {
+                Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -104,13 +106,15 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
-                    //TODO add to DB that user is business user
-                    // Sign up success
-                    signUpButton.isEnabled = true
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
                     val user = User(type = "business", name = userProvidedName, phone = phone)
-                    firestore.collection("users").document(uid!!).set(user)
-                    startBusinessUserActivity()
+                    firestore.collection("users").document(uid!!).set(user).addOnSuccessListener {
+                        startBusinessUserActivity()
+                        signUpButton.isEnabled = true
+                    }.addOnFailureListener {
+                        signUpButton.isEnabled = true
+                        Toast.makeText(context, getString(R.string.database_write_error), Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     signUpButton.isEnabled = true

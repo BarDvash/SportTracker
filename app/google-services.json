@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "227928727350-nm6pmghh4p6hthmvoeeebts828h8a0m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.technion.fitracker",
+            "certificate_hash": "6c4da85856dec01505714f00b7d54f7142df2ca6"
+          }
+        },
+        {
           "client_id": "227928727350-o88klrn1on4sv4i42a5iuspvlogkur48.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -36,7 +44,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "227928727350-okbq0bdbqj44m608vlpcr8t6thf8fikv.apps.googleusercontent.com",
+              "client_id": "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
