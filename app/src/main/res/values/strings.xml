@@ -31,4 +31,6 @@
     <string name="authentication_failed">Authentication failed</string>
     <string name="authentication_failed_internet">Authentication failed, please check your internet connection and try again.</string>
     <string name="username_hint">Name</string>
+    <string name="database_write_error">Error on writing to database, check your internet connection and try again</string>
+    <string name="database_read_error">Error occurred when trying to read from database, check your internet connection and try again</string>
 </resources>
