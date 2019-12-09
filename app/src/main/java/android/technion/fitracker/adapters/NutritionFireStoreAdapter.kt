@@ -36,24 +36,35 @@ class NutritionFireStoreAdapter(options: FirestoreRecyclerOptions<NutritionFireS
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: NutritionFireStoreModel) {
-        holder.name.text = item.name
-        firestore.collection("users").document(auth.currentUser!!.uid).collection("meals").document(item.name!!).collection("dishes").get().addOnSuccessListener { documents ->
-            val sb = StringBuilder()
-            for (document in documents) {
-                val doc = document.toObject(DishesModel::class.java)
-                sb.appendln(doc.name)
+        holder.name.text = item.Name
+        firestore.collection("users").document(auth.currentUser!!.uid).collection("meals").whereEqualTo("Name",item.Name!!).get().addOnSuccessListener {
+          documents ->
+            documents.first().reference.collection("dishes").get().addOnSuccessListener {
+                    dishes ->
+                val sbNames = StringBuilder()
+                val sbCounts = StringBuilder()
+                for (dish in dishes) {
+                    val doc = dish.toObject(DishesModel::class.java)
+                    sbNames.appendln(doc.Name)
+                    sbCounts.appendln(doc.Count)
+                }
+                holder.desc.text = sbNames.toString()
+                holder.count.text = sbCounts.toString()
             }
-            holder.desc.text = sb.toString()
-        }
-            .addOnFailureListener { exception ->
+                .addOnFailureListener { exception ->
+                    Log.d("DB","Can't get subcollection from DB")
+                }
 
-            }
+        }.addOnFailureListener {
+            Log.d("DB","Can't get meals from DB")
+        }
     }
 
     inner class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view){
         var name: TextView = view.findViewById(R.id.nutritionName)
         var desc: TextView = view.findViewById(R.id.nutritionInfo)
+        var count: TextView = view.findViewById(R.id.nutritionQuantity)
     }
 
 }
