@@ -37,7 +37,7 @@ class NutritionFireStoreAdapter(options: FirestoreRecyclerOptions<NutritionFireS
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: NutritionFireStoreModel) {
         holder.name.text = item.name
-        firestore.collection("users").document(auth.currentUser!!.uid).collection("nutrition").document(item.name!!).collection("dishes").get().addOnSuccessListener { documents ->
+        firestore.collection("users").document(auth.currentUser!!.uid).collection("meals").document(item.name!!).collection("dishes").get().addOnSuccessListener { documents ->
             val sb = StringBuilder()
             for (document in documents) {
                 val doc = document.toObject(DishesModel::class.java)
