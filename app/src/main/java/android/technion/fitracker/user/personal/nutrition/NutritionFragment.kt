@@ -68,8 +68,4 @@ class NutritionFragment : Fragment() {
         adapter.stopListening()
 
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }
