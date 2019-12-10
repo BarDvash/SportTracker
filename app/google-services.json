@@ -15,11 +15,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "227928727350-9b35lbekbinudhqtdi8khn26oa2j8qb2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.technion.fitracker",
+            "certificate_hash": "d2f012c764b684bae4d6905589513f25f937390e"
+          }
+        },
+        {
           "client_id": "227928727350-nm6pmghh4p6hthmvoeeebts828h8a0m7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "android.technion.fitracker",
             "certificate_hash": "6c4da85856dec01505714f00b7d54f7142df2ca6"
+          }
+        },
+        {
+          "client_id": "227928727350-ggrv51a8c5aii63i3s6bao1rg2v6ocek.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.technion.fitracker",
+            "certificate_hash": "381ebbdbe7ae8272d134436ef63fb2082f0adc8a"
           }
         },
         {
