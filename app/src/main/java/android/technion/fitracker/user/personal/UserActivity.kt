@@ -63,6 +63,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
