@@ -1,3 +1,3 @@
-package android.technion.fitracker.models
+package android.technion.fitracker.models.nutrition
 
 data class NutritionFireStoreModel(var Name: String? = null)

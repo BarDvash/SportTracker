@@ -21,7 +21,7 @@
         tools:layout="@layout/fragment_measurements" />
     <fragment
         android:id="@+id/nutritionFragment"
-        android:name="android.technion.fitracker.user.personal.NutritionFragment"
+        android:name="android.technion.fitracker.user.personal.nutrition.NutritionFragment"
         android:label="fragment_nutrition"
         tools:layout="@layout/fragment_nutrition" />
     <fragment

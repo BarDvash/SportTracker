@@ -1,4 +1,4 @@
-package android.technion.fitracker.user.personal
+package android.technion.fitracker.user.personal.nutrition
 
 
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import android.technion.fitracker.R
-import android.technion.fitracker.adapters.NutritionFireStoreAdapter
-import android.technion.fitracker.models.NutritionFireStoreModel
+import android.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
+import android.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
