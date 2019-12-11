@@ -75,12 +75,15 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        navController.popBackStack()
+        val test2 =   navController.currentDestination?.label
         when (menuItem.itemId) {
-            R.id.action_home -> navController.navigate(R.id.homeScreenFragment)
-            R.id.action_workouts -> navController.navigate(R.id.workoutsFragment)
-            R.id.action_nutrition -> navController.navigate(R.id.nutritionFragment)
-            R.id.action_measurements -> navController.navigate(R.id.measurementsFragment)
+            R.id.action_home -> startFragmentAndPop(R.id.homeScreenFragment)
+            R.id.action_workouts -> startFragmentAndPop(R.id.workoutsFragment)
+            R.id.action_nutrition -> {
+                if (test2 != "fragment_nutrition")
+                    startFragmentAndPop(R.id.nutritionFragment)
+            }
+            R.id.action_measurements -> startFragmentAndPop(R.id.measurementsFragment)
         }
         return true
     }
@@ -94,7 +97,6 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
             true
         }
-
         else -> {
             // If we got here, the user's action was not recognized.
             // Invoke the superclass to handle it.
@@ -106,5 +108,10 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val userHome = Intent(applicationContext, LoginActivity::class.java)
         startActivity(userHome)
         finish()
+    }
+
+    private fun startFragmentAndPop(id: Int) {
+        navController.popBackStack()
+        navController.navigate(id)
     }
 }

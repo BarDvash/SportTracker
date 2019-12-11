@@ -31,4 +31,5 @@
     <string name="authentication_failed">Authentication failed</string>
     <string name="authentication_failed_internet">Authentication failed, please check your internet connection and try again.</string>
     <string name="username_hint">Name</string>
+    <string name="add_meal_title">Add a new meal</string>
 </resources>

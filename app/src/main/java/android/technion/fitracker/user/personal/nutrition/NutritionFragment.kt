@@ -1,6 +1,7 @@
 package android.technion.fitracker.user.personal.nutrition
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -23,11 +25,12 @@ var recyclerView: RecyclerView? = null
 /**
  * A simple [Fragment] subclass.
  */
-class NutritionFragment : Fragment() {
+class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
 //    lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
+    lateinit var fab: FloatingActionButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +47,8 @@ class NutritionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        fab = view.findViewById(R.id.nutrition_fab)
+        fab.setOnClickListener(this)
         if (recyclerView == null) {
             recyclerView = view.findViewById(R.id.nutrition_rec_view)
             recyclerView!!.setHasFixedSize(true)
@@ -67,5 +72,16 @@ class NutritionFragment : Fragment() {
         super.onStop()
         adapter.stopListening()
 
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.nutrition_fab -> switchToAddActivity()
+        }
+    }
+
+    private fun switchToAddActivity() {
+        val userHome = Intent(context, NutritionAddMealActivity::class.java)
+        startActivity(userHome)
     }
 }
