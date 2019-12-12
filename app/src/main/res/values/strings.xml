@@ -33,4 +33,18 @@
     <string name="username_hint">Name</string>
     <string name="database_write_error">Error on writing to database, check your internet connection and try again</string>
     <string name="database_read_error">Error occurred when trying to read from database, check your internet connection and try again</string>
+    <string name="workout_name_field_hint">Workout Name</string>
+    <string name="empty_workout_list_hint">There are no exercises added yet!\nUse + button to add first exercise.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="duration_hint">Duration</string>
+    <string name="speed_hint">Speed</string>
+    <string name="intensity_hint">Intensity</string>
+    <string name="name_hint">Name</string>
+    <string name="sets_hint">Sets</string>
+    <string name="repetitions_hint">Repetitions</string>
+    <string name="rest_between_sets_hint">Rest between sets</string>
+    <string name="notes_hint">Notes</string>
+    <string name="plus_sign_hint">+</string>
+    <string name="aerobic_hint">Aerobic</string>
+    <string name="description_hint">Description</string>
 </resources>

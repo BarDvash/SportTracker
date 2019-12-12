@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.personal.WorkoutsFragment">
+    tools:context=".user.personal.workout.WorkoutsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,12 +27,13 @@
             android:layout_marginTop="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/workouts_title"
             app:layout_constraintVertical_bias="0.0"
-            tools:itemCount="2"
-            tools:listitem="@layout/workout_ele"
+            tools:itemCount="5"
+            tools:listitem="@layout/workout_with_desc_ele"
+            tools:background="#e3e3e3"
             tools:orientation="horizontal"
             tools:scrollbars="horizontal" />
 

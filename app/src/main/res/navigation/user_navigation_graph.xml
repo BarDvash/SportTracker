@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/measurementsFragment"
-        android:name="android.technion.fitracker.user.personal.MeasurementsFragment"
+        android:name="android.technion.fitracker.user.personal.measurements.MeasurementsFragment"
         android:label="fragment_measurements"
         tools:layout="@layout/fragment_measurements" />
     <fragment
@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_nutrition" />
     <fragment
         android:id="@+id/workoutsFragment"
-        android:name="android.technion.fitracker.user.personal.WorkoutsFragment"
+        android:name="android.technion.fitracker.user.personal.workout.WorkoutsFragment"
         android:label="fragment_workouts"
         tools:layout="@layout/fragment_user_workouts" />
 </navigation>

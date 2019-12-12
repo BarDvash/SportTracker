@@ -120,6 +120,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
                 signInButton.isEnabled = false
                 signInButton.text = getString(R.string.sign_in_progress)
                 firebaseAuthWithEmail()
+
             }
             R.id.login_fragment_sign_up_button -> navController.navigate(
                 R.id.action_signInFragment_to_signUpFragment

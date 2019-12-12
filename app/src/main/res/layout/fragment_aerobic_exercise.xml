@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".user.personal.workout.AerobicExerciseFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <EditText
+            android:id="@+id/aerobic_name_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:ems="10"
+            android:hint="@string/name_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/aerobic_duration_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/duration_hint"
+            app:layout_constraintEnd_toEndOf="@+id/aerobic_name_input"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/aerobic_name_input"
+            app:layout_constraintTop_toBottomOf="@+id/aerobic_name_input" />
+
+        <EditText
+            android:id="@+id/aerobic_speed_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/speed_hint"
+            app:layout_constraintEnd_toEndOf="@+id/aerobic_duration_input"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/aerobic_duration_input"
+            app:layout_constraintTop_toBottomOf="@+id/aerobic_duration_input" />
+
+        <EditText
+            android:id="@+id/aerobic_intensity_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/intensity_hint"
+            app:layout_constraintEnd_toEndOf="@+id/aerobic_speed_input"
+            app:layout_constraintStart_toStartOf="@+id/aerobic_speed_input"
+            app:layout_constraintTop_toBottomOf="@+id/aerobic_speed_input" />
+
+        <EditText
+            android:id="@+id/aerobic_notes_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/notes_hint"
+            app:layout_constraintEnd_toEndOf="@+id/aerobic_intensity_input"
+            app:layout_constraintStart_toStartOf="@+id/aerobic_intensity_input"
+            app:layout_constraintTop_toBottomOf="@+id/aerobic_intensity_input" />
+
+        <Button
+            android:id="@+id/aerobic_add_button"
+            android:layout_width="67dp"
+            android:layout_height="74dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/plus_sign_hint"
+            android:textSize="36sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aerobic_notes_input" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

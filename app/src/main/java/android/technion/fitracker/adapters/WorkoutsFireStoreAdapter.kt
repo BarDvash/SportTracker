@@ -19,7 +19,7 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
         viewType: Int
     ): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.workout_ele, parent, false)
+            .inflate(R.layout.workout_with_desc_ele, parent, false)
         return ViewHolder(view)
     }
 
@@ -34,7 +34,7 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
 
     inner class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view){
-        var name: TextView = view.findViewById(R.id.workoutName)
-        var desc: TextView = view.findViewById(R.id.workoutInfo)
+        var name: TextView = view.findViewById(R.id.workout_name)
+        var desc: TextView = view.findViewById(R.id.workout_info)
     }
 }

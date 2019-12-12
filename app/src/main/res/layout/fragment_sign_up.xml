@@ -62,7 +62,6 @@
     <Button
         android:id="@+id/sign_up_fragment_trainer_sign_up_button"
         android:layout_marginBottom="16dp"
-        android:background="#FFFFFF"
         android:text="@string/register_business_user_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +73,6 @@
         android:id="@+id/sign_up_fragment_sign_up_button"
         style="@style/log_screen_btn"
         android:layout_marginTop="16dp"
-        android:background="#FFFFFF"
         android:shadowColor="#007A4545"
         android:text="@string/sign_up_text"
         app:layout_constraintEnd_toEndOf="parent"

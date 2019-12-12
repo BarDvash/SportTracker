@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e3e3e3"
     tools:context=".user.personal.UserActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,7 +12,9 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="@+id/user_toolbar"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/user_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/user_toolbar" />
+        app:layout_constraintTop_toTopOf="@+id/user_avatar" />
 
     <View
         android:id="@+id/user_divider"

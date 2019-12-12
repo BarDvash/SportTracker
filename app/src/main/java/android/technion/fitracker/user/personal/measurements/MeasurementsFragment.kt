@@ -1,4 +1,4 @@
-package android.technion.fitracker.user.personal
+package android.technion.fitracker.user.personal.measurements
 
 
 import android.os.Bundle
