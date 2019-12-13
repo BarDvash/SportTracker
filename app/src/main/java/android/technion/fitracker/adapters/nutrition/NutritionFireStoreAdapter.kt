@@ -7,6 +7,7 @@ import android.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.lang.StringBuilder
 
 class NutritionFireStoreAdapter(options: FirestoreRecyclerOptions<NutritionFireStoreModel>) :
     FirestoreRecyclerAdapter<NutritionFireStoreModel, ViewHolder>(options) {
@@ -41,8 +43,14 @@ class NutritionFireStoreAdapter(options: FirestoreRecyclerOptions<NutritionFireS
                 val counts = ArrayList<String>()
                 for (dish in dishes) {
                     val doc = dish.toObject(DishesModel::class.java)
-                    names.add(doc.Name!!)
-                    counts.add(doc.Count!!)
+                    val sbNames = StringBuilder()
+                    val sbCount = StringBuilder()
+                    for (pair in doc.Data!!){
+                        sbNames.appendln(pair.key)
+                        sbCount.appendln(pair.value)
+                    }
+                    names.add(sbNames.toString().substringBeforeLast('\n'))
+                    counts.add(sbCount.toString().substringBeforeLast('\n'))
                 }
                 holder.recView.apply {
                     setHasFixedSize(true)

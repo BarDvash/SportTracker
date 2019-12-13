@@ -32,4 +32,7 @@
     <string name="authentication_failed_internet">Authentication failed, please check your internet connection and try again.</string>
     <string name="username_hint">Name</string>
     <string name="add_meal_title">Add a new meal</string>
+    <string name="add_new_meal">Add a new meal</string>
+    <string name="name_for_the_new_meal">Name for the new meal</string>
+    <string name="add_new_dish">Add new dish</string>
 </resources>
