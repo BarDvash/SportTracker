@@ -72,6 +72,7 @@ class SearchableActivity : AppCompatActivity() {
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
                 adapter = SearchFireStoreAdapter(options)
                 recyclerView.adapter = adapter
+                adapter.startListening()
             }
         }
 
