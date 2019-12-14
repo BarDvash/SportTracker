@@ -9,6 +9,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/business_user_toolbar"
         android:layout_width="0dp"
+        app:subtitleTextColor="@android:color/white"
+        app:titleTextColor="@android:color/white"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"

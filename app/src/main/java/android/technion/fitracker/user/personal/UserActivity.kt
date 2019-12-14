@@ -39,21 +39,21 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         if (auth.currentUser != null) {
-            if(auth.currentUser!!.photoUrl != null){
-                Glide.with(this) //1
-                    .load(auth.currentUser!!.photoUrl)
-                    .placeholder(R.drawable.user_avatar)
-                    .error(R.drawable.user_avatar)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .transform(CircleCrop())
-                    .into(findViewById(R.id.user_avatar))
-            }
             val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener {
                     document ->
                 val user = document.toObject(User::class.java)
                 findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
+                if (!user?.photoURL.isNullOrEmpty()) {
+                    Glide.with(this) //1
+                            .load(user?.photoURL)
+                            .placeholder(R.drawable.user_avatar)
+                            .error(R.drawable.user_avatar)
+                            .skipMemoryCache(true) //2
+                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                            .transform(CircleCrop()) //4
+                            .into(findViewById(R.id.business_user_avatar))
+                }
             }
         }
         findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
@@ -71,6 +71,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return true
 
     }
+
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

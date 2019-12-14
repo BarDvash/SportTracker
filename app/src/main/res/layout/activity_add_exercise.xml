@@ -18,18 +18,20 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:subtitleTextColor="@android:color/white"
+        app:titleTextColor="@android:color/white" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/aerobic_chip"
-        style="@style/Base.Widget.MaterialComponents.Chip"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:checkable="true"
-        android:checked="false"
         android:clickable="true"
+        android:checked="false"
         android:text="@string/aerobic_hint"
         android:textSize="18sp"
         app:checkedIconVisible="false"
@@ -47,14 +49,14 @@
 
     <com.google.android.material.chip.Chip
         android:id="@+id/weight_chip"
-        style="@style/Base.Widget.MaterialComponents.Chip"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:checkable="true"
-        android:checked="true"
         android:clickable="true"
         android:focusable="true"
+        android:checked="true"
         android:text="@string/weight_hint"
         android:textIsSelectable="false"
         android:textSize="18sp"

@@ -9,91 +9,145 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="16dp">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/weight_name_input"
+                <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/weight_name_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:ems="10"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:hint="@string/name_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/weight_weight_input"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/weight_weight_input_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="10"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+
             android:hint="@string/weight_hint"
-            app:layout_constraintEnd_toEndOf="@+id/weight_name_input"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/weight_name_input"
-            app:layout_constraintTop_toBottomOf="@+id/weight_name_input" />
-
-        <EditText
-            android:id="@+id/weight_sets_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="@string/sets_hint"
-            app:layout_constraintEnd_toEndOf="@+id/weight_weight_input"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/weight_weight_input"
-            app:layout_constraintTop_toBottomOf="@+id/weight_weight_input" />
-
-        <EditText
-            android:id="@+id/weight_repetitions_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="@string/repetitions_hint"
-            app:layout_constraintEnd_toEndOf="@+id/weight_sets_input"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/weight_sets_input"
-            app:layout_constraintTop_toBottomOf="@+id/weight_sets_input" />
-
-        <EditText
-            android:id="@+id/weight_set_rest_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="@string/rest_between_sets_hint"
-            app:layout_constraintEnd_toEndOf="@+id/weight_repetitions_input"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/weight_repetitions_input"
-            app:layout_constraintTop_toBottomOf="@+id/weight_repetitions_input" />
-
-        <EditText
-            android:id="@+id/weight_notes_input"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:ems="10"
-            android:hint="@string/notes_hint"
-            app:layout_constraintEnd_toEndOf="@+id/weight_set_rest_input"
-            app:layout_constraintStart_toStartOf="@+id/weight_set_rest_input"
-            app:layout_constraintTop_toBottomOf="@+id/weight_set_rest_input" />
-
-        <Button
-            android:id="@+id/weight_add_button"
-            android:layout_width="67dp"
-            android:layout_height="74dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/plus_sign_hint"
-            android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/weight_notes_input" />
+            app:layout_constraintTop_toBottomOf="@id/weight_name_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight_weight_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/weight_sets_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+
+            android:hint="@string/sets_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weight_weight_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight_sets_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/weight_repetitions_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+
+            android:hint="@string/repetitions_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weight_sets_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight_repetitions_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/weight_set_rest_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+
+            android:hint="@string/rest_between_sets_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weight_repetitions_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight_set_rest_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/weight_notes_input_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+
+
+            android:hint="@string/notes_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weight_set_rest_input_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/weight_notes_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/weight_done_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:src="@drawable/ic_check_white_24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

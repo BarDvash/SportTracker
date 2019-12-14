@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.personal.workout.AddExerciseActivity"></activity>
+        <activity android:name=".user.personal.workout.AddExerciseActivity" />
         <activity android:name=".user.personal.workout.CreateNewWorkoutActivity" />
         <activity android:name=".user.business.BusinessUserActivity" />
         <activity android:name=".user.personal.UserActivity" />

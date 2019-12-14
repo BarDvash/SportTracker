@@ -6,8 +6,12 @@ import android.technion.fitracker.models.exercise.ExerciseBaseModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+
+
+
 
 
 class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -15,6 +19,8 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
     enum class HolderPosition {
         AEROBIC, WEIGHT
     }
+
+    var mOnItemClickListener: View.OnClickListener? = null
 
     inner class WeightViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
@@ -24,6 +30,10 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         var repetitions: TextView = view.findViewById(R.id.weight_element_repetitions)
         var rest: TextView = view.findViewById(R.id.weight_element_rest)
         var notes: TextView = view.findViewById(R.id.weight_element_notes)
+        init {
+            view.setTag(this)
+            view.setOnClickListener(mOnItemClickListener)
+        }
     }
 
     inner class AerobicViewHolder(view: View) :
@@ -33,6 +43,14 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         var speed: TextView = view.findViewById(R.id.aerobic_element_speed)
         var intensity: TextView = view.findViewById(R.id.aerobic_element_intensity)
         var notes: TextView = view.findViewById(R.id.aerobic_element_notes)
+        init {
+            view.setTag(this)
+            view.setOnClickListener(mOnItemClickListener)
+        }
+    }
+
+    public fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
+        mOnItemClickListener = itemClickListener
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -43,7 +61,6 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         }
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -51,11 +68,12 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         val viewHolder: RecyclerView.ViewHolder?
         viewHolder = when (viewType) {
             HolderPosition.WEIGHT.ordinal -> {
-                val weightView = LayoutInflater.from(parent.context).inflate(R.layout.wieght_workout_ele, parent, false)
+                val weightView = LayoutInflater.from(parent.context).inflate(R.layout.weight_workout_ele, parent, false)
                 WeightViewHolder(weightView)
             }
             HolderPosition.AEROBIC.ordinal -> {
-                val aerobicView = LayoutInflater.from(parent.context).inflate(R.layout.aerobic_workout_ele, parent, false)
+                val aerobicView =
+                    LayoutInflater.from(parent.context).inflate(R.layout.aerobic_workout_ele, parent, false)
                 AerobicViewHolder(aerobicView)
             }
             else -> null
@@ -64,30 +82,40 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
 
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (myDataset[position].type.equals("Aerobic")) {
             val aerobicElement: AerobicExerciseModel? = myDataset[position].downcastToAerobic()
             val aerobicHolder = (holder as AerobicViewHolder)
-            aerobicHolder.name.text = aerobicElement?.name
-            aerobicHolder.duration.text = "Duration: " + aerobicElement?.duration
-            aerobicHolder.speed.text = "Speed: " + aerobicElement?.speed
-            aerobicHolder.intensity.text = "Intensity: " + aerobicElement?.intensity
-            aerobicHolder.notes.text = "Notes: " +aerobicElement?.notes
+            setViewHolderElement(aerobicHolder.name, aerobicElement?.name)
+            setViewHolderElement(aerobicHolder.duration, aerobicElement?.duration)
+            setViewHolderElement(aerobicHolder.speed, aerobicElement?.speed)
+            setViewHolderElement(aerobicHolder.intensity, aerobicElement?.intensity)
+            setViewHolderElement(aerobicHolder.notes, aerobicElement?.notes)
         } else {
             val weightElement = myDataset[position].downcastToWeight()
             val weightHolder = (holder as WeightViewHolder)
-            weightHolder.name.text = weightElement?.name
-            weightHolder.weight.text = "Weight: " + weightElement?.weight
-            weightHolder.sets.text = "Sets: " + weightElement?.sets
-            weightHolder.repetitions.text = "Repetitions: " + weightElement?.repetitions
-            weightHolder.rest.text = "Rest: " + weightElement?.rest
-            weightHolder.notes.text = "Notes: " +weightElement?.notes
+            setViewHolderElement(weightHolder.name, weightElement?.name)
+            setViewHolderElement(weightHolder.weight, weightElement?.weight)
+            setViewHolderElement(weightHolder.sets, weightElement?.sets)
+            setViewHolderElement(weightHolder.repetitions, weightElement?.repetitions)
+            setViewHolderElement(weightHolder.rest, weightElement?.rest)
+            setViewHolderElement(weightHolder.notes, weightElement?.notes)
         }
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+    private fun setViewHolderElement(
+        textView: TextView?,
+        field: String?
+    ) {
+        if (field.isNullOrEmpty()) {
+            (textView?.parent as LinearLayout).visibility = View.GONE
+
+        } else {
+            textView?.text = field
+        }
+    }
+
     override fun getItemCount() = myDataset.size
 
 }

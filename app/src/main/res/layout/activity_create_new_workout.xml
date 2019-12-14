@@ -11,31 +11,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
             android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:subtitleTextColor="@android:color/white"
+            app:titleTextColor="@android:color/white"
+            android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-         />
+            app:menu="@menu/add_new_workout_menu"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <EditText
-            android:id="@+id/new_workout_name"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/create_workout_name_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:ems="10"
+            android:layout_marginLeft="8dp"
+
+            android:layout_marginRight="8dp"
             android:hint="@string/name_hint"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/create_workout_toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/create_workout_toolbar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_workout_name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/create_workout_desc_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:hint="@string/description_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_workout_name_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_workout_desc_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/no_workouts_hint"
@@ -46,21 +67,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499" />
+            app:layout_constraintTop_toTopOf="@+id/create_workout_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/create_workout_recyclev"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText"
-            tools:itemCount="5"
-            tools:listitem="" />
+            app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout"
+            tools:itemCount="2"
+            tools:listitem="@layout/weight_workout_ele" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_exercise_fab"
@@ -75,15 +94,4 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/description_hint"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/new_workout_name"
-            app:layout_constraintStart_toStartOf="@+id/new_workout_name"
-            app:layout_constraintTop_toBottomOf="@+id/new_workout_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

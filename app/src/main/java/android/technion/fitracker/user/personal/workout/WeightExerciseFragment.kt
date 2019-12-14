@@ -11,12 +11,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class WeightExerciseFragment : Fragment(), View.OnClickListener {
-    lateinit var addExercise: Button
+    lateinit var addExercise: FloatingActionButton
     lateinit var name: EditText
     lateinit var weight: EditText
     lateinit var sets: EditText
@@ -28,7 +27,6 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_weight_exercise, container, false)
     }
 
@@ -40,28 +38,35 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         repetitions = view.findViewById(R.id.weight_repetitions_input)
         rest = view.findViewById(R.id.weight_set_rest_input)
         notes = view.findViewById(R.id.weight_notes_input)
-        addExercise = view.findViewById(R.id.weight_add_button)
+        addExercise = view.findViewById(R.id.weight_done_fab)
         addExercise.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.weight_add_button -> {
+            R.id.weight_done_fab -> {
                 if (name.text.toString() == "") {
+                    //TODO : refactor me to underline the field
                     Toast.makeText(v.context, "You must fill at least Name field!", Toast.LENGTH_LONG).show()
                 } else {
-                    val intent = Intent()
-                    intent.putExtra("name", name.text.toString())
-                    intent.putExtra("weight", weight.text.toString())
-                    intent.putExtra("sets", sets.text.toString())
-                    intent.putExtra("repetitions", repetitions.text.toString())
-                    intent.putExtra("rest", rest.text.toString())
-                    intent.putExtra("notes", notes.text.toString())
+                    val intent = createIntentWithData()
                     activity?.setResult(CreateNewWorkoutActivity.ResultCodes.WEIGHT.ordinal, intent)
                     activity?.finish()
                 }
             }
         }
+    }
+
+
+    private fun createIntentWithData(): Intent {
+        val intent = Intent()
+        intent.putExtra("name", name.text.toString())
+        intent.putExtra("weight", weight.text.toString())
+        intent.putExtra("sets", sets.text.toString())
+        intent.putExtra("repetitions", repetitions.text.toString())
+        intent.putExtra("rest", rest.text.toString())
+        intent.putExtra("notes", notes.text.toString())
+        return intent
     }
 
 

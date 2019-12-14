@@ -103,7 +103,8 @@ class SignUpFragment : Fragment(), View.OnClickListener {
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
-                    val user = User(type = "personal", name = userName)
+                    val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
+                    val user = User(type = "personal", name = userName, photoURL = photoUrl.toString())
                     firestore.collection("users").document(uid!!).set(user).addOnSuccessListener {
                         signUpButton.isEnabled = true
                         startUserActivity()

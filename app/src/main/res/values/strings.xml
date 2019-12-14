@@ -47,4 +47,5 @@
     <string name="plus_sign_hint">+</string>
     <string name="aerobic_hint">Aerobic</string>
     <string name="description_hint">Description</string>
+    <string name="save">Save</string>
 </resources>
