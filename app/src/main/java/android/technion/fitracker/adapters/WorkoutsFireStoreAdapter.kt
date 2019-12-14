@@ -1,8 +1,9 @@
 package android.technion.fitracker.adapters
 
 import android.technion.fitracker.R
-import android.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
+
 import android.technion.fitracker.models.WorkoutFireStoreModel
+import android.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>) :
-    FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
+class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>) : FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

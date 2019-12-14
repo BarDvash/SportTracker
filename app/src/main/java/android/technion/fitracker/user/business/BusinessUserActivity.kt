@@ -83,20 +83,27 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.business_user_menu_logout_ac -> {
-            FirebaseAuth.getInstance().signOut()
-            mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this) {
-                    startLoginActivity()
-                }
-            true
-        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
+            R.id.business_user_menu_logout_ac -> {
+                FirebaseAuth.getInstance().signOut()
+                mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this) {
+                        startLoginActivity()
+                    }
+                true
+            }
 
-        else -> {
-            // If we got here, the user's action was not recognized.
-            // Invoke the superclass to handle it.
-            super.onOptionsItemSelected(item)
+            R.id.search_from_buisness -> {
+                onSearchRequested()
+                true
+            }
+
+            else -> {
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 

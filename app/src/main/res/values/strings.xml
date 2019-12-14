@@ -48,4 +48,9 @@
     <string name="aerobic_hint">Aerobic</string>
     <string name="description_hint">Description</string>
     <string name="save">Save</string>
+    <string name="add_meal_title">Add a new meal</string>
+    <string name="add_new_meal">Add a new meal</string>
+    <string name="name_for_the_new_meal">Name for the new meal</string>
+    <string name="add_new_dish">Add new dish</string>
+    <string name="search_hint">Search users</string>
 </resources>
