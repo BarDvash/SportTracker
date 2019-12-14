@@ -7,7 +7,7 @@
     tools:context=".user.business.BusinessUserActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/search_business_user_toolbar"
+        android:id="@+id/search_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/business_user_activity_menu" />
+        app:menu="@menu/search_menu" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_rec_view"
@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_business_user_toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/search_toolbar"
         app:layout_constraintVertical_bias="0.0"
         tools:itemCount="2"
         tools:listitem="@layout/search_ele"
