@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.technion.fitracker.adapters.SearchFireStoreAdapter
-import android.technion.fitracker.login.LoginActivity
 import android.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
@@ -18,7 +17,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -31,7 +29,6 @@ class SearchableActivity : AppCompatActivity() {
     lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
 
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
@@ -40,10 +37,7 @@ class SearchableActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState) //calling the overridden onCreate function
         setContentView(R.layout.search_activity) //set the relevant activity layout
         //initializes:
-        setSupportActionBar(findViewById(R.id.search_business_user_toolbar))
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(idToken).requestEmail().build()
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
+        setSupportActionBar(findViewById(R.id.search_toolbar))
         firestore = FirebaseFirestore.getInstance()
         recyclerView = findViewById(R.id.search_rec_view)
         recyclerView.setHasFixedSize(true)
@@ -91,7 +85,7 @@ class SearchableActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.business_user_activity_menu, menu)
+        menuInflater.inflate(R.menu.search_menu, menu)
         return true
 
     }
@@ -100,16 +94,8 @@ class SearchableActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
-            R.id.business_user_menu_logout_ac -> {
-                FirebaseAuth.getInstance().signOut()
-                mGoogleSignInClient.signOut()
-                    .addOnCompleteListener(this) {
-                        startLoginActivity()
-                    }
-                true
-            }
 
-            R.id.search_from_buisness -> {
+            R.id.search_from_searchActivity -> {
                 onSearchRequested()
                 true
             }
@@ -122,10 +108,5 @@ class SearchableActivity : AppCompatActivity() {
         }
     }
 
-    private fun startLoginActivity() {
-        val userHome = Intent(applicationContext, LoginActivity::class.java)
-        startActivity(userHome)
-        finish()
-    }
 }
 
