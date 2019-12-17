@@ -30,7 +30,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/user_avatar"
-        android:src="@drawable/ic_user_avatar"
+        android:src="@drawable/user_avatar"
         app:layout_constraintStart_toStartOf="@+id/user_toolbar"
         app:layout_constraintTop_toBottomOf="@+id/user_toolbar" />
 

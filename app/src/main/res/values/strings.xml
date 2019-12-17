@@ -27,7 +27,7 @@
     <string name="schedule_title">Schedule</string>
     <string name="home_title">Home</string>
     <string name="username_default">Username</string>
-    <string name="sign_in_progress">LOGGING YOU IN…</string>
+    <string name="sign_in_progress">LOGGING IN…</string>
     <string name="authentication_failed">Authentication failed</string>
     <string name="authentication_failed_internet">Authentication failed, please check your internet connection and try again.</string>
     <string name="username_hint">Name</string>

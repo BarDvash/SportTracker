@@ -40,7 +40,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
-            val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
+            val docRef = firestore.collection("business_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
                 findViewById<TextView>(R.id.business_user_name).text = user?.name ?: "Username"

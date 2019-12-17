@@ -47,19 +47,19 @@ class SignUpFragment : Fragment(), View.OnClickListener {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         if (auth.currentUser != null) {
-            val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
-            docRef.get().addOnSuccessListener {
-                    document ->
-                val user = document.toObject(User::class.java)
-                if(user?.type == "personal"){
+            val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
+            docRef.get().addOnSuccessListener { document ->
+
+                if(document.exists()){
                     startUserActivity()
-                }else{
-                    startBusinessUserActivity()
                 }
 
             }.addOnFailureListener {
                 Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
             }
+
+
+
         }
     }
 
@@ -84,7 +84,7 @@ class SignUpFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v!!.id){
+        when (v!!.id) {
             R.id.sign_up_fragment_sign_up_button -> {
                 signUpButton.isEnabled = false
                 handleEmailSignUp()
@@ -100,31 +100,26 @@ class SignUpFragment : Fragment(), View.OnClickListener {
         val password = passwordEditText.text.toString()
         val userName = nameEditText.text.toString()
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(activity!!) { task ->
-                if (task.isSuccessful) {
-                    val uid = FirebaseAuth.getInstance().currentUser?.uid
-                    val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
-                    val user = User(type = "personal", name = userName, photoURL = photoUrl.toString())
-                    firestore.collection("users").document(uid!!).set(user).addOnSuccessListener {
+                .addOnCompleteListener(activity!!) { task ->
+                    if (task.isSuccessful) {
+                        val uid = FirebaseAuth.getInstance().currentUser?.uid
+                        val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
+                        val user = User(name = userName, photoURL = photoUrl.toString())
+                        firestore.collection("regular_users").document(uid!!).set(user).addOnSuccessListener {
+                            signUpButton.isEnabled = true
+                            startUserActivity()
+                        }.addOnFailureListener {
+                            signUpButton.isEnabled = true
+                            Toast.makeText(context, getString(R.string.database_write_error), Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        // If sign in fails, display a message to the user.
                         signUpButton.isEnabled = true
-                        startUserActivity()
-                    }.addOnFailureListener {
-                        signUpButton.isEnabled = true
-                        Toast.makeText(context, getString(R.string.database_write_error), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    // If sign in fails, display a message to the user.
-                    signUpButton.isEnabled = true
-                    Toast.makeText(context, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
                 }
-            }
     }
 
-    private fun startBusinessUserActivity() {
-        val userHome = Intent(context!!, BusinessUserActivity::class.java)
-        startActivity(userHome)
-        activity?.finish()
-    }
 
     private fun startUserActivity() {
         val userHome = Intent(context!!, UserActivity::class.java)

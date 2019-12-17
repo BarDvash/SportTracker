@@ -48,7 +48,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val uid = mAuth.currentUser?.uid
         val query = firestore
-                .collection("users")
+                .collection("regular_users")
                 .document(uid!!)
                 .collection("workouts")
                 .orderBy("name", Query.Direction.ASCENDING)

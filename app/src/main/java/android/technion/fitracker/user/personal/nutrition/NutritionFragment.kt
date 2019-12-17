@@ -54,7 +54,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
             recyclerView!!.setHasFixedSize(true)
             recyclerView!!.layoutManager = LinearLayoutManager(context)
             val uid = mAuth.currentUser?.uid
-            val query = firestore.collection("users").document(uid!!).collection("meals").orderBy("Name", Query.Direction.ASCENDING)
+            val query = firestore.collection("regular_users").document(uid!!).collection("meals").orderBy("Name", Query.Direction.ASCENDING)
             val options = FirestoreRecyclerOptions.Builder<NutritionFireStoreModel>().setQuery(query, NutritionFireStoreModel::class.java).build()
             adapter = NutritionFireStoreAdapter(options)
             recyclerView!!.adapter = adapter

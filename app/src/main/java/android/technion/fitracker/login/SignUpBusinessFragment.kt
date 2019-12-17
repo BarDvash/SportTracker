@@ -48,17 +48,11 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         if (auth.currentUser != null) {
-            val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
+            val docRef = firestore.collection("business_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener {
                     document ->
                 val user = document.toObject(User::class.java)
-                if(user?.type == "personal"){
-                    startUserActivity()
-                }else{
-                    startBusinessUserActivity()
-                }
-
-            }.addOnFailureListener {
+                startBusinessUserActivity() }.addOnFailureListener {
                 Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
             }
         }
@@ -107,8 +101,8 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
-                    val user = User(type = "business", name = userProvidedName, phone = phone)
-                    firestore.collection("users").document(uid!!).set(user).addOnSuccessListener {
+                    val user = User(name = userProvidedName, phone = phone)
+                    firestore.collection("business_users").document(uid!!).set(user).addOnSuccessListener {
                         startBusinessUserActivity()
                         signUpButton.isEnabled = true
                     }.addOnFailureListener {
@@ -123,11 +117,6 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
             }
     }
 
-    private fun startUserActivity() {
-        val userHome = Intent(context!!, UserActivity::class.java)
-        startActivity(userHome)
-        activity?.finish()
-    }
 
     private fun startBusinessUserActivity() {
         val userHome = Intent(context!!, BusinessUserActivity::class.java)

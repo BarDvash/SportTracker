@@ -193,7 +193,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         val uid = firebase.currentUser?.uid
         val workout = Workout(nameInput, descInput, exercisesList)
         if (uid != null) {
-            firestore.collection("users")
+            firestore.collection("regular_users")
                     .document(uid).collection("workouts").add(workout)
                     .addOnSuccessListener { documentReference -> Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot added with ID: " + documentReference.id)
                         this.finish()
