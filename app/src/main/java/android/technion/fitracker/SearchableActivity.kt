@@ -9,6 +9,7 @@ import android.technion.fitracker.adapters.SearchFireStoreAdapter
 import android.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,11 +59,11 @@ class SearchableActivity : AppCompatActivity() {
         handleIntent(intent)
     }
 
-    private fun handleIntent(intent: Intent) {
+    private fun handleIntent(intent: Intent, collection_name : String = "regular_users") {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { str ->
                 SearchRecentSuggestions(this, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(str, null)
-                val query = firestore.collection("users").orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
+                val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
                 adapter = SearchFireStoreAdapter(options)
                 recyclerView.adapter = adapter
@@ -71,6 +72,10 @@ class SearchableActivity : AppCompatActivity() {
         }
 
     }
+
+    fun search_users(view: View) {handleIntent(intent)}
+    fun search_trainers(view: View) {handleIntent(intent,"business_users")}
+
 
     override fun onStart() {
         super.onStart()
@@ -107,6 +112,7 @@ class SearchableActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
 
