@@ -21,10 +21,7 @@
         <provider
             android:name=".MySuggestionProvider"
             android:authorities="android.technion.fitracker.MySuggestionProvider" />
-
-
-        <activity android:name=".user.personal.workout.AddExerciseActivity" />
-        <activity android:name=".user.personal.workout.CreateNewWorkoutActivity" />
+        
         <activity android:name=".user.business.BusinessUserActivity" />
         <activity android:name=".user.personal.UserActivity" />
         <activity
