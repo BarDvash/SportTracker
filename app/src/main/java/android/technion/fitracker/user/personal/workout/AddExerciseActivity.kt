@@ -2,8 +2,12 @@ package android.technion.fitracker.user.personal.workout
 
 import android.os.Bundle
 import android.technion.fitracker.R
+import android.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import android.technion.fitracker.databinding.ActivityAddExerciseBinding
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
@@ -14,10 +18,15 @@ class AddExerciseActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var navController: NavController
     lateinit var weightChip: Chip
     lateinit var aerobicChip: Chip
+    lateinit var viewModel: CreateNewExerciseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_exercise)
+        viewModel = ViewModelProviders.of(this)[CreateNewExerciseViewModel::class.java]
+//        viewModel.weightFields.value?.set("name", "lol")
+        val binding = DataBindingUtil.setContentView<ActivityAddExerciseBinding>(this, R.layout.activity_add_exercise)
+        binding.lifecycleOwner = this
+        binding.myViewModel = viewModel
         setSupportActionBar(findViewById(R.id.add_new_exercise_toolbar))
         navController = Navigation.findNavController(findViewById(R.id.exercise_navigation_host))
         weightChip = findViewById(R.id.weight_chip)
@@ -29,7 +38,9 @@ class AddExerciseActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (checkIfDataExist()) {
+        if (!checkIfDataExist()) {
+            this.finish()
+        }else{
             MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")
                     .setPositiveButton(
                         "Yes"
@@ -47,7 +58,9 @@ class AddExerciseActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        if (checkIfDataExist()) {
+        if (!checkIfDataExist()) {
+            this.finish()
+        }else{
             MaterialAlertDialogBuilder(this)
                     .setTitle("Warning")
                     .setMessage("Data will be lost, continue?")
@@ -69,19 +82,19 @@ class AddExerciseActivity : AppCompatActivity(), View.OnClickListener {
     fun checkIfDataExist(): Boolean {
         return when (navController.currentDestination?.id) {
             R.id.weight_exercise -> {
-                !findViewById<TextInputEditText>(R.id.weight_name_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.weight_weight_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.weight_notes_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.weight_repetitions_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.weight_sets_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.weight_set_rest_input).text.isNullOrBlank()
+                !viewModel.weight_name.value.isNullOrBlank() ||
+                        !viewModel.weight_weight.value.isNullOrBlank() ||
+                        !viewModel.weight_sets.value.isNullOrBlank() ||
+                        !viewModel.weight_repetitions.value.isNullOrBlank() ||
+                        !viewModel.weight_rest.value.isNullOrBlank() ||
+                        !viewModel.weight_notes.value.isNullOrBlank()
             }
             R.id.aerobic_exercise -> {
-                !findViewById<TextInputEditText>(R.id.aerobic_name_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.aerobic_duration_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.aerobic_intensity_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.aerobic_notes_input).text.isNullOrBlank() ||
-                        !findViewById<TextInputEditText>(R.id.aerobic_speed_input).text.isNullOrBlank()
+                !viewModel.aerobic_name.value.isNullOrBlank() ||
+                        !viewModel.aerobic_duration.value.isNullOrBlank() ||
+                        !viewModel.aerobic_speed.value.isNullOrBlank() ||
+                        !viewModel.aerobic_intensity.value.isNullOrBlank() ||
+                        !viewModel.aerobic_notes.value.isNullOrBlank()
             }
             else -> false
         }

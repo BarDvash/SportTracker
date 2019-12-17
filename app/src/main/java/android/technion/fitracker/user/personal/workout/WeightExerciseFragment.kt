@@ -4,14 +4,18 @@ package android.technion.fitracker.user.personal.workout
 import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
+import android.technion.fitracker.databinding.FragmentWeightExerciseBinding
+import android.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.Exception
 
 
 class WeightExerciseFragment : Fragment(), View.OnClickListener {
@@ -22,12 +26,23 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
     lateinit var repetitions: EditText
     lateinit var rest: EditText
     lateinit var notes: EditText
+    lateinit var viewModel: CreateNewExerciseViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this)[CreateNewExerciseViewModel::class.java]
+        } ?: throw Exception("Invalid Activity CreateNewExerciseViewModel aerobic fragment")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_weight_exercise, container, false)
+        val view =
+            DataBindingUtil.inflate<FragmentWeightExerciseBinding>(inflater, R.layout.fragment_weight_exercise, container, false)
+        view.myViewModel = viewModel
+        return view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
