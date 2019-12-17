@@ -35,15 +35,13 @@
             android:id="@+id/regular_users_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_users_tab"
-            android:onClick="search_users"/>
+            android:text="@string/search_users_tab" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/business_users_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search_trainers_tab"
-            android:onClick="search_trainers"/>
+            android:text="@string/search_trainers_tab"/>
 
     </com.google.android.material.tabs.TabLayout>
 
