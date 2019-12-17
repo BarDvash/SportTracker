@@ -2,12 +2,11 @@ package android.technion.fitracker.adapters.nutrition
 
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter.ViewHolder
-import android.technion.fitracker.models.DishesModel
+import android.technion.fitracker.models.nutrition.DishesModel
 import android.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

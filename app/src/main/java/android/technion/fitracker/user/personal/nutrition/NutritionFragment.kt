@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 var fragmentView: View? = null
-var recyclerView: RecyclerView? = null
+var nutrition_recyclerView: RecyclerView? = null
 
 /**
  * A simple [Fragment] subclass.
@@ -49,17 +49,17 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         firestore = FirebaseFirestore.getInstance()
         fab = view.findViewById(R.id.nutrition_fab)
         fab.setOnClickListener(this)
-        if (recyclerView == null) {
-            recyclerView = view.findViewById(R.id.nutrition_rec_view)
-            recyclerView!!.setHasFixedSize(true)
-            recyclerView!!.layoutManager = LinearLayoutManager(context)
+        if (nutrition_recyclerView == null) {
+            nutrition_recyclerView = view.findViewById(R.id.nutrition_rec_view)
+            nutrition_recyclerView!!.setHasFixedSize(true)
+            nutrition_recyclerView!!.layoutManager = LinearLayoutManager(context)
             val uid = mAuth.currentUser?.uid
             val query = firestore.collection("users").document(uid!!).collection("meals").orderBy("Name", Query.Direction.ASCENDING)
             val options = FirestoreRecyclerOptions.Builder<NutritionFireStoreModel>().setQuery(query, NutritionFireStoreModel::class.java).build()
             adapter = NutritionFireStoreAdapter(options)
-            recyclerView!!.adapter = adapter
+            nutrition_recyclerView!!.adapter = adapter
         }
-        adapter = recyclerView!!.adapter as FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
+        adapter = nutrition_recyclerView!!.adapter as FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
     }
 
     override fun onStart() {

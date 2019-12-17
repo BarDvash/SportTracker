@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import android.view.View
+import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.StringBuilder
 
-class NutritionMealAdapter(private val data: ArrayList<Map<String,String>>) :
+class NutritionMealAdapter(private val data: ObservableArrayList<Map<String, String>>) :
     RecyclerView.Adapter<NutritionMealAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup,

@@ -21,7 +21,7 @@
         <provider
             android:name=".MySuggestionProvider"
             android:authorities="android.technion.fitracker.MySuggestionProvider" />
-        
+
         <activity android:name=".user.business.BusinessUserActivity" />
         <activity android:name=".user.personal.UserActivity" />
         <activity
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".user.personal.nutrition.NutritionAddMealActivity" />
-        <activity android:name=".user.personal.nutrition.NutritionAddDishActivity" />
+        <activity android:name=".user.personal.nutrition.NutritionAddDishFragment" />
 
         <!-- this is the searchable activity; it performs searches -->
         <activity
