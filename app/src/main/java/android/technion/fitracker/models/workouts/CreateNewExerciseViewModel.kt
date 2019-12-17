@@ -1,8 +1,6 @@
 package android.technion.fitracker.models.workouts
 
-import android.widget.TextView
 import androidx.databinding.Bindable
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
