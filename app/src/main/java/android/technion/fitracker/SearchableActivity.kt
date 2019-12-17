@@ -9,6 +9,7 @@ import android.technion.fitracker.adapters.SearchFireStoreAdapter
 import android.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -27,7 +29,7 @@ class SearchableActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
-
+    lateinit var tab_layout: TabLayout
 
 
     //Google login token
@@ -42,6 +44,29 @@ class SearchableActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.search_rec_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+
+        tab_layout = findViewById(R.id.tabLayout)
+
+
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if(tab?.text == "users") {
+                    search_users()
+                }else{
+                    search_trainers()
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+
+        })
+
         handleIntent(intent)
     }
 
@@ -58,11 +83,11 @@ class SearchableActivity : AppCompatActivity() {
         handleIntent(intent)
     }
 
-    private fun handleIntent(intent: Intent) {
+    private fun handleIntent(intent: Intent, collection_name : String = "regular_users") {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { str ->
                 SearchRecentSuggestions(this, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(str, null)
-                val query = firestore.collection("users").orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
+                val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
                 adapter = SearchFireStoreAdapter(options)
                 recyclerView.adapter = adapter
@@ -71,6 +96,10 @@ class SearchableActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun search_users() {handleIntent(intent)}
+    private fun search_trainers() {handleIntent(intent,"business_users")}
+
 
     override fun onStart() {
         super.onStart()
@@ -107,6 +136,7 @@ class SearchableActivity : AppCompatActivity() {
             }
         }
     }
+
 
 }
 

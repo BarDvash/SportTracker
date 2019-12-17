@@ -39,7 +39,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         if (auth.currentUser != null) {
-            val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
+            val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener {
                     document ->
                 val user = document.toObject(User::class.java)

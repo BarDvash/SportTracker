@@ -1,77 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".user.business.BusinessUserActivity">
+
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/business_user_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".user.business.BusinessUserActivity">
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp"
+    android:minHeight="?attr/actionBarSize"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:menu="@menu/business_user_activity_menu"
+    app:subtitleTextColor="@android:color/white"
+    app:titleTextColor="@android:color/white" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/business_user_toolbar"
-        android:layout_width="0dp"
-        app:subtitleTextColor="@android:color/white"
-        app:titleTextColor="@android:color/white"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/business_user_activity_menu"/>
+<ImageView
+    android:id="@+id/business_user_avatar"
+    android:layout_width="99dp"
+    android:layout_height="96dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:contentDescription="@string/user_avatar"
+    android:src="@drawable/user_avatar"
+    app:layout_constraintStart_toStartOf="@+id/business_user_toolbar"
+    app:layout_constraintTop_toBottomOf="@+id/business_user_toolbar" />
 
-    <ImageView
-        android:id="@+id/business_user_avatar"
-        android:layout_width="127dp"
-        android:layout_height="136dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:contentDescription="@string/user_avatar"
-        android:src="@drawable/user_avatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/business_user_toolbar" />
+<TextView
+    android:id="@+id/business_user_name"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginLeft="8dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="20dp"
+    android:text="@string/username_default"
+    android:textSize="24sp"
+    app:layout_constraintBottom_toBottomOf="@+id/business_user_avatar"
+    app:layout_constraintEnd_toEndOf="@+id/business_user_toolbar"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toEndOf="@+id/business_user_avatar"
+    app:layout_constraintTop_toTopOf="@+id/business_user_avatar" />
 
-    <TextView
-        android:id="@+id/business_user_name"
-        android:layout_width="0dp"
-        android:layout_height="138dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="@string/username_default"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/business_user_avatar"
-        app:layout_constraintTop_toTopOf="@+id/business_user_avatar" />
+<View
+    android:id="@+id/business_divider"
+    android:layout_width="0dp"
+    android:layout_height="1dp"
+    android:paddingBottom="20dp"
+    android:layout_marginTop="16dp"
+    android:background="?android:attr/listDivider"
+    app:layout_constraintEnd_toEndOf="@+id/business_user_name"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/business_user_name"
+    />
 
-    <View
-        android:id="@+id/business_divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="@+id/business_user_name"
-        app:layout_constraintStart_toStartOf="@+id/business_user_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/business_user_name" />
+<fragment
+    android:id="@+id/business_fragment_host"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:defaultNavHost="true"
+    app:layout_constraintBottom_toTopOf="@+id/divider"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/business_divider"
+    app:navGraph="@navigation/business_navigation_graph" />
 
-    <fragment
-        android:id="@+id/business_fragment_host"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@+id/business_bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/business_divider"
-        app:navGraph="@navigation/business_navigation_graph" />
+<View
+    android:id="@+id/divider"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="?android:attr/listDivider"
+    app:layout_constraintBottom_toTopOf="@+id/business_bottom_navigation"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/business_bottom_navigation" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/business_bottom_navigation"
-        android:layout_width="0dp"
-        android:layout_height="58dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/business_user_bottom_nav_menu"/>
+<com.google.android.material.bottomnavigation.BottomNavigationView
+    android:id="@+id/business_bottom_navigation"
+    android:layout_width="0dp"
+    android:layout_height="60dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/business_fragment_host"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="@+id/business_fragment_host"
+    app:menu="@menu/business_user_bottom_nav_menu">
+
+</com.google.android.material.bottomnavigation.BottomNavigationView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -76,24 +76,28 @@ class SignInFragment : Fragment(), View.OnClickListener {
         passwordEditText = view.findViewById(R.id.login_fragment_pass)
     }
 
+
     override fun onStart() {
         super.onStart()
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         if (auth.currentUser != null) {
-            val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
-            docRef.get().addOnSuccessListener {
-                document ->
-                val user = document.toObject(User::class.java)
-                if(user?.type == "personal"){
-                    startUserActivity()
-                }else{
-                    startBusinessUserActivity()
-                }
+            var regular_users_doc = firestore.collection("regular_users").document(auth.currentUser!!.uid)
+            var business_users_doc = firestore.collection("business_users").document(auth.currentUser!!.uid)
 
-            }.addOnFailureListener {
-                Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
+            regular_users_doc.get().addOnSuccessListener {
+                if (it.exists()){
+                    startUserActivity()
+                }
+                else
+                {
+                    business_users_doc.get().addOnSuccessListener {
+                        startBusinessUserActivity()
+                    }.addOnFailureListener {
+                        Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }
@@ -108,9 +112,9 @@ class SignInFragment : Fragment(), View.OnClickListener {
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(idToken)
-            .requestEmail()
-            .build()
+                .requestIdToken(idToken)
+                .requestEmail()
+                .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(context!!, gso)
 
@@ -152,46 +156,47 @@ class SignInFragment : Fragment(), View.OnClickListener {
 
     }
 
+
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val uid = FirebaseAuth.getInstance().currentUser?.uid
-                    val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
-                    val user = User(type = "personal", name = auth.currentUser?.displayName, photoURL = photoUrl.toString())
-                    firestore.collection("users").document(uid!!).get().addOnCompleteListener {
-                        val doc = it.result
-                        if (doc?.exists()!!){
-                            signInGoogleButton.isEnabled = true
-                            startUserActivity()
-                        }
-                        else {
-                            createNewUserEntryInDB(uid, user)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val uid = FirebaseAuth.getInstance().currentUser?.uid
+                        val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
+                        val user =
+                            User(name = auth.currentUser?.displayName, photoURL = photoUrl.toString())
+                        firestore.collection("regular_users").document(uid!!).get().addOnCompleteListener {
+                            val doc = it.result
+                            if (doc?.exists()!!) {
+                                signInGoogleButton.isEnabled = true
+                                startUserActivity()
+                            } else {
+                                createNewUserEntryInDB(uid, user)
 
+                            }
+                        }.addOnFailureListener {
+                            createNewUserEntryInDB(uid, user)
                         }
-                    }.addOnFailureListener {
-                        createNewUserEntryInDB(uid, user)
+                    } else {
+                        signInGoogleButton.isEnabled = true
+                        Toast.makeText(
+                            context,
+                            getString(R.string.authentication_failed_internet),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                } else {
-                    signInGoogleButton.isEnabled = true
-                    Toast.makeText(
-                        context,
-                        getString(R.string.authentication_failed_internet),
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
-            }
     }
 
     private fun createNewUserEntryInDB(uid: String, user: User) {
-        firestore.collection("users").document(uid).set(user).addOnSuccessListener {
+        firestore.collection("regular_users").document(uid).set(user).addOnSuccessListener {
             signInGoogleButton.isEnabled = true
             startUserActivity()
         }.addOnFailureListener {
             signInGoogleButton.isEnabled = true
             Toast.makeText(context, getString(R.string.database_write_error), Toast.LENGTH_SHORT)
-                .show()
+                    .show()
         }
     }
 
@@ -210,39 +215,44 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private fun firebaseAuthWithEmail() {
         val email = emailEditText.text.toString()
         val password = passwordEditText.text.toString()
-        if (email.isEmpty() || password.isEmpty()){
+        if (email.isEmpty() || password.isEmpty()) {
             enableButtonAndSetText()
             return
         }
 
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(activity!!) { task ->
-                if (task.isSuccessful) {
-                    if (auth.currentUser != null) {
-                        val docRef = firestore.collection("users").document(auth.currentUser!!.uid)
-                        docRef.get().addOnSuccessListener {
-                                document ->
-                            val user = document.toObject(User::class.java)
-                            enableButtonAndSetText()
-                            if(user?.type == "personal"){
-                                startUserActivity()
-                            }else{
-                                startBusinessUserActivity()
+                .addOnCompleteListener(activity!!) { task ->
+                    if (task.isSuccessful) {
+                        if (auth.currentUser != null) {
+                            val regular_users_doc_ref = firestore.collection("regular_users").document(auth.currentUser!!.uid)
+                            val business_users_doc_ref = firestore.collection("business_users").document(auth.currentUser!!.uid)
+
+                            regular_users_doc_ref.get().addOnSuccessListener {
+                                if(it.exists()){
+                                    enableButtonAndSetText()
+                                    startUserActivity()
+                                }else{
+                                    business_users_doc_ref.get().addOnSuccessListener {
+                                        enableButtonAndSetText()
+                                        startBusinessUserActivity()
+                                    }.addOnFailureListener {
+                                        Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT)
+                                                .show()
+                                        enableButtonAndSetText()
+                                    }
+                                }
+
                             }
-
-                        }.addOnFailureListener {
-                            Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
-                            enableButtonAndSetText()
                         }
-                    }
 
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(context!!, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
-                    enableButtonAndSetText()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(context!!, getString(R.string.authentication_failed), Toast.LENGTH_SHORT).show()
+                        enableButtonAndSetText()
+                    }
                 }
-            }
     }
+
 
     private fun enableButtonAndSetText() {
         signInButton.isEnabled = true
