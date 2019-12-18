@@ -36,8 +36,8 @@ class NutritionFireStoreAdapter(options: FirestoreRecyclerOptions<NutritionFireS
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: NutritionFireStoreModel) {
         holder.name.text = item.name
-        firestore.collection("users").document(auth.currentUser!!.uid).collection("meals")
-                .whereEqualTo("name", item.name!!).get().addOnSuccessListener { documents ->
+        firestore.collection("regular_users").document(auth.currentUser!!.uid).collection("meals")
+                .whereEqualTo("name", item.name).get().addOnSuccessListener { documents ->
                     val meal = documents.first().toObject(Meal::class.java)
                     val names = ArrayList<String>()
                     val counts = ArrayList<String>()

@@ -101,7 +101,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
             }
             R.id.add_meal_done_button -> {
                 val data = Meal(viewModel.editTextMealName.value,viewModel.data)
-                db.collection("users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
+                db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
 //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
 //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
