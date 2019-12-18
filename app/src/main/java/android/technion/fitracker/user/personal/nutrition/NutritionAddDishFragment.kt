@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.setContentView
@@ -24,7 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NutritionAddDishFragment: Fragment(), View.OnClickListener {
 
-    var dishes:HashMap<String,String> = HashMap()
+//    var dishes:HashMap<String,String> = HashMap()
     val names:ArrayList<String> = ArrayList()
     val counts:ArrayList<String> = ArrayList()
     lateinit var  adapter: NutritionNestedDishAdapter
@@ -36,6 +37,7 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
         viewModel = activity?.run {
             ViewModelProviders.of(this)[AddMealViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+        viewModel.dishes = HashMap()
     }
 
     override fun onCreateView(
@@ -70,7 +72,8 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
         when (v!!.id) {
             R.id.fab_on_add_dish -> switchToAddActivity()
             R.id.add_dish_done_button -> {
-                viewModel.data.add(dishes)
+                if (viewModel.dishes.isNotEmpty())
+                    viewModel.data.add(viewModel.dishes)
                 navController.popBackStack()
             }
         }
@@ -85,10 +88,13 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
         val countEditText = dial.findViewById<EditText>(R.id.dish_count_edittext)
         val addButton = dial.findViewById<Button>(R.id.dish_add)
         addButton.setOnClickListener {
-            //TODO not empty
             val name = nameEditText.text.toString()
+            if (name.isEmpty()){
+                Toast.makeText(context,"Name should not be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             val count = countEditText.text.toString()
-            dishes[name] = count
+            viewModel.dishes[name] = count
             names.add(name)
             counts.add(count)
             adapter.notifyDataSetChanged()

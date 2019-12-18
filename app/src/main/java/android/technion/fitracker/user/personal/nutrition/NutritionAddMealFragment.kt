@@ -100,6 +100,10 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
                 navController.navigate(R.id.nutritionAddDishFragment)
             }
             R.id.add_meal_done_button -> {
+                if (viewModel.editTextMealName.value.isNullOrEmpty()){
+                    Toast.makeText(context,"Please provide a name for menu",Toast.LENGTH_SHORT).show()
+                    return
+                }
                 val data = Meal(viewModel.editTextMealName.value,viewModel.data)
                 db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
 //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
