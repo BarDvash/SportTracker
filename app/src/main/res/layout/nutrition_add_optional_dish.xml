@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="Name" />
 
     <EditText
         android:id="@+id/dish_count_edittext"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Count" />
+        android:hint="Count" />
 
     <Button
         android:id="@+id/dish_add"

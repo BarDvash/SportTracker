@@ -5,6 +5,7 @@ import android.technion.fitracker.R
 import android.technion.fitracker.adapters.nutrition.NutritionMealAdapter
 import android.technion.fitracker.databinding.FragmentAddMealBinding
 import android.technion.fitracker.models.nutrition.AddMealViewModel
+import android.technion.fitracker.user.Meal
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class NutritionAddMealFragment: Fragment(), View.OnClickListener {
@@ -28,6 +31,8 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
     lateinit var adapter: NutritionMealAdapter
     lateinit var navController: NavController
     lateinit var viewModel: AddMealViewModel
+    private lateinit var auth: FirebaseAuth
+    lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +80,8 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_meal_title)
 
+        db = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
         navController = Navigation.findNavController(view)
 
@@ -93,8 +100,13 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
                 navController.navigate(R.id.nutritionAddDishFragment)
             }
             R.id.add_meal_done_button -> {
-                //TODO upload to db
-//                navController.popBackStack()
+                val data = Meal(viewModel.editTextMealName.value,viewModel.data)
+                db.collection("users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
+//                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+//                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
+                }
+                activity?.finish()
             }
         }
     }
