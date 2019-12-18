@@ -54,7 +54,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         firebase = FirebaseAuth.getInstance()
         noWorkoutHint = findViewById(R.id.no_workouts_hint)
         exercisesList = ArrayList()
-        nameField = findViewById(R.id.create_workout_name_input)
+        nameField = this.findViewById(R.id.create_workout_name_input)
         descField = findViewById(R.id.create_workout_desc_input)
         viewManager = LinearLayoutManager(this)
         onItemClickListener = View.OnClickListener { v ->
