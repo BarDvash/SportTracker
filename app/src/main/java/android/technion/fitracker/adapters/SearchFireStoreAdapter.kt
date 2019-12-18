@@ -14,7 +14,14 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreModel>) : FirestoreRecyclerAdapter<SearchFireStoreModel, ViewHolder>(options) {
 
+
+    var mOnItemClickListener: View.OnClickListener? = null
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        init {
+            view.setTag(this)
+            view.setOnClickListener(mOnItemClickListener)
+        }
         var name: TextView = view.findViewById(R.id.search_card)
     }
 
@@ -26,4 +33,17 @@ class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreMo
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: SearchFireStoreModel) {
         holder.name.text = item.name
     }
+
+    fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
+        mOnItemClickListener = itemClickListener
+    }
+
+
+
+
+
 }
+
+
+
+

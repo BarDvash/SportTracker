@@ -10,14 +10,12 @@ import android.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -30,10 +28,8 @@ class SearchableActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
     lateinit var tab_layout: TabLayout
+    lateinit var onItemClickListener: View.OnClickListener
 
-
-    //Google login token
-    private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //calling the overridden onCreate function
@@ -44,6 +40,12 @@ class SearchableActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.search_rec_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+
+        onItemClickListener = View.OnClickListener { v ->
+            Toast.makeText(this, "hey" , Toast.LENGTH_LONG).show()
+            goToLandingPage()
+        }
 
 
         tab_layout = findViewById(R.id.tabLayout)
@@ -90,6 +92,7 @@ class SearchableActivity : AppCompatActivity() {
                 val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
                 adapter = SearchFireStoreAdapter(options)
+                (adapter as SearchFireStoreAdapter).setOnItemClickListener(onItemClickListener)
                 recyclerView.adapter = adapter
                 adapter.startListening()
             }
@@ -137,6 +140,12 @@ class SearchableActivity : AppCompatActivity() {
         }
     }
 
+    private fun goToLandingPage(){
+        val user_landing_page = Intent(applicationContext, UserLandingPageActivity::class.java)
+        startActivity(user_landing_page)
+        finish()
+
+    }
 
 }
 
