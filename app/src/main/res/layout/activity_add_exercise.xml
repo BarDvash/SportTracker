@@ -11,82 +11,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/add_new_exercise_toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintBottom_toTopOf="@+id/exerciseChooseViewPager"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:subtitleTextColor="@android:color/white"
-            app:titleTextColor="@android:color/white" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/aerobic_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:checkable="true"
-            android:checked="false"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/aerobic_hint"
-            android:textSize="18sp"
-            app:checkedIconVisible="false"
-            app:chipStrokeColor="#7E3030"
-            app:closeIconEnabled="false"
-            app:closeIconTint="#00FF0000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#C20E0E"
 
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toEndOf="@+id/weight_chip"
-            app:layout_constraintTop_toTopOf="@+id/weight_chip"
-            app:rippleColor="#F44336" />
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:subtitleTextColor="@android:color/white"
+                app:titleTextColor="@android:color/white" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/weight_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checkable="true"
-            android:checked="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/weight_hint"
-            android:textIsSelectable="false"
-            android:textSize="18sp"
-            app:checkedIconVisible="false"
-            app:chipStrokeColor="#7E3030"
-            app:closeIconEnabled="false"
-            app:closeIconTint="#00FF0000"
-            app:layout_constraintEnd_toStartOf="@+id/aerobic_chip"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_new_exercise_toolbar"
-            app:rippleColor="#F44336" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabBackground="@android:color/white"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                app:tabTextColor="@color/primaryColor" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <fragment
-            android:id="@+id/exercise_navigation_host"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/exerciseChooseViewPager"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/weight_chip"
-            app:navGraph="@navigation/exercise_type_navigation_graph" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        </androidx.viewpager.widget.ViewPager>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

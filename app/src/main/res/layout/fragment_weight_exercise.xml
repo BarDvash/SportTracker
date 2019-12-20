@@ -26,6 +26,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:hint="@string/name_hint"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -36,8 +37,8 @@
                     android:id="@+id/weight_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@={myViewModel.weight_name}'
-                    android:ems="10" />
+                    android:ems="10"
+                    android:text='@={myViewModel.weight_name}' />
 
             </com.google.android.material.textfield.TextInputLayout>
 

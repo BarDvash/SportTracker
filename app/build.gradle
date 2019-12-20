@@ -71,4 +71,7 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     implementation "android.arch.lifecycle:extensions:1.1.1"
+
+    //viewPager
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }

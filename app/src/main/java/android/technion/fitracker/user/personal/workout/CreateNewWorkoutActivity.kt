@@ -62,8 +62,9 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
             val s = exercisesList.get(rvh.adapterPosition).type
             Toast.makeText(this, "You clicked on " + s, Toast.LENGTH_LONG).show()
         }
-        viewAdapter = ExerciseAdapter(exercisesList)
-        viewAdapter.setOnItemClickListener(onItemClickListener)
+        viewAdapter = ExerciseAdapter(exercisesList).apply {
+            setOnItemClickListener(onItemClickListener)
+        }
         recyclerView = findViewById<RecyclerView>(R.id.create_workout_recyclev).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
