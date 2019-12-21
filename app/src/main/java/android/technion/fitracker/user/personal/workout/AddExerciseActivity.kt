@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
-class AddExerciseActivity : AppCompatActivity(), View.OnClickListener {
+class AddExerciseActivity : AppCompatActivity() {
     lateinit var navController: NavController
     lateinit var viewModel: CreateNewExerciseViewModel
     lateinit var adapter: ExerciseTypeViewPageAdapter
@@ -105,19 +105,4 @@ class AddExerciseActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(v: View?) {
-//        navController.popBackStack()
-//        when (v!!.id) {
-//            R.id.weight_chip -> {
-//                navController.navigate(R.id.weight_exercise)
-//                weightChip.isChecked = true
-//                aerobicChip.isChecked = false
-//            }
-//            R.id.aerobic_chip -> {
-//                navController.navigate(R.id.aerobic_exercise)
-//                weightChip.isChecked = false
-//                aerobicChip.isChecked = true
-//            }
-//        }
-    }
 }
