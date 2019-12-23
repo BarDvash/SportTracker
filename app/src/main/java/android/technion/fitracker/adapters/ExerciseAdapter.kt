@@ -109,6 +109,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
             (textView?.parent as LinearLayout).visibility = View.GONE
 
         } else {
+            (textView?.parent as LinearLayout).visibility = View.VISIBLE
             textView?.text = field
         }
     }
