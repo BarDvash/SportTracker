@@ -25,14 +25,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
 class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     enum class ResultCodes {
-        AEROBIC, WEIGHT, RETURN
+        AEROBIC, WEIGHT, AEROBIC_EDIT, WEIGHT_EDIT, DELETE, RETURN
     }
 
     lateinit var viewModel: CreateWorkoutViewModel
@@ -61,11 +60,36 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         val exercises = viewModel.workout_exercises.value
         val onItemClickListener = View.OnClickListener { v ->
             val rvh = v.tag as RecyclerView.ViewHolder
-            val s = exercises?.get(rvh.adapterPosition)
-            Toast.makeText(this, "You clicked on " + (s?.type ?: "None"), Toast.LENGTH_LONG).show()
+            var s = exercises?.get(rvh.adapterPosition)
+            when (s?.type) {
+                "Aerobic" -> {
+                    s = s as AerobicExerciseModel
+                    val intent = Intent(this, EditAerobicExercise::class.java)
+                    intent.putExtra("name", s.name)
+                    intent.putExtra("duration", s.duration)
+                    intent.putExtra("speed", s.speed)
+                    intent.putExtra("intensity", s.intensity)
+                    intent.putExtra("notes", s.notes)
+                    intent.putExtra("index", rvh.adapterPosition)
+                    startActivityForResult(intent,ResultCodes.AEROBIC_EDIT.ordinal)
+                }
+                "Weight" -> {
+                    s = s as WeightExerciseModel
+                    val intent = Intent(this, EditWeightExercise::class.java)
+                    intent.putExtra("name", s.name)
+                    intent.putExtra("weight", s.weight)
+                    intent.putExtra("sets", s.sets)
+                    intent.putExtra("repetitions", s.repetitions)
+                    intent.putExtra("rest", s.rest)
+                    intent.putExtra("notes", s.notes)
+                    intent.putExtra("index", rvh.adapterPosition)
+                    startActivityForResult(intent, ResultCodes.WEIGHT_EDIT.ordinal)
+                }
+            }
         }
-        viewAdapter = ExerciseAdapter(exercises!!)
-        viewAdapter.setOnItemClickListener(onItemClickListener)
+        viewAdapter = ExerciseAdapter(exercises!!).apply {
+            mOnItemClickListener = onItemClickListener
+        }
         recyclerView = findViewById<RecyclerView>(R.id.create_workout_recycler).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -78,13 +102,17 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        setEmptyPlaceholderState()
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.new_workout_save_item -> {
                 saveWorkoutToFirestore()
             }
+            //Back button
             else -> {
-                //Handling Up button which has no ID
                 safeExit()
             }
         }
@@ -104,34 +132,68 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (resultCode) {
             AEROBIC.ordinal -> {
-                val aerobicExercise = AerobicExerciseModel(
-                    data?.getStringExtra("name"),
-                    data?.getStringExtra("duration"),
-                    data?.getStringExtra("speed"),
-                    data?.getStringExtra("intensity"),
-                    data?.getStringExtra("notes")
-                ) as ExerciseBaseModel
+                val aerobicExercise: ExerciseBaseModel = getExerciseBaseModelFromAerobicData(data)
                 viewModel.workout_exercises.value?.add(aerobicExercise)
-                setEmptyPlaceholderState()
-                viewAdapter.notifyDataSetChanged()
             }
             WEIGHT.ordinal -> {
-                val weightExercise = WeightExerciseModel(
-                    data?.getStringExtra("name"),
-                    data?.getStringExtra("weight"),
-                    data?.getStringExtra("sets"),
-                    data?.getStringExtra("repetitions"),
-                    data?.getStringExtra("rest"),
-                    data?.getStringExtra("notes")
-                ) as ExerciseBaseModel
+                val weightExercise: ExerciseBaseModel = getExerciseBaseModelFromWeightData(data)
                 viewModel.workout_exercises.value?.add(weightExercise)
-                setEmptyPlaceholderState()
-                viewAdapter.notifyDataSetChanged()
+            }
+            AEROBIC_EDIT.ordinal -> {
+                val aerobicModel: ExerciseBaseModel = getExerciseBaseModelFromAerobicData(data)
+                val index = data?.getIntExtra("index", -1)
+                if (index != null && index != -1) {
+                    viewModel.workout_exercises.value?.set(
+                        index,
+                        aerobicModel
+                    )
+                }
+
+            }
+            WEIGHT_EDIT.ordinal -> {
+                val index = data?.getIntExtra("index", -1)
+                if (index != null && index != -1) {
+                    val weightModel: ExerciseBaseModel = getExerciseBaseModelFromWeightData(data)
+                    viewModel.workout_exercises.value?.set(
+                        index, weightModel
+
+                    )
+                }
+            }
+            DELETE.ordinal -> {
+                val index = data?.getIntExtra("index", -1)
+                if (index != null && index != -1) {
+                    viewModel.workout_exercises.value?.removeAt(index)
+                }
             }
             RETURN.ordinal -> {
                 return
             }
         }
+        setEmptyPlaceholderState()
+        viewAdapter.notifyDataSetChanged()
+
+    }
+
+    private fun getExerciseBaseModelFromWeightData(data: Intent?): ExerciseBaseModel {
+        return WeightExerciseModel(
+            data?.getStringExtra("name"),
+            data?.getStringExtra("weight"),
+            data?.getStringExtra("sets"),
+            data?.getStringExtra("repetitions"),
+            data?.getStringExtra("rest"),
+            data?.getStringExtra("notes")
+        )
+    }
+
+    private fun getExerciseBaseModelFromAerobicData(data: Intent?): ExerciseBaseModel {
+        return AerobicExerciseModel(
+            data?.getStringExtra("name"),
+            data?.getStringExtra("duration"),
+            data?.getStringExtra("speed"),
+            data?.getStringExtra("intensity"),
+            data?.getStringExtra("notes")
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -139,6 +201,11 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         menuInflater.inflate(R.menu.add_new_workout_menu, menu)
         return true
 
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        safeExit()
+        return true
     }
 
     override fun onBackPressed() {
@@ -173,7 +240,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.add_exercise_fab -> {
                 val createNewWorkoutActivity = Intent(v.context!!, AddExerciseActivity::class.java)
-                startActivityForResult(createNewWorkoutActivity, 1)
+                startActivityForResult(createNewWorkoutActivity, ResultCodes.WEIGHT.ordinal)
             }
             R.id.new_workout_save_item -> {
                 saveWorkoutToFirestore()
@@ -191,7 +258,8 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
             return
         }
         val uid = firebase.currentUser?.uid
-        val workout = Workout(viewModel.workout_name.value, viewModel.workout_desc.value, viewModel.workout_exercises.value)
+        val workout =
+            Workout(viewModel.workout_name.value, viewModel.workout_desc.value, viewModel.workout_exercises.value)
         if (uid != null) {
             firestore.collection("regular_users")
                     .document(uid).collection("workouts").add(workout)

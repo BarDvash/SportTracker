@@ -14,6 +14,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>) : FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
+    var mOnItemClickListener: View.OnClickListener? = null
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -36,5 +38,10 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
         RecyclerView.ViewHolder(view){
         var name: TextView = view.findViewById(R.id.workout_name)
         var desc: TextView = view.findViewById(R.id.workout_info)
+        init {
+            view.setTag(this)
+            view.setOnClickListener(mOnItemClickListener)
+        }
+
     }
 }

@@ -2,18 +2,13 @@ package android.technion.fitracker.user.personal
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.technion.fitracker.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import android.technion.fitracker.R
-import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 /**
  * A simple [Fragment] subclass.

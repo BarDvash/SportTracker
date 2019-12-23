@@ -9,12 +9,13 @@ import android.technion.fitracker.models.WorkoutFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -28,7 +29,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
 
     lateinit var firestore: FirebaseFirestore
     lateinit var recyclerView: RecyclerView
-    lateinit var fab: FloatingActionButton
+    lateinit var fab: ExtendedFloatingActionButton
     lateinit var adapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>
 
     override fun onCreateView(
@@ -47,6 +48,11 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val uid = mAuth.currentUser?.uid
+        val onItemClickListener = View.OnClickListener { v ->
+            val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
+            Toast.makeText(activity, "You clicked on " + (rvh.name.text ?: "None"), Toast.LENGTH_SHORT).show()
+//            val s = exercises?.get(rvh.adapterPosition)
+        }
         val query = firestore
                 .collection("regular_users")
                 .document(uid!!)
@@ -55,14 +61,13 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        adapter = WorkoutsFireStoreAdapter(options)
+        adapter = WorkoutsFireStoreAdapter(options).apply {
+            mOnItemClickListener = onItemClickListener
+        }
         recyclerView.adapter = adapter
         fab.setOnClickListener(this)
     }
 
-    fun createNewWorkout() {
-
-    }
 
     override fun onStart() {
         super.onStart()

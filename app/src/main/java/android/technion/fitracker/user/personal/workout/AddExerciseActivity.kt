@@ -3,11 +3,10 @@ package android.technion.fitracker.user.personal.workout
 import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.viewPages.ExerciseTypeViewPageAdapter
+import android.technion.fitracker.databinding.ActivityAddExerciseBinding
 import android.technion.fitracker.models.workouts.CreateNewExerciseViewModel
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import android.technion.fitracker.databinding.ActivityAddExerciseBinding
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.viewpager.widget.ViewPager
@@ -19,6 +18,8 @@ class AddExerciseActivity : AppCompatActivity() {
     lateinit var viewModel: CreateNewExerciseViewModel
     lateinit var adapter: ExerciseTypeViewPageAdapter
     lateinit var viewPager: ViewPager
+    private val WEIGHT_PAGE = 0
+    private val AEROBIC_PAGE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,31 +42,20 @@ class AddExerciseActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        if (!checkIfDataExist()) {
-            this.setResult(CreateNewWorkoutActivity.ResultCodes.RETURN.ordinal)
-            this.finish()
-        }else{
-            MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")
-                    .setPositiveButton(
-                        "Yes"
-                    ) { _, _ ->
-                        this.setResult(CreateNewWorkoutActivity.ResultCodes.RETURN.ordinal)
-                        this.finish()
-                    }
-                    .setNegativeButton(
-                        "No"
-                    ) { _, _ ->
-
-                    }.show()
-        }
+        safeBack()
         return true
     }
 
     override fun onBackPressed() {
+        safeBack()
+
+    }
+
+    private fun safeBack() {
         if (!checkIfDataExist()) {
             this.setResult(CreateNewWorkoutActivity.ResultCodes.RETURN.ordinal)
             this.finish()
-        }else{
+        } else {
             MaterialAlertDialogBuilder(this)
                     .setTitle("Warning")
                     .setMessage("Data will be lost, continue?")
@@ -81,12 +71,11 @@ class AddExerciseActivity : AppCompatActivity() {
 
                     }.show()
         }
-
     }
 
-    fun checkIfDataExist(): Boolean {
+    private fun checkIfDataExist(): Boolean {
         return when (viewPager.currentItem) {
-            0 -> {
+            WEIGHT_PAGE -> {
                 !viewModel.weight_name.value.isNullOrBlank() ||
                         !viewModel.weight_weight.value.isNullOrBlank() ||
                         !viewModel.weight_sets.value.isNullOrBlank() ||
@@ -94,7 +83,7 @@ class AddExerciseActivity : AppCompatActivity() {
                         !viewModel.weight_rest.value.isNullOrBlank() ||
                         !viewModel.weight_notes.value.isNullOrBlank()
             }
-            1-> {
+            AEROBIC_PAGE -> {
                 !viewModel.aerobic_name.value.isNullOrBlank() ||
                         !viewModel.aerobic_duration.value.isNullOrBlank() ||
                         !viewModel.aerobic_speed.value.isNullOrBlank() ||

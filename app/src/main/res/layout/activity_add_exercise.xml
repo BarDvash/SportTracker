@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="#C20E0E"
-
+                app:menu="@menu/edit_exercise_menu"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:subtitleTextColor="@android:color/white"

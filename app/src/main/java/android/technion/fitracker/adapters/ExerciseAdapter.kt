@@ -49,9 +49,6 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         }
     }
 
-    public fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
-        mOnItemClickListener = itemClickListener
-    }
 
     override fun getItemViewType(position: Int): Int {
         return if (myDataset[position].type.equals("Aerobic")) {

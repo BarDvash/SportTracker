@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".user.personal.workout.EditAerobicExercise"></activity>
+        <activity android:name=".user.personal.workout.EditWeightExercise" />
+        <activity android:name=".user.personal.workout.WorkoutActivity" />
         <activity android:name=".UserLandingPageActivity" />
         <activity android:name=".user.personal.workout.AddExerciseActivity" />
         <activity android:name=".user.personal.workout.CreateNewWorkoutActivity" /> <!-- enable the search dialog to send searches to SearchableActivity from every other activity -->
