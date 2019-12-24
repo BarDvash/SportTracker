@@ -1,17 +1,19 @@
 package android.technion.fitracker.user.personal.nutrition
 
+import android.content.ClipData
 import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.nutrition.NutritionMealAdapter
 import android.technion.fitracker.databinding.FragmentAddMealBinding
 import android.technion.fitracker.models.nutrition.AddMealViewModel
 import android.technion.fitracker.user.Meal
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.databinding.ObservableList
@@ -33,33 +35,13 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
     lateinit var viewModel: AddMealViewModel
     private lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
+    lateinit var placeHolder: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
             ViewModelProviders.of(this)[AddMealViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
-        viewModel.data.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<Map<String,String>>>() {
-            override fun onChanged(sender: ObservableList<Map<String,String>>) {
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onItemRangeRemoved(sender: ObservableList<Map<String,String>>, positionStart: Int, itemCount: Int) {
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onItemRangeInserted(sender: ObservableList<Map<String,String>>, positionStart: Int, itemCount: Int) {
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onItemRangeMoved(sender: ObservableList<Map<String,String>>, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onItemRangeChanged(sender: ObservableList<Map<String,String>>, positionStart: Int, itemCount: Int) {
-                adapter.notifyDataSetChanged()
-            }
-        })
     }
 
     override fun onCreateView(
@@ -69,17 +51,23 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         val view = DataBindingUtil.inflate<FragmentAddMealBinding>(inflater, R.layout.fragment_add_meal,container, false)
         view.viewmodel = viewModel
+        setHasOptionsMenu(true)
         return view.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.meal_fragment_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fab = view.findViewById<FloatingActionButton>(R.id.fab_on_add_new_meal)
+        placeHolder = view.findViewById(R.id.meal_fragment_placeholder)
         fab.setOnClickListener(this)
         (activity as AppCompatActivity).setSupportActionBar(view.findViewById(R.id.add_new_meal_toolbar))
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_meal_title)
-
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
@@ -88,10 +76,17 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.add_meal_recview)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = NutritionMealAdapter(viewModel.data)
-        recyclerView?.adapter = adapter
+        val onClickListener = View.OnClickListener {
+            val recView = it.tag as RecyclerView.ViewHolder
+            val pos = recView.adapterPosition
+            val bundle = bundleOf("dishes" to viewModel.data[pos], "pos" to pos)
+            navController.navigate(R.id.nutritionAddDishFragment,bundle)
+        }
+        adapter = NutritionMealAdapter(viewModel.data, onClickListener)
 
-        view.findViewById<Button>(R.id.add_meal_done_button).setOnClickListener(this)
+        recyclerView?.adapter = adapter
+        setPlaceHolderVisibility()
+
     }
 
     override fun onClick(v: View?) {
@@ -99,19 +94,42 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
             R.id.fab_on_add_new_meal -> {
                 navController.navigate(R.id.nutritionAddDishFragment)
             }
-            R.id.add_meal_done_button -> {
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
+            R.id.meal_fragment_delete -> {
+                (activity as NutritionAddMealActivity).deleteFromDB()
+                activity?.finish()
+                true
+            }
+
+            R.id.meal_fragment_save -> {
                 if (viewModel.editTextMealName.value.isNullOrEmpty()){
                     Toast.makeText(context,"Please provide a name for menu",Toast.LENGTH_SHORT).show()
-                    return
+                    return true
                 }
-                val data = Meal(viewModel.editTextMealName.value,viewModel.data)
-                db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
-//                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
-                }.addOnFailureListener {
-//                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
-                }
+                (activity as NutritionAddMealActivity).writeToDB((activity as NutritionAddMealActivity).updateData)
                 activity?.finish()
+                true
+            }
+
+            else -> {
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                super.onOptionsItemSelected(item)
             }
         }
     }
+
+    private fun setPlaceHolderVisibility() {
+        if (viewModel.data.isEmpty()) {
+            placeHolder.visibility = View.VISIBLE
+        }
+        else {
+            placeHolder.visibility = View.GONE
+        }
+    }
+
 }

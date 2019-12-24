@@ -76,14 +76,10 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        val test2 =   navController.currentDestination?.label
         when (menuItem.itemId) {
             R.id.action_home -> startFragmentAndPop(R.id.homeScreenFragment)
             R.id.action_workouts -> startFragmentAndPop(R.id.workoutsFragment)
-            R.id.action_nutrition -> {
-                if (test2 != "fragment_nutrition")
-                    startFragmentAndPop(R.id.nutritionFragment)
-            }
+            R.id.action_nutrition -> startFragmentAndPop(R.id.nutritionFragment)
             R.id.action_measurements -> startFragmentAndPop(R.id.measurementsFragment)
         }
         return true

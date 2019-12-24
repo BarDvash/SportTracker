@@ -39,15 +39,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_add_dish_toolbar" />
 
-        <Button
-            android:id="@+id/add_dish_done_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Done"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_dish_recview" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/activity_add_dish_toolbar"
             android:layout_width="match_parent"
@@ -59,7 +50,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
+            app:menu="@menu/dish_fragment_menu"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        <TextView
+            android:id="@+id/dish_fragment_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bla bla bla 2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/add_dish_recview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

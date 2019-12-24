@@ -41,10 +41,12 @@
         <item name="android:ems">10</item>
     </style>
 
-    <style name="WideDialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="WideDialog"  parent="Theme.MaterialComponents.Light.Dialog">
         <item name="android:windowMinWidthMajor">90%</item>
         <item name="android:windowMinWidthMinor">90%</item>
         <item name="android:windowNoTitle">false</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="textInputStyle">@style/MyEditText</item>
     </style>
 
 </resources>

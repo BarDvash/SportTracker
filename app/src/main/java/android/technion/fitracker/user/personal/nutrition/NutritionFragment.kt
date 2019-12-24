@@ -9,24 +9,28 @@ import android.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-var fragmentView: View? = null
-var nutrition_recyclerView: RecyclerView? = null
-
-
+/**
+ * A simple [Fragment] subclass.
+ */
 class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
-//    lateinit var recyclerView: RecyclerView
+    lateinit var nutrition_recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
     lateinit var fab: FloatingActionButton
 
@@ -34,10 +38,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (fragmentView == null){
-            fragmentView = inflater.inflate(R.layout.fragment_nutrition, container, false)
-        }
-        // Inflate the layout for this fragment
+        val fragmentView = inflater.inflate(R.layout.fragment_nutrition, container, false)
         return fragmentView
     }
 
@@ -47,17 +48,35 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         firestore = FirebaseFirestore.getInstance()
         fab = view.findViewById(R.id.nutrition_fab)
         fab.setOnClickListener(this)
-        if (nutrition_recyclerView == null) {
-            nutrition_recyclerView = view.findViewById(R.id.nutrition_rec_view)
-            nutrition_recyclerView!!.setHasFixedSize(true)
-            nutrition_recyclerView!!.layoutManager = LinearLayoutManager(context)
-            val uid = mAuth.currentUser?.uid
-            val query = firestore.collection("regular_users").document(uid!!).collection("meals").orderBy("name", Query.Direction.ASCENDING)
-            val options = FirestoreRecyclerOptions.Builder<NutritionFireStoreModel>().setQuery(query, NutritionFireStoreModel::class.java).build()
-            adapter = NutritionFireStoreAdapter(options)
-            nutrition_recyclerView!!.adapter = adapter
+        nutrition_recyclerView = view.findViewById(R.id.nutrition_rec_view)
+        nutrition_recyclerView.setHasFixedSize(true)
+        nutrition_recyclerView.layoutManager = LinearLayoutManager(context)
+        val uid = mAuth.currentUser?.uid
+        val query =
+            firestore.collection("regular_users").document(uid!!).collection("meals")
+                    .orderBy("name", Query.Direction.ASCENDING)
+        val options =
+            FirestoreRecyclerOptions.Builder<NutritionFireStoreModel>()
+                    .setQuery(query, NutritionFireStoreModel::class.java).build()
+        val onClickListener = View.OnClickListener {
+            val element = it.tag as NutritionFireStoreAdapter.ViewHolder
+            val name = element.name.text
+
+
+            firestore.collection("regular_users").document(uid).collection("meals").whereEqualTo("name", name).get()
+                    .addOnSuccessListener {
+                        val doc = it.first().toObject(NutritionFireStoreModel::class.java)
+                        val bundle = bundleOf("list" to doc.meals, "name" to name, "docId" to it.first().id)
+                        val userHome = Intent(context, NutritionAddMealActivity::class.java)
+                        userHome.putExtras(bundle)
+                        startActivity(userHome)
+                    }.addOnFailureListener {
+
+            }
+
         }
-        adapter = nutrition_recyclerView!!.adapter as FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
+        adapter = NutritionFireStoreAdapter(options, onClickListener)
+        nutrition_recyclerView.adapter = adapter
     }
 
     override fun onStart() {

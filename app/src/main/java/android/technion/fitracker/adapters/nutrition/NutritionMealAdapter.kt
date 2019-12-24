@@ -9,14 +9,16 @@ import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.RecyclerView
 import java.lang.StringBuilder
 
-class NutritionMealAdapter(private val data: ObservableArrayList<Map<String, String>>) :
+class NutritionMealAdapter(private val data: ObservableArrayList<Map<String, String>>, private val onItemClickListener: View.OnClickListener) :
     RecyclerView.Adapter<NutritionMealAdapter.ViewHolder>(){
+
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
 
         val v =  LayoutInflater.from(parent.context)
             .inflate(R.layout.nutrition_meal_card,parent,false)
+        v.setOnClickListener(onItemClickListener)
         return ViewHolder(v)
     }
 
@@ -41,6 +43,8 @@ class NutritionMealAdapter(private val data: ObservableArrayList<Map<String, Str
 
         val name : TextView = view.findViewById(R.id.nutrition_meal_name)
         val count: TextView = view.findViewById(R.id.nutrition_meal_info)
-
+        init {
+            view.tag = this
+        }
     }
 }

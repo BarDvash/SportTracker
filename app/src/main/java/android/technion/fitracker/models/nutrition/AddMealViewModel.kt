@@ -11,7 +11,11 @@ class AddMealViewModel : ViewModel() {
     @Bindable
     val editTextMealName = MutableLiveData<String>()
 
-    val data = ObservableArrayList<Map<String,String>>()
+    var data = ObservableArrayList<Map<String,String>>()
 
     var dishes :HashMap<String,String> = HashMap()
+
+    var docId: String? = null
+
+
 }
