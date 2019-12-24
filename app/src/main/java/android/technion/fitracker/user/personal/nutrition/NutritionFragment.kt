@@ -22,9 +22,7 @@ import com.google.firebase.firestore.Query
 var fragmentView: View? = null
 var nutrition_recyclerView: RecyclerView? = null
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore

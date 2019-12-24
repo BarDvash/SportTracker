@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".user.personal.workout.EditWeightExercise">
+        tools:context=".user.personal.workout.edit.EditWeightExercise">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/edit_weight_toolbar"

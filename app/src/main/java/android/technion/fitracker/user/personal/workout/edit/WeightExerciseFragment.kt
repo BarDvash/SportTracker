@@ -1,10 +1,10 @@
-package android.technion.fitracker.user.personal.workout
+package android.technion.fitracker.user.personal.workout.edit
 
 
 import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
-import android.technion.fitracker.databinding.FragmentAerobicExerciseBinding
+import android.technion.fitracker.databinding.FragmentWeightExerciseBinding
 import android.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
-class AerobicExerciseFragment : Fragment(), View.OnClickListener {
+class WeightExerciseFragment : Fragment(), View.OnClickListener {
     lateinit var addExercise: FloatingActionButton
     lateinit var viewModel: CreateNewExerciseViewModel
 
@@ -32,31 +32,27 @@ class AerobicExerciseFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view =
-            DataBindingUtil.inflate<FragmentAerobicExerciseBinding>(inflater, R.layout.fragment_aerobic_exercise, container, false)
+            DataBindingUtil.inflate<FragmentWeightExerciseBinding>(inflater, R.layout.fragment_weight_exercise, container, false)
         view.myViewModel = viewModel
         return view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addExercise = view.findViewById(R.id.aerobic_done_fab)
+        addExercise = view.findViewById(R.id.weight_done_fab)
         addExercise.setOnClickListener(this)
-
     }
-
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.aerobic_done_fab -> {
-                if (viewModel.aerobic_name.value == "") {
+            R.id.weight_done_fab -> {
+                if (viewModel.weight_name.value.isNullOrEmpty()) {
                     //TODO : refactor me to underline the field
                     Toast.makeText(v.context, "You must fill at least Name field!", Toast.LENGTH_LONG).show()
                 } else {
                     val intent = createIntentWithData()
-                    activity?.apply {
-                        setResult(CreateNewWorkoutActivity.ResultCodes.AEROBIC.ordinal, intent)
-                        finish()
-                    }
+                    activity?.setResult(CreateNewWorkoutActivity.ResultCodes.WEIGHT.ordinal, intent)
+                    activity?.finish()
                 }
             }
         }
@@ -64,13 +60,12 @@ class AerobicExerciseFragment : Fragment(), View.OnClickListener {
 
     private fun createIntentWithData(): Intent {
         return Intent().apply {
-            putExtra("name", viewModel.aerobic_name.value)
-            putExtra("duration", viewModel.aerobic_duration.value)
-            putExtra("speed", viewModel.aerobic_speed.value)
-            putExtra("intensity", viewModel.aerobic_intensity.value)
-            putExtra("notes", viewModel.aerobic_notes.value)
+            putExtra("name", viewModel.weight_name.value)
+            putExtra("weight", viewModel.weight_weight.value)
+            putExtra("sets", viewModel.weight_sets.value)
+            putExtra("repetitions", viewModel.weight_repetitions.value)
+            putExtra("rest", viewModel.weight_rest.value)
+            putExtra("notes", viewModel.weight_notes.value)
         }
     }
-
-
 }

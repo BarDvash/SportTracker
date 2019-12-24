@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class HomeScreenFragment : Fragment() {
     private lateinit var navController: NavController
 

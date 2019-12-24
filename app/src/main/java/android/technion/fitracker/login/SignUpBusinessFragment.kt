@@ -19,9 +19,7 @@ import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class SignUpBusinessFragment : Fragment(), View.OnClickListener {
 
     lateinit var navController: NavController

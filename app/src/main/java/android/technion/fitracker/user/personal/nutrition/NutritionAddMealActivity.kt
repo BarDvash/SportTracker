@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.databinding.ActivityAddMealBinding
 import android.technion.fitracker.models.nutrition.AddMealViewModel
-import android.technion.fitracker.user.personal.workout.CreateNewWorkoutActivity
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders

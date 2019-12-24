@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".user.personal.workout.CreateNewWorkoutActivity">
+    tools:context=".user.personal.workout.edit.CreateNewWorkoutActivity">
     <data>
         <variable
             name="newWorkoutViewModel"
@@ -90,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout"
             app:layout_constraintVertical_bias="1.0"
             tools:itemCount="2"
-            tools:listitem="@layout/weight_workout_ele" />
+            tools:listitem="@layout/element_weight_workout" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/add_exercise_fab"

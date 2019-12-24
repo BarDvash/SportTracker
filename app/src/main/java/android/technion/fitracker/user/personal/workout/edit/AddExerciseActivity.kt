@@ -1,4 +1,4 @@
-package android.technion.fitracker.user.personal.workout
+package android.technion.fitracker.user.personal.workout.edit
 
 import android.os.Bundle
 import android.technion.fitracker.R

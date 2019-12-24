@@ -11,12 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.personal.workout.EditAerobicExercise"></activity>
-        <activity android:name=".user.personal.workout.EditWeightExercise" />
+        <activity android:name=".user.personal.workout.WorkoutStarter"></activity>
+        <activity android:name=".user.personal.workout.workout_starter" />
+        <activity android:name=".user.personal.workout.edit.EditAerobicExercise" />
+        <activity android:name=".user.personal.workout.edit.EditWeightExercise" />
         <activity android:name=".user.personal.workout.WorkoutActivity" />
         <activity android:name=".UserLandingPageActivity" />
-        <activity android:name=".user.personal.workout.AddExerciseActivity" />
-        <activity android:name=".user.personal.workout.CreateNewWorkoutActivity" /> <!-- enable the search dialog to send searches to SearchableActivity from every other activity -->
+        <activity android:name=".user.personal.workout.edit.AddExerciseActivity" />
+        <activity android:name=".user.personal.workout.edit.CreateNewWorkoutActivity" /> <!-- enable the search dialog to send searches to SearchableActivity from every other activity -->
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".SearchableActivity" />

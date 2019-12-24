@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/weight_exercise"
-        android:name="android.technion.fitracker.user.personal.workout.WeightExerciseFragment"
+        android:name="android.technion.fitracker.user.personal.workout.edit.WeightExerciseFragment"
         android:label="fragment_weight_exercise"
         tools:layout="@layout/fragment_weight_exercise" />
     <fragment
         android:id="@+id/aerobic_exercise"
-        android:name="android.technion.fitracker.user.personal.workout.AerobicExerciseFragment"
+        android:name="android.technion.fitracker.user.personal.workout.edit.AerobicExerciseFragment"
         android:label="fragment_aerobic_exercise"
         tools:layout="@layout/fragment_aerobic_exercise" />
 </navigation>

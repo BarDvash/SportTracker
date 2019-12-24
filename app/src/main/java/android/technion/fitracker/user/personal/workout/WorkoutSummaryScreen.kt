@@ -1,4 +1,4 @@
-package android.technion.fitracker.user.business
+package android.technion.fitracker.user.personal.workout
 
 
 import android.os.Bundle
@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import android.technion.fitracker.R
 
 
-class ScheduleFragment : Fragment() {
+class WorkoutSummaryScreen : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_business_schedule, container, false)
+        return inflater.inflate(R.layout.fragment_workout_summary_screen, container, false)
     }
 
 

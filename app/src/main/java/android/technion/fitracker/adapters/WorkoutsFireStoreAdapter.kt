@@ -21,7 +21,7 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
         viewType: Int
     ): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.workout_with_desc_ele, parent, false)
+            .inflate(R.layout.element_workout, parent, false)
         return ViewHolder(view)
     }
 

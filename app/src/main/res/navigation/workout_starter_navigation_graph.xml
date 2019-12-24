@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workout_starter_navigation_graph"
+    app:startDestination="@id/workoutStartScreen">
+
+    <fragment
+        android:id="@+id/workoutStartScreen"
+        android:name="android.technion.fitracker.user.personal.workout.WorkoutStartScreen"
+        android:label="WorkoutStartScreen" >
+        <action
+            android:id="@+id/action_workoutStartScreen_to_workoutInProgress"
+            app:destination="@id/workoutInProgress" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutInProgress"
+        android:name="android.technion.fitracker.user.personal.workout.WorkoutInProgress"
+        android:label="WorkoutInProgress" >
+        <action
+            android:id="@+id/action_workoutInProgress_to_workoutSummaryScreen"
+            app:destination="@id/workoutSummaryScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/workoutSummaryScreen"
+        android:name="android.technion.fitracker.user.personal.workout.WorkoutSummaryScreen"
+        android:label="fragment_workout_summary_screen"
+        tools:layout="@layout/fragment_workout_summary_screen" />
+</navigation>
