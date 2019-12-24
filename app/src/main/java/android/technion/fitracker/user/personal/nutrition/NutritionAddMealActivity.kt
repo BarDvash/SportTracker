@@ -85,15 +85,15 @@ class NutritionAddMealActivity : AppCompatActivity() {
 
     private fun showWarning() {
         MaterialAlertDialogBuilder(this)
-                .setTitle("Warning")
-                .setMessage("Data will be lost, continue?")
+                .setTitle(getString(R.string.warning))
+                .setMessage(getString(R.string.usaved_data_will_be_lost))
                 .setPositiveButton(
-                    "Yes"
+                    getString(R.string.yes)
                 ) { _, _ ->
                     goBack()
                 }
                 .setNegativeButton(
-                    "No"
+                    getString(R.string.no)
                 ) { _, _ ->
 
                 }.show()

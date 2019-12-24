@@ -65,9 +65,15 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
         val fab = view.findViewById<FloatingActionButton>(R.id.fab_on_add_new_meal)
         placeHolder = view.findViewById(R.id.meal_fragment_placeholder)
         fab.setOnClickListener(this)
-        (activity as AppCompatActivity).setSupportActionBar(view.findViewById(R.id.add_new_meal_toolbar))
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_meal_title)
+        val rootActivity = (activity as NutritionAddMealActivity)
+        rootActivity.setSupportActionBar(view.findViewById(R.id.add_new_meal_toolbar))
+        rootActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        if (rootActivity.updateData) {
+            rootActivity.supportActionBar?.title = getString(R.string.edit_meal)
+        }
+        else {
+            rootActivity.supportActionBar?.title = getString(R.string.add_meal_title)
+        }
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
@@ -107,7 +113,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
 
             R.id.meal_fragment_save -> {
                 if (viewModel.editTextMealName.value.isNullOrEmpty()){
-                    Toast.makeText(context,"Please provide a name for menu",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.provide_name), Toast.LENGTH_SHORT).show()
                     return true
                 }
                 (activity as NutritionAddMealActivity).writeToDB((activity as NutritionAddMealActivity).updateData)

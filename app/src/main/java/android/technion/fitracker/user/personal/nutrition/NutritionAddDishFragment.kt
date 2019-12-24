@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class NutritionAddDishFragment: Fragment(), View.OnClickListener {
+class NutritionAddDishFragment : Fragment(), View.OnClickListener {
 
-    val names:ArrayList<String> = ArrayList()
-    val counts:ArrayList<String> = ArrayList()
-    lateinit var  adapter: NutritionNestedDishAdapter
+    val names: ArrayList<String> = ArrayList()
+    val counts: ArrayList<String> = ArrayList()
+    lateinit var adapter: NutritionNestedDishAdapter
     lateinit var navController: NavController
     lateinit var viewModel: AddMealViewModel
     lateinit var placeHolder: TextView
@@ -44,14 +44,15 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = DataBindingUtil.inflate<FragmentAddDishBinding>(inflater, R.layout.fragment_add_dish,container, false)
+        val view =
+            DataBindingUtil.inflate<FragmentAddDishBinding>(inflater, R.layout.fragment_add_dish, container, false)
         view.viewmodel = viewModel
         setHasOptionsMenu(true)
         return view.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.dish_fragment_menu,menu)
+        inflater.inflate(R.menu.dish_fragment_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -63,34 +64,36 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
         val fab = view.findViewById<FloatingActionButton>(R.id.fab_on_add_dish)
         fab.setOnClickListener(this)
         val toolBarView = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.activity_add_dish_toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolBarView)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.add_new_dish)
+        val rootActivity = (activity as AppCompatActivity)
+        rootActivity.setSupportActionBar(toolBarView)
+        rootActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         var dishes: HashMap<String, String>?
         if (arguments?.get("dishes") != null) {
             isEditing = true
             editPos = arguments?.getInt("pos")!!
-            dishes = arguments?.get("dishes") as HashMap<String,String>
+            dishes = arguments?.get("dishes") as HashMap<String, String>
             viewModel.dishes = dishes
             for (item in dishes) {
                 names.add(item.key)
                 counts.add(item.value)
             }
-        }
-        else {
+            rootActivity.supportActionBar?.title = getString(R.string.edit_dish)
+        } else {
             viewModel.dishes = HashMap()
+            rootActivity.supportActionBar?.title = getString(R.string.add_new_dish)
         }
 
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.add_dish_recview)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = NutritionNestedDishAdapter(names,counts)
+        adapter = NutritionNestedDishAdapter(names, counts)
         adapter.onItemClickListener = View.OnClickListener {
             val recView = it.tag as RecyclerView.ViewHolder
             val pos = recView.adapterPosition
-            val dial = Dialog(context!!,R.style.WideDialog)
+            val dial = Dialog(context!!, R.style.WideDialog)
             dial.setContentView(R.layout.nutrition_add_optional_dish)
-            dial.setTitle("Edit the dish")
+            dial.setTitle(getString(R.string.edit_dish))
             val nameEditText = dial.findViewById<EditText>(R.id.dish_name_edittext)
             val countEditText = dial.findViewById<EditText>(R.id.dish_count_edittext)
             val oldName = Editable.Factory.getInstance().newEditable(names[pos])
@@ -99,8 +102,8 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
             val addButton = dial.findViewById<Button>(R.id.dish_add)
             addButton.setOnClickListener {
                 val name = nameEditText.text.toString()
-                if (name.isEmpty()){
-                    Toast.makeText(context,"Name should not be empty", Toast.LENGTH_SHORT).show()
+                if (name.isEmpty()) {
+                    Toast.makeText(context, getString(R.string.name_shouldnt_be_empty), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
                 val count = countEditText.text.toString()
@@ -136,17 +139,17 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
 
 
     private fun switchToAddActivity() {
-        val dial = Dialog(context!!,R.style.WideDialog)
+        val dial = Dialog(context!!, R.style.WideDialog)
         dial.setContentView(R.layout.nutrition_add_optional_dish)
-        dial.setTitle("Add a new dish")
+        dial.setTitle(getString(R.string.add_dish))
         val nameEditText = dial.findViewById<EditText>(R.id.dish_name_edittext)
         val countEditText = dial.findViewById<EditText>(R.id.dish_count_edittext)
         val addButton = dial.findViewById<Button>(R.id.dish_add)
         val deleteButton = dial.findViewById<Button>(R.id.dish_delete)
         addButton.setOnClickListener {
             val name = nameEditText.text.toString()
-            if (name.isEmpty()){
-                Toast.makeText(context,"Name should not be empty", Toast.LENGTH_SHORT).show()
+            if (name.isEmpty()) {
+                Toast.makeText(context, getString(R.string.name_shouldnt_be_empty), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val count = countEditText.text.toString()
@@ -191,8 +194,7 @@ class NutritionAddDishFragment: Fragment(), View.OnClickListener {
     private fun setPlaceHolderVisibility() {
         if (names.isEmpty()) {
             placeHolder.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             placeHolder.visibility = View.GONE
         }
     }
