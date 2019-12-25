@@ -10,6 +10,7 @@ import android.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,7 +30,8 @@ class SearchableActivity : AppCompatActivity() {
     lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
     lateinit var tab_layout: TabLayout
     lateinit var onItemClickListener: View.OnClickListener
-
+    lateinit var current_search_query: String
+    lateinit var searchWidget: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //calling the overridden onCreate function
@@ -42,7 +44,9 @@ class SearchableActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
 
-        onItemClickListener = View.OnClickListener { v ->
+
+
+        onItemClickListener = View.OnClickListener { _ ->
             Toast.makeText(this, "hey" , Toast.LENGTH_LONG).show()
             goToLandingPage()
         }
@@ -88,6 +92,7 @@ class SearchableActivity : AppCompatActivity() {
     private fun handleIntent(intent: Intent, collection_name : String = "regular_users") {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { str ->
+                current_search_query=str
                 SearchRecentSuggestions(this, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(str, null)
                 val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
@@ -142,6 +147,7 @@ class SearchableActivity : AppCompatActivity() {
 
     private fun goToLandingPage(){
         val user_landing_page = Intent(applicationContext, UserLandingPageActivity::class.java)
+        user_landing_page.putExtra("search_query",current_search_query)
         startActivity(user_landing_page)
         finish()
 
