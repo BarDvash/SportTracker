@@ -117,9 +117,15 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
 
 
     private fun startBusinessUserActivity() {
+        val userHome = Intent(context!!, FlashSignInActivity::class.java)
+        userHome.putExtra("user_type","business")
+        startActivity(userHome)
+        activity?.finish()
+        /**
         val userHome = Intent(context!!, BusinessUserActivity::class.java)
         startActivity(userHome)
         activity?.finish()
+         **/
     }
 
 }

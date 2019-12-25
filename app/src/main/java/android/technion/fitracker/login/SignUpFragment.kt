@@ -3,6 +3,7 @@ package android.technion.fitracker.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.technion.fitracker.R
 import android.technion.fitracker.user.User
 import android.technion.fitracker.user.business.BusinessUserActivity
@@ -120,8 +121,17 @@ class SignUpFragment : Fragment(), View.OnClickListener {
 
 
     private fun startUserActivity() {
+
+        val userHome = Intent(context!!, FlashSignInActivity::class.java)
+        userHome.putExtra("user_type","regular")
+        startActivity(userHome)
+        activity?.finish()
+
+        //start user activity
+        /**
         val userHome = Intent(context!!, UserActivity::class.java)
         startActivity(userHome)
         activity?.finish()
+         **/
     }
 }

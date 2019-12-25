@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.personal.workout.WorkoutStarter"></activity>
+        <activity android:name=".login.FlashSignInActivity"></activity>
+        <activity android:name=".user.personal.workout.WorkoutStarter" />
         <activity android:name=".user.personal.workout.workout_starter" />
         <activity android:name=".user.personal.workout.edit.EditAerobicExercise" />
         <activity android:name=".user.personal.workout.edit.EditWeightExercise" />

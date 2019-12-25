@@ -2,7 +2,9 @@ package android.technion.fitracker.user.personal
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.technion.fitracker.R
+import android.technion.fitracker.login.FlashSignInActivity
 import android.technion.fitracker.login.LoginActivity
 import android.technion.fitracker.user.User
 import android.view.Menu
