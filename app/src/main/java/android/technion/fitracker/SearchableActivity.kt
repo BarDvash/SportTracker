@@ -96,7 +96,7 @@ class SearchableActivity : AppCompatActivity() {
                 SearchRecentSuggestions(this, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(str, null)
                 val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
-                adapter = SearchFireStoreAdapter(options)
+                adapter = SearchFireStoreAdapter(options,this)
                 (adapter as SearchFireStoreAdapter).setOnItemClickListener(onItemClickListener)
                 recyclerView.adapter = adapter
                 adapter.startListening()
