@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 class NutritionNestedDishAdapter(private val nameData: ArrayList<String>, private val countData: ArrayList<String>) :
     RecyclerView.Adapter<NutritionNestedDishAdapter.ViewHolder>(){
 
+    var onItemClickListener: View.OnClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
 
         val v =  LayoutInflater.from(parent.context)
             .inflate(R.layout.nutrition_detailed_dish_card,parent,false)
+        v.setOnClickListener(onItemClickListener)
         return ViewHolder(v)
     }
 
@@ -30,9 +33,10 @@ class NutritionNestedDishAdapter(private val nameData: ArrayList<String>, privat
 
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
-
         val name : TextView = view.findViewById(R.id.nutrition_ele_dish_name)
         val count: TextView = view.findViewById(R.id.nutrition_ele_dish_info)
-
+        init {
+            view.tag = this
+        }
     }
 }

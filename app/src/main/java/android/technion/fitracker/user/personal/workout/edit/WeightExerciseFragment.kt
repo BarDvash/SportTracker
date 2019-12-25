@@ -1,30 +1,23 @@
-package android.technion.fitracker.user.personal.workout
+package android.technion.fitracker.user.personal.workout.edit
 
 
 import android.content.Intent
 import android.os.Bundle
 import android.technion.fitracker.R
-import android.technion.fitracker.databinding.FragmentAerobicExerciseBinding
+import android.technion.fitracker.databinding.FragmentWeightExerciseBinding
 import android.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.lang.Exception
 
 
-class AerobicExerciseFragment : Fragment(), View.OnClickListener {
+class WeightExerciseFragment : Fragment(), View.OnClickListener {
     lateinit var addExercise: FloatingActionButton
-    lateinit var name: EditText
-    lateinit var duration: EditText
-    lateinit var speed: EditText
-    lateinit var intensity: EditText
-    lateinit var notes: EditText
     lateinit var viewModel: CreateNewExerciseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,33 +32,26 @@ class AerobicExerciseFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view =
-            DataBindingUtil.inflate<FragmentAerobicExerciseBinding>(inflater, R.layout.fragment_aerobic_exercise, container, false)
+            DataBindingUtil.inflate<FragmentWeightExerciseBinding>(inflater, R.layout.fragment_weight_exercise, container, false)
         view.myViewModel = viewModel
         return view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        name = view.findViewById(R.id.aerobic_name_input)
-        duration = view.findViewById(R.id.aerobic_duration_input)
-        speed = view.findViewById(R.id.aerobic_speed_input)
-        intensity = view.findViewById(R.id.aerobic_intensity_input)
-        notes = view.findViewById(R.id.aerobic_notes_input)
-        addExercise = view.findViewById(R.id.aerobic_done_fab)
+        addExercise = view.findViewById(R.id.weight_done_fab)
         addExercise.setOnClickListener(this)
-
     }
-
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.aerobic_done_fab -> {
-                if (name.text.toString() == "") {
+            R.id.weight_done_fab -> {
+                if (viewModel.weight_name.value.isNullOrEmpty()) {
                     //TODO : refactor me to underline the field
                     Toast.makeText(v.context, "You must fill at least Name field!", Toast.LENGTH_LONG).show()
                 } else {
                     val intent = createIntentWithData()
-                    activity?.setResult(CreateNewWorkoutActivity.ResultCodes.AEROBIC.ordinal, intent)
+                    activity?.setResult(CreateNewWorkoutActivity.ResultCodes.WEIGHT.ordinal, intent)
                     activity?.finish()
                 }
             }
@@ -73,14 +59,13 @@ class AerobicExerciseFragment : Fragment(), View.OnClickListener {
     }
 
     private fun createIntentWithData(): Intent {
-        val intent = Intent()
-        intent.putExtra("name", name.text.toString())
-        intent.putExtra("duration", duration.text.toString())
-        intent.putExtra("speed", speed.text.toString())
-        intent.putExtra("intensity", intensity.text.toString())
-        intent.putExtra("notes", notes.text.toString())
-        return intent
+        return Intent().apply {
+            putExtra("name", viewModel.weight_name.value)
+            putExtra("weight", viewModel.weight_weight.value)
+            putExtra("sets", viewModel.weight_sets.value)
+            putExtra("repetitions", viewModel.weight_repetitions.value)
+            putExtra("rest", viewModel.weight_rest.value)
+            putExtra("notes", viewModel.weight_notes.value)
+        }
     }
-
-
 }

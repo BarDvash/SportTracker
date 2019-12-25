@@ -27,9 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class SignInFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient

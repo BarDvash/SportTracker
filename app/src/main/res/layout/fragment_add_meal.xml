@@ -25,25 +25,38 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:subtitleTextColor="@android:color/white"
+        app:titleTextColor="@android:color/white"/>
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_meal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/name_for_the_new_meal"
-        android:inputType="textPersonName"
-        android:text="@={viewmodel.editTextMealName}"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_new_meal_toolbar"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/add_new_meal_toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/name_hint"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+
+            android:text="@={viewmodel.editTextMealName}" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/add_meal_recview"
@@ -51,7 +64,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_meal" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_on_add_new_meal"
@@ -66,14 +79,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_add_white_36dp" />
 
-    <Button
-        android:id="@+id/add_meal_done_button"
+    <TextView
+        android:id="@+id/meal_fragment_placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Done"
+        android:text="@string/empty_meal_list_hint"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_meal_recview" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_meal" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

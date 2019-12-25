@@ -49,9 +49,6 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         }
     }
 
-    public fun setOnItemClickListener(itemClickListener: View.OnClickListener) {
-        mOnItemClickListener = itemClickListener
-    }
 
     override fun getItemViewType(position: Int): Int {
         return if (myDataset[position].type.equals("Aerobic")) {
@@ -68,12 +65,12 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         val viewHolder: RecyclerView.ViewHolder?
         viewHolder = when (viewType) {
             HolderPosition.WEIGHT.ordinal -> {
-                val weightView = LayoutInflater.from(parent.context).inflate(R.layout.weight_workout_ele, parent, false)
+                val weightView = LayoutInflater.from(parent.context).inflate(R.layout.element_weight_workout, parent, false)
                 WeightViewHolder(weightView)
             }
             HolderPosition.AEROBIC.ordinal -> {
                 val aerobicView =
-                    LayoutInflater.from(parent.context).inflate(R.layout.aerobic_workout_ele, parent, false)
+                    LayoutInflater.from(parent.context).inflate(R.layout.element_aerobic_workout, parent, false)
                 AerobicViewHolder(aerobicView)
             }
             else -> null
@@ -112,6 +109,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
             (textView?.parent as LinearLayout).visibility = View.GONE
 
         } else {
+            (textView?.parent as LinearLayout).visibility = View.VISIBLE
             textView?.text = field
         }
     }

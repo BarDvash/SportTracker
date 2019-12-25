@@ -1,24 +1,23 @@
-package android.technion.fitracker.user.personal
+package android.technion.fitracker.user.personal.workout
 
 
 import android.os.Bundle
-import android.technion.fitracker.R
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-/**
- * A simple [Fragment] subclass.
- */
-class fragment_new_workout : Fragment() {
+import android.technion.fitracker.R
+
+
+class WorkoutSummaryScreen : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_new_workout, container, false)
+        return inflater.inflate(R.layout.fragment_workout_summary_screen, container, false)
     }
 
 

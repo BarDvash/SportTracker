@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".user.personal.workout.CreateNewWorkoutActivity">
+    tools:context=".user.personal.workout.edit.CreateNewWorkoutActivity">
+    <data>
+        <variable
+            name="newWorkoutViewModel"
+            type="android.technion.fitracker.models.workouts.CreateWorkoutViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/create_workout_toolbar"
@@ -12,14 +20,14 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
-            app:subtitleTextColor="@android:color/white"
-            app:titleTextColor="@android:color/white"
             android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/add_new_workout_menu"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:subtitleTextColor="@android:color/white"
+            app:titleTextColor="@android:color/white" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/create_workout_name_layout"
@@ -34,10 +42,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_workout_toolbar">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_workout_name_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/create_workout_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={newWorkoutViewModel.workout_name}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -52,10 +61,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_workout_name_layout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/create_workout_desc_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/create_workout_desc_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={newWorkoutViewModel.workout_desc}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -70,7 +80,7 @@
             app:layout_constraintTop_toTopOf="@+id/create_workout_toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/create_workout_recyclev"
+            android:id="@+id/create_workout_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -78,10 +88,11 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout"
+            app:layout_constraintVertical_bias="1.0"
             tools:itemCount="2"
-            tools:listitem="@layout/weight_workout_ele" />
+            tools:listitem="@layout/element_weight_workout" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/add_exercise_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,8 +101,11 @@
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_add_white_36dp"
+            android:text="Add exercise"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_add_white_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

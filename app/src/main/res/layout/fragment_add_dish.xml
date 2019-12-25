@@ -39,27 +39,31 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_add_dish_toolbar" />
 
-        <Button
-            android:id="@+id/add_dish_done_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Done"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_dish_recview" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/activity_add_dish_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            android:theme="@style/ToolbarTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:menu="@menu/dish_fragment_menu"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:subtitleTextColor="@android:color/white"
+            app:titleTextColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/dish_fragment_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_dish_list_hint"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/add_dish_recview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

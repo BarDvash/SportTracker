@@ -35,6 +35,8 @@
     <string name="database_read_error">Error occurred when trying to read from database, check your internet connection and try again</string>
     <string name="workout_name_field_hint">Workout Name</string>
     <string name="empty_workout_list_hint">There are no exercises added yet!\nUse + button to add first exercise.</string>
+    <string name="empty_dish_list_hint">There are no dishes added yet!\nUse + button to add first dish.</string>
+    <string name="empty_meal_list_hint">There are no meals added yet!\nUse + button to add first meal.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="duration_hint">Duration</string>
     <string name="speed_hint">Speed</string>
@@ -48,11 +50,18 @@
     <string name="aerobic_hint">Aerobic</string>
     <string name="description_hint">Description</string>
     <string name="save">Save</string>
-    <string name="add_meal_title">Add a new meal</string>
-    <string name="add_new_meal">Add a new meal</string>
-    <string name="name_for_the_new_meal">Name for the new meal</string>
+    <string name="add_meal_title">Add meal</string>
     <string name="add_new_dish">Add new dish</string>
     <string name="search_hint">Search users</string>
     <string name="search_users_tab">users</string>
     <string name="search_trainers_tab">trainers</string>
+    <string name="provide_name">Please provide a name for menu</string>
+    <string name="warning">Warning</string>
+    <string name="usaved_data_will_be_lost">All unsaved data will be lost, continue?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="name_shouldnt_be_empty">Name should not be empty</string>
+    <string name="add_dish">Add a new dish</string>
+    <string name="edit_meal">Edit the meal</string>
+    <string name="edit_dish">Edit the dish</string>
 </resources>

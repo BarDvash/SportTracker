@@ -9,9 +9,7 @@ import android.view.ViewGroup
 
 import android.technion.fitracker.R
 
-/**
- * A simple [Fragment] subclass.
- */
+
 class HomeScreenFragment : Fragment() {
 
     override fun onCreateView(

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import android.technion.fitracker.models.WorkoutFireStoreModel
+import android.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,21 +15,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 
-/**
- * A simple [Fragment] subclass.
- */
 class WorkoutsFragment : Fragment(), View.OnClickListener {
-    lateinit var mAuth: FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
 
     lateinit var firestore: FirebaseFirestore
-    lateinit var recyclerView: RecyclerView
-    lateinit var fab: FloatingActionButton
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var fab: ExtendedFloatingActionButton
     lateinit var adapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>
 
     override fun onCreateView(
@@ -47,6 +46,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val uid = mAuth.currentUser?.uid
+
         val query = firestore
                 .collection("regular_users")
                 .document(uid!!)
@@ -55,14 +55,21 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        adapter = WorkoutsFireStoreAdapter(options)
+        adapter = WorkoutsFireStoreAdapter(options).apply {
+            mOnItemClickListener = View.OnClickListener { v ->
+                val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
+                val snapshot: DocumentSnapshot = adapter.snapshots.getSnapshot(rvh.adapterPosition)
+                val workoutID = snapshot.id
+                val workoutStart = Intent(context!!, WorkoutStarter::class.java)
+                workoutStart.putExtra("workoutID", workoutID)
+                startActivity(workoutStart)
+            }
+        }
+
         recyclerView.adapter = adapter
         fab.setOnClickListener(this)
     }
 
-    fun createNewWorkout() {
-
-    }
 
     override fun onStart() {
         super.onStart()
@@ -73,6 +80,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         super.onStop()
         adapter.stopListening()
     }
+
 
     override fun onClick(v: View?) {
         when (v!!.id) {
