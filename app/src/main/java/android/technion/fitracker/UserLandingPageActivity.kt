@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class UserLandingPageActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    private  lateinit var name : String
-    private  lateinit var photo : String
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,34 +24,32 @@ class UserLandingPageActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.search_toolbar))
         firestore = FirebaseFirestore.getInstance()
 
-        //get the name and photoUrl
 
-        ////////////////////////////////
+        var bundle: Bundle? = intent.extras
+        var user_name = bundle!!.getString("user_name")
+        var photo_url = bundle!!.getString("photo_url")
+
+        var name: TextView = findViewById(R.id.search_result_landing_page_user_name)
+        var image: ImageView = findViewById(R.id.search_result_landing_page_user_avatar)
 
 
-        /**
-        if (auth.currentUser != null) {
-            val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
-            docRef.get().addOnSuccessListener {
-                    document ->
-                val user = document.toObject(User::class.java)
-                findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
-                if (!user?.photoURL.isNullOrEmpty()) {
-                    Glide.with(this) //1
-                            .load(user?.photoURL)
-                            .placeholder(R.drawable.user_avatar)
-                            .error(R.drawable.user_avatar)
-                            .skipMemoryCache(true) //2
-                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                            .transform(CircleCrop()) //4
-                            .into(findViewById(R.id.user_avatar))
-                }
-            }
+        name.text = user_name
+
+        if (!photo_url.isNullOrEmpty()) {
+            //Glide.with(activity).load(item.photoURL).into(holder.user_image)
+
+            Glide.with(this) //1
+                    .load(photo_url)
+                    .placeholder(R.drawable.user_avatar)
+                    .error(R.drawable.user_avatar)
+                    .skipMemoryCache(true) //2
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                    .transform(CircleCrop()) //4
+                    .into(image)
+
         }
-        **/
+
     }
-
-
 
 
 

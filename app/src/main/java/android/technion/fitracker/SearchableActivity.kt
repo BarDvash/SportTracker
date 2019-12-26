@@ -45,13 +45,6 @@ class SearchableActivity : AppCompatActivity() {
 
 
 
-
-        onItemClickListener = View.OnClickListener { _ ->
-            Toast.makeText(this, "hey" , Toast.LENGTH_LONG).show()
-            goToLandingPage()
-        }
-
-
         tab_layout = findViewById(R.id.tabLayout)
 
 
@@ -97,7 +90,6 @@ class SearchableActivity : AppCompatActivity() {
                 val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
                 adapter = SearchFireStoreAdapter(options,this)
-                (adapter as SearchFireStoreAdapter).setOnItemClickListener(onItemClickListener)
                 recyclerView.adapter = adapter
                 adapter.startListening()
             }
@@ -145,13 +137,7 @@ class SearchableActivity : AppCompatActivity() {
         }
     }
 
-    private fun goToLandingPage(){
-        val user_landing_page = Intent(applicationContext, UserLandingPageActivity::class.java)
-        user_landing_page.putExtra("search_query",current_search_query)
-        startActivity(user_landing_page)
-        finish()
 
-    }
 
 }
 
