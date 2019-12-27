@@ -2,12 +2,11 @@ package android.technion.fitracker.user.personal.workout
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.technion.fitracker.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-import android.technion.fitracker.R
+import androidx.fragment.app.Fragment
 
 
 class WorkoutSummaryScreen : Fragment() {

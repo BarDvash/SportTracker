@@ -91,10 +91,10 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         viewAdapter = ExerciseAdapter(exercises!!).apply {
             mOnItemClickListener = onItemClickListener
         }
-        if(!viewModel.workoutID.value.isNullOrEmpty()){
+        if (!viewModel.workoutID.value.isNullOrEmpty()) {
             extractWorkoutFromDB()
 
-        }else{
+        } else {
             supportActionBar?.title = "Create Workout"
         }
         recyclerView = findViewById<RecyclerView>(R.id.create_workout_recycler).apply {
@@ -113,6 +113,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         super.onResume()
         setEmptyPlaceholderState()
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.new_workout_save_item -> {
@@ -220,7 +221,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun safeExit() {
-        if(inEditMode()){
+        if (inEditMode()) {
             MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Unsaved data will be lost, continue?")
                     .setPositiveButton(
                         "Yes"
@@ -232,7 +233,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                         "No"
                     ) { _, _ ->
                     }.show()
-        }else {
+        } else {
             if (dataExist()) {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")
                         .setPositiveButton(
@@ -282,7 +283,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         val workout =
             WorkoutData(viewModel.workout_name.value, viewModel.workout_desc.value, viewModel.workout_exercises.value)
         if (uid != null) {
-            if(inEditMode()){
+            if (inEditMode()) {
                 firestore.collection("regular_users")
                         .document(uid).collection("workouts").document(viewModel.workoutID.value!!).set(workout)
                         .addOnSuccessListener { documentReference ->
@@ -291,7 +292,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                             this.finish()
                         }
                         .addOnFailureListener { e -> Log.w(FragmentActivity.VIBRATOR_SERVICE, "Error updating document document", e) }
-            }else {
+            } else {
                 firestore.collection("regular_users")
                         .document(uid).collection("workouts").add(workout)
                         .addOnSuccessListener { documentReference ->
@@ -303,7 +304,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun inEditMode(): Boolean{
+    private fun inEditMode(): Boolean {
         return !viewModel.workoutID.value.isNullOrEmpty()
     }
 
