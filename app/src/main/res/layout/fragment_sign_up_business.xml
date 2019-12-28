@@ -90,6 +90,8 @@
     <Button
         android:id="@+id/sign_up_business_regular_user_button"
         style="@style/log_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/register_regular_user_text"
         app:layout_constraintBottom_toBottomOf="parent"

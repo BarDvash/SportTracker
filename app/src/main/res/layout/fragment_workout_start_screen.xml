@@ -43,7 +43,7 @@
                 android:focusable="true"
                 android:text="Start workout"
                 android:textAllCaps="false"
-                app:icon="@drawable/ic_play_button"
+                app:icon="@drawable/ic_play_button_arrowhead"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

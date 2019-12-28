@@ -64,4 +64,5 @@
     <string name="add_dish">Add a new dish</string>
     <string name="edit_meal">Edit the meal</string>
     <string name="edit_dish">Edit the dish</string>
+    <string name="share">Share</string>
 </resources>

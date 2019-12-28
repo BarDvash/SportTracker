@@ -2,7 +2,8 @@ package android.technion.fitracker.models.exercise
 
 open class ExerciseBaseModel(
     val type: String? = null,
-    var done: Boolean = false
+    var done: Boolean = false,
+    var time_done: String? = null
 )  {
     fun downcastToWeight(): WeightExerciseModel?{
         if(type ?: type == "Weight"){

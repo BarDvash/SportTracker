@@ -74,12 +74,12 @@ class WorkoutStarter : AppCompatActivity() {
                         ) { _, _ ->
                         }.show()
             }
-            "WorkoutSummaryScreen" -> {
+            "fragment_workout_summary_screen" -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Discard workout result?")
                         .setPositiveButton(
                             "Yes"
                         ) { _, _ ->
-                            startFragmentAndPop(R.id.workoutStartScreen)
+                            this.finish()
                         }
                         .setNegativeButton(
                             "No"

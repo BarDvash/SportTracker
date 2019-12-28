@@ -2,6 +2,7 @@ package android.technion.fitracker.user.personal.workout
 
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.ExerciseCompactAdapter
 import android.technion.fitracker.databinding.FragmentWorkoutInProgressBinding
@@ -10,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Chronometer
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,15 +21,18 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class WorkoutInProgress : Fragment(), View.OnClickListener {
     private lateinit var viewModel: WorkoutStartViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var fab: ExtendedFloatingActionButton
+    private lateinit var finish_fab: FloatingActionButton
+    private lateinit var play_stop_fab: FloatingActionButton
     private lateinit var navController: NavController
     private lateinit var viewAdapter: ExerciseCompactAdapter
+    private lateinit var chrono: Chronometer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +72,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.VISIBLE
                         viewHolder.aerobicBodyLayout.visibility = View.GONE
                     }
-
+                    model.time_done = chrono.text.toString()
                 } else {
                     if (it.type == "Weight") {
                         (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.GONE
@@ -75,6 +81,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.GONE
                         viewHolder.aerobicBodyLayout.visibility = View.VISIBLE
                     }
+                    model.time_done = null
                 }
             }
 
@@ -89,9 +96,19 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
             this?.adapter = viewAdapter
 
         }!!
-        fab = activity?.findViewById(R.id.finish_workout_fab)!!
-        fab.setOnClickListener(this)
+        activity?.let {
+            chrono = it.findViewById(R.id.workout_stopwatch)
+            finish_fab = it.findViewById(R.id.finish_fab)
+            play_stop_fab = it.findViewById(R.id.play_stop_fab)
+        }
+        finish_fab.setOnClickListener(this)
+        play_stop_fab.setOnClickListener(this)
+
         viewAdapter.notifyDataSetChanged()
+        viewModel.stopwatch = 0
+        chrono.base = SystemClock.elapsedRealtime()
+        chrono.start()
+        viewModel.started = true
     }
 
     private fun startFragmentAndPop(id: Int) {
@@ -109,7 +126,62 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
     }
 
 
+    private fun finishedAllExercises(): Boolean {
+        viewModel.workoutExercises.value?.let {
+            for (exercise in it) {
+                if (!exercise.done) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private fun stopChrono(){
+        viewModel.stopwatch = SystemClock.elapsedRealtime() - chrono.base
+        chrono.stop();
+    }
+
+    private fun  startChrono(){
+        chrono.setBase(SystemClock.elapsedRealtime() - viewModel.stopwatch);
+        chrono.start();
+    }
+
     override fun onClick(v: View?) {
-        //TODO: to result, stop workout, stop timer,
+        when (v?.id) {
+            R.id.play_stop_fab -> {
+                if (viewModel.started) {
+                    play_stop_fab.setImageResource(R.drawable.ic_play_button_arrowhead)
+                    stopChrono()
+                } else {
+                    play_stop_fab.setImageResource(R.drawable.ic_pause_button)
+                    startChrono()
+                }
+                viewModel.started = !viewModel.started
+            }
+            R.id.finish_fab -> {
+                if (finishedAllExercises()) {
+                    stopChrono()
+                    viewModel.timeElapsed.value = chrono.text.toString()
+                    startFragmentAndPop(R.id.workoutSummaryScreen)
+                } else {
+                    MaterialAlertDialogBuilder(activity)
+                            .setTitle("Warning")
+                            .setMessage("You haven't finished all exercises, finish the workout anyway?")
+                            .setPositiveButton(
+                                "Yes"
+                            ) { _, _ ->
+                                viewModel.started = false
+                                stopChrono()
+                                viewModel.timeElapsed.value = chrono.text.toString()
+                                startFragmentAndPop(R.id.workoutSummaryScreen)
+                            }
+                            .setNegativeButton(
+                                "No"
+                            ) { _, _ ->
+                            }.show()
+                }
+            }
+        }
     }
 }

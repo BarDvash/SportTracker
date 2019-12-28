@@ -13,6 +13,7 @@ import android.technion.fitracker.models.workouts.WorkoutStartViewModel
 import android.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 import android.util.Log
 import android.view.*
+import android.widget.Chronometer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -35,6 +36,8 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
     private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var navController: NavController
     private lateinit var viewAdapter: ExerciseAdapter
+
+
 
     lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
@@ -67,11 +70,10 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
         viewManager = LinearLayoutManager(activity)
         val exercises = viewModel.workoutExercises.value
         viewAdapter = ExerciseAdapter(exercises!!)
-        recyclerView = activity?.findViewById<RecyclerView>(R.id.workouts_rec_view).apply {
-            this?.setHasFixedSize(true)
-            this?.layoutManager = viewManager
-            this?.adapter = viewAdapter
-
+        recyclerView = activity?.findViewById<RecyclerView>(R.id.workouts_rec_view)?.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
         }!!
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
