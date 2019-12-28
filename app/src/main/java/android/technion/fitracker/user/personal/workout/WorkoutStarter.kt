@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class WorkoutStarter : AppCompatActivity() {
@@ -37,7 +38,8 @@ class WorkoutStarter : AppCompatActivity() {
         when (resultCode) {
             ResultCodes.EDIT.ordinal -> {
                 viewModel.workoutExercises.value?.clear()
-                val navHostFragment: NavHostFragment? = supportFragmentManager.findFragmentById(R.id.workout_starter_nav_host) as NavHostFragment?
+                val navHostFragment: NavHostFragment? =
+                    supportFragmentManager.findFragmentById(R.id.workout_starter_nav_host) as NavHostFragment?
                 (navHostFragment!!.childFragmentManager.fragments[0] as WorkoutStartScreen).extractWorkoutFromDB(this)
             }
             ResultCodes.DELETE.ordinal -> {
@@ -50,5 +52,50 @@ class WorkoutStarter : AppCompatActivity() {
         }
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        backHandler()
+        return true
+    }
 
+    private fun backHandler() {
+        when (navController.currentDestination?.label) {
+            "WorkoutStartScreen" -> {
+                finish()
+            }
+            "WorkoutInProgress" -> {
+                MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Stop the workout?")
+                        .setPositiveButton(
+                            "Yes"
+                        ) { _, _ ->
+                            startFragmentAndPop(R.id.workoutStartScreen)
+                        }
+                        .setNegativeButton(
+                            "No"
+                        ) { _, _ ->
+                        }.show()
+            }
+            "fragment_workout_summary_screen" -> {
+                MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Discard workout result?")
+                        .setPositiveButton(
+                            "Yes"
+                        ) { _, _ ->
+                            this.finish()
+                        }
+                        .setNegativeButton(
+                            "No"
+                        ) { _, _ ->
+                        }.show()
+            }
+
+        }
+    }
+
+    private fun startFragmentAndPop(id: Int) {
+        navController.popBackStack()
+        navController.navigate(id)
+    }
+
+    override fun onBackPressed() {
+        backHandler()
+    }
 }

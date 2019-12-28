@@ -11,9 +11,15 @@ class WorkoutStartViewModel : ViewModel(){
     @Bindable
     val workoutName = MutableLiveData<String>()
     @Bindable
-    val stopwatch = MutableLiveData<Int>()
+    val timeElapsed = MutableLiveData<String>()
+    @Bindable
+    val workoutComment = MutableLiveData<String>()
+
+    var stopwatch :Long = 0
     @Bindable
     val comment = MutableLiveData<String>()
+
+    var started = false
 
     val workoutExercises = MutableLiveData<ArrayList<ExerciseBaseModel>>()
     init {
@@ -21,7 +27,7 @@ class WorkoutStartViewModel : ViewModel(){
     }
     val ratings = MutableLiveData<Map<String,Int>>()
     init{
-        mapOf<String,String>()
+        mapOf<String,Int>()
     }
     val times = MutableLiveData<Map<String,String>>()
     init{

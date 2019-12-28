@@ -13,28 +13,31 @@ import android.technion.fitracker.models.workouts.WorkoutStartViewModel
 import android.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 import android.util.Log
 import android.view.*
+import android.widget.Chronometer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_workout_in_progress.*
 
 
 class WorkoutStartScreen : Fragment(), View.OnClickListener {
     private lateinit var viewModel: WorkoutStartViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var viewAdapter: ExerciseAdapter
+    private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var navController: NavController
+    private lateinit var viewAdapter: ExerciseAdapter
+
+
 
     lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
@@ -43,7 +46,7 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
             ViewModelProviders.of(this)[WorkoutStartViewModel::class.java]
-        } ?: throw Exception("Invalid Activity WorkoutStartScreen aerobic fragment")
+        } ?: throw Exception("Invalid  WorkoutStartScreen fragment")
         setHasOptionsMenu(true)
     }
 
@@ -54,12 +57,12 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
         val view =
             DataBindingUtil.inflate<FragmentWorkoutStartScreenBinding>(inflater, R.layout.fragment_workout_start_screen, container, false)
         view.viewModel = viewModel
-
         return view.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
         val appCompatActivity = (activity as AppCompatActivity)
         appCompatActivity.setSupportActionBar(view.findViewById(R.id.start_workout_toolbar))
         appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -67,11 +70,10 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
         viewManager = LinearLayoutManager(activity)
         val exercises = viewModel.workoutExercises.value
         viewAdapter = ExerciseAdapter(exercises!!)
-        recyclerView = activity?.findViewById<RecyclerView>(R.id.workouts_rec_view).apply {
-            this?.setHasFixedSize(true)
-            this?.layoutManager = viewManager
-            this?.adapter = viewAdapter
-
+        recyclerView = activity?.findViewById<RecyclerView>(R.id.workouts_rec_view)?.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
         }!!
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -135,11 +137,11 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.start_workout_edit_item ->{
-                val intent = Intent(activity,CreateNewWorkoutActivity::class.java)
+        when (item.itemId) {
+            R.id.start_workout_edit_item -> {
+                val intent = Intent(activity, CreateNewWorkoutActivity::class.java)
                 intent.putExtra("workoutID", viewModel.workoutID.value)
-                startActivityForResult(intent,0)
+                startActivityForResult(intent, 0)
             }
             R.id.start_workout_delete_item -> {
                 MaterialAlertDialogBuilder(activity).setTitle("Warning").setMessage("Data will be lost, continue?")
@@ -162,8 +164,14 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
         return true
     }
 
+    private fun startFragmentAndPop(id: Int) {
+        navController.popBackStack()
+        navController.navigate(id)
+    }
+
     private fun deleteWorkoutFromDB() {
-        firestore.collection("regular_users").document(mAuth.currentUser?.uid!!).collection("workouts").document(viewModel.workoutID.value!!).delete().addOnSuccessListener {
+        firestore.collection("regular_users").document(mAuth.currentUser?.uid!!).collection("workouts")
+                .document(viewModel.workoutID.value!!).delete().addOnSuccessListener {
             Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot deleted with ID: " + viewModel.workoutID.value)
         }
                 .addOnFailureListener { e -> Log.w(FragmentActivity.VIBRATOR_SERVICE, "Error deleting document", e) }
@@ -172,7 +180,7 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.start_workout_fab -> {
-                //TODO
+                startFragmentAndPop(R.id.workoutInProgress)
             }
             //Back button
             else -> {
@@ -182,20 +190,4 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
     }
 
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        super.onCreateOptionsMenu(menu)
-//        when (navController.currentDestination?.label) {
-//            "fragment_workout_start_screen" -> {
-//                supportActionBar?.title = viewModel.workoutName.value
-//                menuInflater.inflate(R.menu.start_workout_menu, menu)
-//            }
-//            "fragment_workout_in_progress" -> {
-//                supportActionBar?.title = viewModel.workoutName.value
-//            }
-//            "fragment_workout_summary_screen" -> {
-//                supportActionBar?.title = "Summary"
-//            }
-//        }
-//        return true
-//    }
 }

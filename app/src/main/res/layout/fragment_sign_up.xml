@@ -65,13 +65,14 @@
 
     <Button
         android:id="@+id/sign_up_fragment_trainer_sign_up_button"
+        style="@style/log_screen_btn"
+        android:layout_width="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="@string/register_business_user_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/log_screen_btn"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/sign_up_fragment_sign_up_button"
