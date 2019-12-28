@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_on_add_dish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,9 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_add_white_36dp"
+            android:text="Add dish option"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_add_white_36dp"
             android:focusable="true" />
 
         <androidx.recyclerview.widget.RecyclerView

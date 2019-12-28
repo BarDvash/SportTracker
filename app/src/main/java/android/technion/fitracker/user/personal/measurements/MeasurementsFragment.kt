@@ -21,6 +21,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -84,7 +85,7 @@ class MeasurementsFragment : Fragment() {
             startActivity(activity)
             true
         }
-        view.findViewById<FloatingActionButton>(R.id.measurements_fab).setOnClickListener {
+        view.findViewById<ExtendedFloatingActionButton>(R.id.measurements_fab).setOnClickListener {
             (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment,false,true,true)
         }
         //TODO check for placeholder visibility

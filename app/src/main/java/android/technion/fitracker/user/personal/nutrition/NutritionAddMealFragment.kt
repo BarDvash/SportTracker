@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -62,7 +63,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val fab = view.findViewById<FloatingActionButton>(R.id.fab_on_add_new_meal)
+        val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_on_add_new_meal)
         placeHolder = view.findViewById(R.id.meal_fragment_placeholder)
         fab.setOnClickListener(this)
         val rootActivity = (activity as NutritionAddMealActivity)

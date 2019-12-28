@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NutritionAddDishFragment : Fragment(), View.OnClickListener {
@@ -61,7 +62,7 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
         navController = Navigation.findNavController(view)
 
         placeHolder = view.findViewById(R.id.dish_fragment_placeholder)
-        val fab = view.findViewById<FloatingActionButton>(R.id.fab_on_add_dish)
+        val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_on_add_dish)
         fab.setOnClickListener(this)
         val toolBarView = view.findViewById<androidx.appcompat.widget.Toolbar>(R.id.activity_add_dish_toolbar)
         val rootActivity = (activity as AppCompatActivity)

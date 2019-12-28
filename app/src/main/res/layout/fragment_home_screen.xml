@@ -51,6 +51,7 @@
                     android:id="@+id/last_workouts_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="4dp"
                     tools:listitem="@layout/element_home_last_workouts" />
 
             </LinearLayout>
