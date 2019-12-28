@@ -40,8 +40,8 @@
                 android:layout_height="32dp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
-                android:contentDescription="Done Image"
-                android:src="@drawable/ic_tick_inside_circle"
+                android:contentDescription="@string/done_image"
+                app:srcCompat="@drawable/ic_tick_inside_circle"
                 android:tint="@color/primaryColor"
                 android:visibility="invisible" />
         </LinearLayout>
@@ -87,7 +87,7 @@
                         android:layout_marginEnd="4dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="0"
-                        android:text="Weight:" />
+                        android:text="@string/weight_" />
 
                     <TextView
                         android:id="@+id/weight_element_weight"
@@ -118,7 +118,7 @@
                             android:layout_marginEnd="4dp"
                             android:layout_marginRight="4dp"
                             android:layout_weight="0"
-                            android:text="Sets:"
+                            android:text="@string/sets_"
                             android:visibility="visible" />
 
                         <TextView
@@ -156,7 +156,7 @@
                             android:layout_marginEnd="4dp"
                             android:layout_marginRight="4dp"
                             android:layout_weight="0"
-                            android:text="Repetitions:" />
+                            android:text="@string/repetitions_" />
 
                         <TextView
                             android:id="@+id/weight_element_repetitions"
@@ -191,7 +191,7 @@
                             android:layout_marginEnd="4dp"
                             android:layout_marginRight="4dp"
                             android:layout_weight="0"
-                            android:text="Rest:" />
+                            android:text="@string/rest_" />
 
                         <TextView
                             android:id="@+id/weight_element_rest"

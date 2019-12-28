@@ -36,15 +36,16 @@
 
                     <TextView
                         android:id="@+id/textView15"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/primaryColor"
                         android:paddingLeft="8dp"
-                        android:text="Last workouts:"
+                        android:text="@string/last_workouts"
                         android:textColor="@android:color/white"
                         android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:paddingStart="8dp" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

@@ -27,7 +27,7 @@
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:text="Add measure"
+            android:text="@string/add_measure"
             android:textAllCaps="false"
             app:icon="@drawable/ic_add_white_36dp"
             app:layout_constraintBottom_toBottomOf="parent"

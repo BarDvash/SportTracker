@@ -41,7 +41,7 @@
                 android:layout_marginBottom="16dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="Start workout"
+                android:text="@string/start_workout"
                 android:textAllCaps="false"
                 app:icon="@drawable/ic_play_button_arrowhead"
                 app:layout_constraintBottom_toBottomOf="parent"

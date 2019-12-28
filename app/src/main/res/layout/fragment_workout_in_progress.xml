@@ -100,7 +100,7 @@
                     android:id="@+id/play_stop_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_pause_button"
+                    app:srcCompat="@drawable/ic_pause_button"
                     app:layout_anchor="@id/bottom_app_bar" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -127,7 +127,7 @@
                     android:id="@+id/finish_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_racing_flag"
+                    app:srcCompat="@drawable/ic_racing_flag"
                     app:layout_anchor="@id/bottom_app_bar_2" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

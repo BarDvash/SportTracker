@@ -40,7 +40,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Duration:" />
+                android:text="@string/duration_" />
 
             <TextView
                 android:id="@+id/aerobic_element_duration"
@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="Duration: "
                 tools:text="25min" />
         </LinearLayout>
 
@@ -64,7 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Speed:" />
+                android:text="@string/speed_" />
 
             <TextView
                 android:id="@+id/aerobic_element_speed"
@@ -72,7 +71,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="Speed: "
                 tools:text="6min/km" />
         </LinearLayout>
 
@@ -88,7 +86,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Intensity:" />
+                android:text="@string/intensity_" />
 
             <TextView
                 android:id="@+id/aerobic_element_intensity"
@@ -96,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="Intensity: "
                 tools:text="12" />
         </LinearLayout>
 
@@ -112,7 +109,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Notes:" />
+                android:text="@string/notes_" />
 
             <TextView
                 android:id="@+id/aerobic_element_notes"
@@ -120,7 +117,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="Notes: "
                 tools:text="Drink 2lt water after." />
         </LinearLayout>
 

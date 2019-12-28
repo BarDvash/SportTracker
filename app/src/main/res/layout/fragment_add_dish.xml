@@ -27,7 +27,7 @@
             android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Add dish option"
+            android:text="@string/add_dish_option"
             android:textAllCaps="false"
             app:icon="@drawable/ic_add_white_36dp"
             android:focusable="true" />

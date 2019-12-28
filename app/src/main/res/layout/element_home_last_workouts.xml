@@ -38,7 +38,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_weight="1"
-        android:contentDescription="recent_workout_icon"
+        android:contentDescription="@string/recent_workout_icon"
         android:padding="2dp"
         app:srcCompat="@drawable/ic_training" />
 

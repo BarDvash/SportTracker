@@ -63,7 +63,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Sets:" />
+                android:text="@string/sets_" />
 
             <TextView
                 android:id="@+id/weight_element_sets"
@@ -86,7 +86,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Repetitions:" />
+                android:text="@string/repetitions_" />
 
             <TextView
                 android:id="@+id/weight_element_repetitions"
@@ -110,7 +110,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Rest:" />
+                android:text="@string/rest_" />
 
             <TextView
                 android:id="@+id/weight_element_rest"
@@ -133,7 +133,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="0"
-                android:text="Notes:" />
+                android:text="@string/notes_" />
 
             <TextView
                 android:id="@+id/weight_element_notes"

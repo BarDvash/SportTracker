@@ -38,8 +38,8 @@
                 android:layout_height="32dp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
-                android:contentDescription="Done Image"
-                android:src="@drawable/ic_tick_inside_circle"
+                android:contentDescription="@string/done_image"
+                app:srcCompat="@drawable/ic_tick_inside_circle"
                 android:tint="@color/primaryColor"
                 android:visibility="invisible" />
         </LinearLayout>
@@ -86,7 +86,7 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="4dp"
                         android:layout_weight="0"
-                        android:text="Duration:" />
+                        android:text="@string/duration_" />
 
                     <TextView
                         android:id="@+id/aerobic_element_duration"
@@ -118,7 +118,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="4dp"
                             android:layout_weight="0"
-                            android:text="Speed:" />
+                            android:text="speed_" />
 
                         <TextView
                             android:id="@+id/aerobic_element_speed"
@@ -126,7 +126,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_weight="0"
-                            android:text="Speed: "
                             tools:text="6min/km" />
 
                     </LinearLayout>
@@ -154,7 +153,7 @@
                             android:layout_marginEnd="8dp"
                             android:layout_marginRight="4dp"
                             android:layout_weight="0"
-                            android:text="Intensity:" />
+                            android:text="@string/intensity_" />
 
                         <TextView
                             android:id="@+id/aerobic_element_intensity"
@@ -162,7 +161,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_weight="1"
-                            android:text="Intensity: "
                             tools:text="12" />
                     </LinearLayout>
 
