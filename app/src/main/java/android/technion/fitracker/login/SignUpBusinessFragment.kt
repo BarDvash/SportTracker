@@ -40,21 +40,6 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
         auth = FirebaseAuth.getInstance()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        if (auth.currentUser != null) {
-            val docRef = firestore.collection("business_users").document(auth.currentUser!!.uid)
-            docRef.get().addOnSuccessListener {
-                    document ->
-                val user = document.toObject(User::class.java)
-                startBusinessUserActivity() }.addOnFailureListener {
-                Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,15 +102,9 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
 
 
     private fun startBusinessUserActivity() {
-        val userHome = Intent(context!!, FlashSignInActivity::class.java)
-        userHome.putExtra("user_type","business")
-        startActivity(userHome)
-        activity?.finish()
-        /**
         val userHome = Intent(context!!, BusinessUserActivity::class.java)
         startActivity(userHome)
         activity?.finish()
-         **/
     }
 
 }

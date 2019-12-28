@@ -76,30 +76,6 @@ class SignInFragment : Fragment(), View.OnClickListener {
     }
 
 
-    override fun onStart() {
-        super.onStart()
-
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        if (auth.currentUser != null) {
-            var regular_users_doc = firestore.collection("regular_users").document(auth.currentUser!!.uid)
-            var business_users_doc = firestore.collection("business_users").document(auth.currentUser!!.uid)
-
-            regular_users_doc.get().addOnSuccessListener {
-                if (it.exists()){
-                    startUserActivity()
-                }
-                else
-                {
-                    business_users_doc.get().addOnSuccessListener {
-                        startBusinessUserActivity()
-                    }.addOnFailureListener {
-                        Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
 
     private fun signIn() {
         signInGoogleButton.isEnabled = false
@@ -202,30 +178,18 @@ class SignInFragment : Fragment(), View.OnClickListener {
     private fun startUserActivity() {
 
 
-        val userHome = Intent(context!!, FlashSignInActivity::class.java)
-        userHome.putExtra("user_type","regular")
-        startActivity(userHome)
-        activity?.finish()
-
-        //start user activity
-        /**
         val userHome = Intent(context!!, UserActivity::class.java)
         startActivity(userHome)
         activity?.finish()
-        **/
+
     }
 
     private fun startBusinessUserActivity() {
 
-        val userHome = Intent(context!!, FlashSignInActivity::class.java)
-        userHome.putExtra("user_type","business")
-        startActivity(userHome)
-        activity?.finish()
-        /**
         val userHome = Intent(context!!, BusinessUserActivity::class.java)
         startActivity(userHome)
         activity?.finish()
-        **/
+
     }
 
     private fun firebaseAuthWithEmail() {

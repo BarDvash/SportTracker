@@ -122,16 +122,9 @@ class SignUpFragment : Fragment(), View.OnClickListener {
 
     private fun startUserActivity() {
 
-        val userHome = Intent(context!!, FlashSignInActivity::class.java)
-        userHome.putExtra("user_type","regular")
-        startActivity(userHome)
-        activity?.finish()
-
-        //start user activity
-        /**
         val userHome = Intent(context!!, UserActivity::class.java)
         startActivity(userHome)
         activity?.finish()
-         **/
+
     }
 }
