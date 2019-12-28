@@ -38,6 +38,7 @@
     <string name="empty_dish_list_hint">There are no options added yet!\nUse + button to add first dish option.</string>
     <string name="empty_meal_list_hint">There are no dishes added yet!\nUse + button to add first dish.</string>
     <string name="empty_measurements_list_hint">There are no measurements added yet!\nUse + button to add first measurement.</string>
+    <string name="empty_nutrition_list_hint">There are no nutrition menus added yet!\nUse + button to add first nutrition menu.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="duration_hint">Duration</string>
     <string name="speed_hint">Speed</string>

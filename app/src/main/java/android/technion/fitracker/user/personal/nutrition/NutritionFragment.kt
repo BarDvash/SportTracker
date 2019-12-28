@@ -2,6 +2,7 @@ package android.technion.fitracker.user.personal.nutrition
 
 
 import android.content.Intent
+import android.database.DataSetObserver
 import android.os.Bundle
 import android.technion.fitracker.R
 import android.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
@@ -34,6 +35,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var nutrition_recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
     lateinit var fab: ExtendedFloatingActionButton
+    public lateinit var placeholder: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +54,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         nutrition_recyclerView = view.findViewById(R.id.nutrition_rec_view)
         nutrition_recyclerView.setHasFixedSize(true)
         nutrition_recyclerView.layoutManager = LinearLayoutManager(context)
+        placeholder = view.findViewById(R.id.nutrition_placeholder)
         val uid = mAuth.currentUser?.uid
         val query =
             firestore.collection("regular_users").document(uid!!).collection("meals")
@@ -76,7 +79,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
             }
 
         }
-        adapter = NutritionFireStoreAdapter(options, onClickListener)
+        adapter = NutritionFireStoreAdapter(options, onClickListener,this)
         nutrition_recyclerView.adapter = adapter
     }
 

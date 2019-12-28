@@ -6,6 +6,7 @@ import android.technion.fitracker.models.exercise.AerobicExerciseModel
 import android.technion.fitracker.models.exercise.ExerciseBaseModel
 import android.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import android.technion.fitracker.user.Meal
+import android.technion.fitracker.user.personal.nutrition.NutritionFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,12 +25,22 @@ import java.lang.StringBuilder
 
 class NutritionFireStoreAdapter(
     options: FirestoreRecyclerOptions<NutritionFireStoreModel>,
-    val onItemClickListener: View.OnClickListener
+    val onItemClickListener: View.OnClickListener,
+    val nutritionFragment: NutritionFragment
 ) :
         FirestoreRecyclerAdapter<NutritionFireStoreModel, ViewHolder>(options) {
 
     private lateinit var firestore: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
+
+    override fun onDataChanged() {
+        super.onDataChanged()
+        if (itemCount <= 0) {
+            nutritionFragment.placeholder.visibility = View.VISIBLE
+        } else {
+            nutritionFragment.placeholder.visibility = View.GONE
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

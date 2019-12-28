@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/nutrition_title"
-        style="@style/user_fragment_title"
-        android:text="@string/nutrition_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+            android:id="@+id/nutrition_title"
+            style="@style/user_fragment_title"
+            android:text="@string/nutrition_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/nutrition_rec_view"
@@ -43,6 +43,16 @@
             app:icon="@drawable/ic_add_white_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/nutrition_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_nutrition_list_hint"
+            app:layout_constraintBottom_toBottomOf="@+id/nutrition_rec_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nutrition_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
