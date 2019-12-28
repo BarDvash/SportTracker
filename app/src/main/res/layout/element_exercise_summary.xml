@@ -17,104 +17,43 @@
         <TextView
             android:id="@+id/workout_name"
             android:layout_width="0dp"
-            android:layout_height="21dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/exercise_time_done"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_weight="5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Exercise Name" />
 
         <TextView
+            android:id="@+id/textView11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="end"
+            android:text="Finished at:"
+            app:layout_constraintBottom_toBottomOf="@+id/workout_name"
+            app:layout_constraintEnd_toStartOf="@+id/exercise_time_done"
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintTop_toTopOf="@+id/workout_name" />
+
+        <TextView
             android:id="@+id/exercise_time_done"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="@+id/workout_name"
-            app:layout_constraintEnd_toStartOf="@+id/exercise_rating_sad"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintStart_toEndOf="@+id/workout_name"
-            app:layout_constraintTop_toTopOf="@+id/workout_name"
-            app:layout_constraintVertical_bias="0.0"
-            tools:text="20:05" />
-
-        <ImageView
-            android:id="@+id/exercise_rating_sad"
-            android:layout_width="35dp"
-            android:layout_height="23dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:clickable="true"
-            android:contentDescription="Rating Sad"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_time_done"
-            app:layout_constraintEnd_toStartOf="@+id/exercise_rating_neutral"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/exercise_time_done"
-            app:layout_constraintTop_toTopOf="@+id/exercise_time_done"
-            app:srcCompat="@drawable/ic_sad" />
-
-        <ImageView
-            android:id="@+id/exercise_rating_neutral"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_rating_sad"
-            app:layout_constraintEnd_toStartOf="@+id/exercise_rating_happy"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/exercise_rating_sad"
-            app:layout_constraintTop_toTopOf="@+id/exercise_rating_sad"
-            app:srcCompat="@drawable/ic_indifferent"
-            android:contentDescription="Rating Neutral" />
-
-        <ImageView
-            android:id="@+id/exercise_rating_happy"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:tint="#00FF0000"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_rating_neutral"
-            app:layout_constraintEnd_toStartOf="@+id/exercise_rating_cool"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/exercise_rating_neutral"
-            app:layout_constraintTop_toTopOf="@+id/exercise_rating_neutral"
-            app:srcCompat="@drawable/ic_happiness"
-            android:contentDescription="Rating Happy" />
-
-        <ImageView
-            android:id="@+id/exercise_rating_cool"
-            android:layout_width="28dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:clickable="true"
-            android:contentDescription="Rating Cool"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="@+id/exercise_rating_happy"
+            android:gravity="end"
+            app:layout_constraintBottom_toBottomOf="@+id/textView11"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@+id/exercise_rating_happy"
-            app:layout_constraintTop_toTopOf="@+id/exercise_rating_happy"
-            app:srcCompat="@drawable/ic_cool" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintHorizontal_weight="3"
+            app:layout_constraintTop_toTopOf="@+id/textView11"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="1:20:05" />
+
+    zzzz</androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

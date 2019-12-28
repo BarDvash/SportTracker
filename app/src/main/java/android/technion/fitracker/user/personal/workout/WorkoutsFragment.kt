@@ -26,8 +26,8 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
     private lateinit var mAuth: FirebaseAuth
 
     lateinit var firestore: FirebaseFirestore
-    private lateinit var recyclerView: RecyclerView
     private lateinit var fab: ExtendedFloatingActionButton
+    private lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>
 
     override fun onCreateView(
@@ -39,9 +39,9 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fab = view.findViewById<ExtendedFloatingActionButton>(R.id.workouts_fab)
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-        fab = view.findViewById(R.id.workouts_fab)
         recyclerView = view.findViewById(R.id.workouts_rec_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)

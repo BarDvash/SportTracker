@@ -19,16 +19,15 @@ class WorkoutStartViewModel : ViewModel(){
     @Bindable
     val comment = MutableLiveData<String>()
 
-    var started = false
 
+    var workoutRate: Int? = null
+
+    var started = false
     val workoutExercises = MutableLiveData<ArrayList<ExerciseBaseModel>>()
     init {
         workoutExercises.value = arrayListOf()
     }
-    val ratings = MutableLiveData<Map<String,Int>>()
-    init{
-        mapOf<String,Int>()
-    }
+
     val times = MutableLiveData<Map<String,String>>()
     init{
         mapOf<String,String>()
