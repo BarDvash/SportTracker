@@ -29,4 +29,8 @@
         android:name="android.technion.fitracker.user.personal.workout.WorkoutsFragment"
         android:label="fragment_workouts"
         tools:layout="@layout/fragment_user_workouts" />
+    <fragment
+        android:id="@+id/measurementsAddFragment"
+        android:name="android.technion.fitracker.user.personal.measurements.MeasurementsAddFragment"
+        android:label="MeasurementsAddFragment" />
 </navigation>

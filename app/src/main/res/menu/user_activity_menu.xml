@@ -10,7 +10,18 @@
 
     <item
         android:id="@+id/search_from_personal"
-        android:icon="@drawable/search"
+        android:icon="@android:drawable/ic_menu_search"
         android:title="@string/search_hint"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/measurements_history"
+        android:title="@string/history"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/measurements_add"
+        android:title="@string/add"
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>

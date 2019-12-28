@@ -6,11 +6,16 @@ import android.os.Handler
 import android.technion.fitracker.R
 import android.technion.fitracker.login.FlashSignInActivity
 import android.technion.fitracker.login.LoginActivity
+import android.technion.fitracker.models.UserViewModel
+import android.technion.fitracker.models.nutrition.AddMealViewModel
 import android.technion.fitracker.user.User
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
@@ -29,12 +34,16 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var historyAction: MenuItem
+    lateinit var addAction: MenuItem
+    lateinit var viewModel: ViewModel
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this)[UserViewModel::class.java]
         setContentView(R.layout.activity_user)
         setSupportActionBar(findViewById(R.id.user_toolbar))
         navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
@@ -71,6 +80,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.user_activity_menu, menu)
+        historyAction = menu?.findItem(R.id.measurements_history)!!
+        addAction = menu.findItem(R.id.measurements_add)
         return true
 
     }
@@ -79,10 +90,18 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.action_home -> startFragmentAndPop(R.id.homeScreenFragment)
-            R.id.action_workouts -> startFragmentAndPop(R.id.workoutsFragment)
-            R.id.action_nutrition -> startFragmentAndPop(R.id.nutritionFragment)
-            R.id.action_measurements -> startFragmentAndPop(R.id.measurementsFragment)
+            R.id.action_home -> {
+                startFragmentAndPop(R.id.homeScreenFragment)
+            }
+            R.id.action_workouts -> {
+                startFragmentAndPop(R.id.workoutsFragment)
+            }
+            R.id.action_nutrition -> {
+                startFragmentAndPop(R.id.nutritionFragment)
+            }
+            R.id.action_measurements -> {
+                startFragmentAndPop(R.id.measurementsFragment,true)
+            }
         }
         return true
     }
@@ -117,8 +136,35 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         finish()
     }
 
-    private fun startFragmentAndPop(id: Int) {
-        navController.popBackStack()
+    private fun startFragmentAndPop(id: Int, historyActionVisible:Boolean = false, addActionVisible:Boolean = false, arrowBackVisible:Boolean = false) {
+        userActivityPopBackStack(arrowBackVisible, addActionVisible, historyActionVisible)
         navController.navigate(id)
+    }
+
+    public fun userActivityPopBackStack(
+        arrowBackVisible: Boolean,
+        addActionVisible: Boolean,
+        historyActionVisible: Boolean
+    ) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(arrowBackVisible)
+        addAction.isVisible = addActionVisible
+        historyAction.isVisible = historyActionVisible
+        navController.popBackStack()
+    }
+
+    public fun userActivityStartFragment(id: Int, historyActionVisible:Boolean = false, addActionVisible:Boolean = false, arrowBackVisible:Boolean = false) {
+        supportActionBar?.setDisplayHomeAsUpEnabled(arrowBackVisible)
+        addAction.isVisible = addActionVisible
+        historyAction.isVisible = historyActionVisible
+        navController.navigate(id)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        userActivityPopBackStack(false,false,true)
+        return true
+    }
+
+    override fun onBackPressed() {
+        onSupportNavigateUp()
     }
 }
