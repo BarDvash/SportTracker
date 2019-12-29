@@ -4,6 +4,8 @@ import android.technion.fitracker.R
 
 import android.technion.fitracker.models.WorkoutFireStoreModel
 import android.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
+import android.technion.fitracker.user.personal.nutrition.NutritionFragment
+import android.technion.fitracker.user.personal.workout.WorkoutsFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>) :
+class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>,val workoutsFragment: WorkoutsFragment) :
         FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
     var mOnItemClickListener: View.OnClickListener? = null
@@ -34,6 +36,16 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
         holder.name.text = item.name
         holder.desc.text = item.desc
     }
+
+    override fun onDataChanged() {
+        super.onDataChanged()
+        if (itemCount <= 0) {
+            workoutsFragment.placeholder.visibility = View.VISIBLE
+        } else {
+            workoutsFragment.placeholder.visibility = View.GONE
+        }
+    }
+
 
     inner class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view){

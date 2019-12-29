@@ -40,12 +40,12 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/primaryColor"
+                        android:paddingStart="8dp"
                         android:paddingLeft="8dp"
                         android:text="@string/last_workouts"
                         android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:paddingStart="8dp" />
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

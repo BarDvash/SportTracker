@@ -32,7 +32,6 @@ class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<Measurement
         position: Int,
         item: MeasurementsHistoryModel
     ) {
-
         val date = dateFormat.parse(item.data!!)
 
 

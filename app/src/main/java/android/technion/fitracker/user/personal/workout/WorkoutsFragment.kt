@@ -10,6 +10,7 @@ import android.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutAct
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
     private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>
+    public lateinit var placeholder: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +48,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val uid = mAuth.currentUser?.uid
-
+        placeholder = view.findViewById(R.id.no_workout_placeholder)
         val query = firestore
                 .collection("regular_users")
                 .document(uid!!)
@@ -55,7 +57,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        adapter = WorkoutsFireStoreAdapter(options).apply {
+        adapter = WorkoutsFireStoreAdapter(options, this).apply {
             mOnItemClickListener = View.OnClickListener { v ->
                 val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
                 val snapshot: DocumentSnapshot = adapter.snapshots.getSnapshot(rvh.adapterPosition)

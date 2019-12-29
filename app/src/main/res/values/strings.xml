@@ -35,6 +35,7 @@
     <string name="database_read_error">Error occurred when trying to read from database, check your internet connection and try again</string>
     <string name="workout_name_field_hint">Workout Name</string>
     <string name="empty_workout_list_hint">There are no exercises added yet!\nUse + button to add first exercise.</string>
+    <string name="empty_workouts_list_hint">There are no workouts added yet!\nUse + button to add first workout.</string>
     <string name="empty_dish_list_hint">There are no options added yet!\nUse + button to add first dish option.</string>
     <string name="empty_meal_list_hint">There are no dishes added yet!\nUse + button to add first dish.</string>
     <string name="empty_measurements_list_hint">There are no measurements added yet!\nUse + button to add first measurement.</string>
@@ -107,4 +108,5 @@
     <string name="delete">Delete</string>
     <string name="title_activity_settings">Settings</string>
     <string name="credits_header">Credits</string>
+    <string name="doubleDot">:</string>
 </resources>

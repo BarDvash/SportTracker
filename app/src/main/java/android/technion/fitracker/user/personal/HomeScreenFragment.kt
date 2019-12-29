@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.DividerItemDecoration.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -44,7 +43,8 @@ class HomeScreenFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
         recyclerView = view.findViewById(R.id.last_workouts_recycler)
-        recyclerView.addItemDecoration( DividerItemDecoration(context, HORIZONTAL))
+        recyclerView.addItemDecoration(DividerItemDecoration(context,
+                                                             DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(context)
         val uid = firebaseAuth.currentUser?.uid
 

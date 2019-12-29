@@ -1,6 +1,7 @@
 package android.technion.fitracker
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -13,6 +14,7 @@ class SettingsActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+        setSupportActionBar(findViewById(R.id.settings_toolbar))
         if (savedInstanceState == null) {
             supportFragmentManager
                     .beginTransaction()
@@ -40,6 +42,15 @@ class SettingsActivity : AppCompatActivity(),
             return true
         }
         return super.onSupportNavigateUp()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return true
     }
 
     override fun onPreferenceStartFragment(

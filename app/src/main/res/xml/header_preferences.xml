@@ -49,8 +49,8 @@
         app:title="Privacy and security">
 
         <Preference
-            app:key="reset password"
-            app:title="reset password" />
+            app:key="Reset password"
+            app:title="Reset password" />
 
     </PreferenceCategory>
 

@@ -21,6 +21,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -43,6 +44,7 @@ class MeasurementsFragment : Fragment() {
     val values: ArrayList<String> = ArrayList()
     lateinit var adapter: MeasurementsRecyclerViewAdapter
     lateinit var placeHolder: TextView
+    lateinit var measurementsContainer: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +90,8 @@ class MeasurementsFragment : Fragment() {
         view.findViewById<ExtendedFloatingActionButton>(R.id.measurements_fab).setOnClickListener {
             (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment,false,true,true)
         }
+        measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
+        measurementsContainer.visibility = View.GONE
         //TODO check for placeholder visibility
         val rec_view = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
         rec_view.setHasFixedSize(true)
@@ -149,9 +153,11 @@ class MeasurementsFragment : Fragment() {
     private fun ifAllEmpty() {
         if (values.isEmpty()){
             placeHolder.visibility = View.VISIBLE
+            measurementsContainer.visibility = View.GONE
         }
         else{
             placeHolder.visibility = View.GONE
+            measurementsContainer.visibility = View.VISIBLE
         }
     }
 }
