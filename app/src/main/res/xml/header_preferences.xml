@@ -50,17 +50,17 @@
         app:title="Privacy and security">
 
         <Preference
-            app:key="Reset password"
-            app:title="Reset password" />
+            app:key="privacy_policy"
+            app:title="Privacy policy">
+
+            <intent
+                android:action="android.intent.action.VIEW"
                 android:data="https://fitracker.flycricket.io/privacy.html" />
         </Preference>
 
-                android:action="android.intent.action.VIEW"
-            <intent
-
         <Preference
             app:key="reset password"
-            app:title="reset password" />
+            app:title="Reset password" />
 
 
     </PreferenceCategory>
