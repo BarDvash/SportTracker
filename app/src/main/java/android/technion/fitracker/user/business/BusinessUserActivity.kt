@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.technion.fitracker.R
+import android.technion.fitracker.SettingsActivity
 import android.technion.fitracker.login.LoginActivity
 import android.technion.fitracker.user.User
 import android.view.Menu
@@ -96,6 +97,12 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
             R.id.search_from_buisness -> {
                 onSearchRequested()
+                true
+            }
+
+            R.id.business_user_menu_settings_ac-> {
+                val userHome = Intent(applicationContext, SettingsActivity::class.java)
+                startActivity(userHome)
                 true
             }
 

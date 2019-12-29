@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.technion.fitracker.R
+import android.technion.fitracker.SettingsActivity
 import android.technion.fitracker.login.FlashSignInActivity
 import android.technion.fitracker.login.LoginActivity
 import android.technion.fitracker.models.UserViewModel
@@ -119,6 +120,12 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
             R.id.search_from_personal -> {
                 onSearchRequested()
+                true
+            }
+
+            R.id.user_menu_settings_ac-> {
+                val userHome = Intent(applicationContext, SettingsActivity::class.java)
+                startActivity(userHome)
                 true
             }
 

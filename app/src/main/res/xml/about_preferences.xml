@@ -1,0 +1,42 @@
+
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <PreferenceCategory
+        app:key="Logo_details"
+        app:title="Logo"
+        app:icon = "@drawable/ic_copyright_24dp">
+
+        <Preference
+            app:key="hatchful_credit"
+            app:summary="logo by: https://hatchful.shopify.com"
+/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="Icons_details"
+        app:title="Icons"
+        app:icon = "@drawable/ic_copyright_24dp">
+
+        <Preference
+            app:summary="Icon made by Freepik from www.flaticon.com" />
+        <Preference
+            app:summary="Icon made by Icongeek26 from www.flaticon.com" />
+
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        app:key="External_Libraries_details"
+        app:title="External Libraries"
+        app:icon = "@drawable/ic_copyright_24dp">
+
+        <Preference
+            app:summary="displaying photos with: https://github.com/bumptech/glide" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
