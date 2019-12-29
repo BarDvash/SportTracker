@@ -18,19 +18,19 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-        app:fragment="android.technion.fitracker.SettingsActivity$MessagesFragment"
+        app:fragment="com.technion.fitracker.SettingsActivity$MessagesFragment"
         app:icon="@drawable/messages"
         app:key="messages_header"
         app:title="@string/messages_header" />
 
     <Preference
-        app:fragment="android.technion.fitracker.SettingsActivity$SyncFragment"
+        app:fragment="com.technion.fitracker.SettingsActivity$SyncFragment"
         app:icon="@drawable/sync"
         app:key="sync_header"
         app:title="@string/sync_header" />
 
     <Preference
-        app:fragment="android.technion.fitracker.SettingsActivity$AboutFragment"
+        app:fragment="com.technion.fitracker.SettingsActivity$AboutFragment"
         app:icon="@drawable/ic_help_outline_black_24dp"
         app:key="about_header"
         app:title="@string/about_header" />
@@ -96,7 +96,7 @@
 
 
         <Preference
-            app:fragment="android.technion.fitracker.SettingsActivity$AboutFragment"
+            app:fragment="com.technion.fitracker.SettingsActivity$AboutFragment"
             app:key="credits_header"
             app:summary="Attribution for external materials"
             app:title="@string/credits_header" />

@@ -6,12 +6,12 @@
     app:startDestination="@id/nutritionAddMealFragment">
     <fragment
         android:id="@+id/nutritionAddDishFragment"
-        android:name="android.technion.fitracker.user.personal.nutrition.NutritionAddDishFragment"
+        android:name="com.technion.fitracker.user.personal.nutrition.NutritionAddDishFragment"
         android:label="fragment_add_dish"
         tools:layout="@layout/fragment_add_dish" />
     <fragment
         android:id="@+id/nutritionAddMealFragment"
-        android:name="android.technion.fitracker.user.personal.nutrition.NutritionAddMealFragment"
+        android:name="com.technion.fitracker.user.personal.nutrition.NutritionAddMealFragment"
         android:label="fragment_add_meal"
         tools:layout="@layout/fragment_add_meal" >
         <action

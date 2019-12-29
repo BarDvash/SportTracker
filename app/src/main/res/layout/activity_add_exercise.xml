@@ -5,7 +5,7 @@
     <data>
         <variable
             name="myViewModel"
-            type="android.technion.fitracker.models.workouts.CreateNewExerciseViewModel" />
+            type="com.technion.fitracker.models.workouts.CreateNewExerciseViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

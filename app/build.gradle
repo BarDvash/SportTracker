@@ -10,7 +10,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "android.technion.fitracker"
+        applicationId "com.technion.fitracker"
         minSdkVersion 16
         targetSdkVersion 29
         multiDexEnabled true

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.technion.fitracker">
+    package="com.technion.fitracker">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -27,7 +27,7 @@
 
         <provider
             android:name=".MySuggestionProvider"
-            android:authorities="android.technion.fitracker.MySuggestionProvider" />
+            android:authorities="com.technion.fitracker.MySuggestionProvider" />
 
         <activity android:name=".user.business.BusinessUserActivity" />
         <activity android:name=".user.personal.UserActivity" />

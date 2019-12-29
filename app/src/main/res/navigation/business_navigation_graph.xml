@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/customersFragment"
-        android:name="android.technion.fitracker.user.business.CustomersFragment"
+        android:name="com.technion.fitracker.user.business.CustomersFragment"
         android:label="fragment_business_customers"
         tools:layout="@layout/fragment_business_customers" />
     <fragment
         android:id="@+id/scheduleFragment"
-        android:name="android.technion.fitracker.user.business.ScheduleFragment"
+        android:name="com.technion.fitracker.user.business.ScheduleFragment"
         android:label="fragment_business_schedule"
         tools:layout="@layout/fragment_business_schedule" />
     <fragment
         android:id="@+id/homeScreenFragment"
-        android:name="android.technion.fitracker.user.business.HomeScreenFragment"
+        android:name="com.technion.fitracker.user.business.HomeScreenFragment"
         android:label="fragment_business_home_screen"
         tools:layout="@layout/fragment_business_home_screen" />
 </navigation>

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="android.technion.fitracker.models.workouts.WorkoutStartViewModel"/>
+            type="com.technion.fitracker.models.workouts.WorkoutStartViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

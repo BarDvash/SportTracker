@@ -6,7 +6,7 @@
     app:startDestination="@id/homeScreenFragment">
     <fragment
         android:id="@+id/homeScreenFragment"
-        android:name="android.technion.fitracker.user.personal.HomeScreenFragment"
+        android:name="com.technion.fitracker.user.personal.HomeScreenFragment"
         android:label="HomeScreen"
         tools:layout="@layout/fragment_home_screen" >
         <action
@@ -16,21 +16,21 @@
     </fragment>
     <fragment
         android:id="@+id/measurementsFragment"
-        android:name="android.technion.fitracker.user.personal.measurements.MeasurementsFragment"
+        android:name="com.technion.fitracker.user.personal.measurements.MeasurementsFragment"
         android:label="fragment_measurements"
         tools:layout="@layout/fragment_measurements" />
     <fragment
         android:id="@+id/nutritionFragment"
-        android:name="android.technion.fitracker.user.personal.nutrition.NutritionFragment"
+        android:name="com.technion.fitracker.user.personal.nutrition.NutritionFragment"
         android:label="fragment_nutrition"
         tools:layout="@layout/fragment_nutrition" />
     <fragment
         android:id="@+id/workoutsFragment"
-        android:name="android.technion.fitracker.user.personal.workout.WorkoutsFragment"
+        android:name="com.technion.fitracker.user.personal.workout.WorkoutsFragment"
         android:label="fragment_workouts"
         tools:layout="@layout/fragment_user_workouts" />
     <fragment
         android:id="@+id/measurementsAddFragment"
-        android:name="android.technion.fitracker.user.personal.measurements.MeasurementsAddFragment"
+        android:name="com.technion.fitracker.user.personal.measurements.MeasurementsAddFragment"
         android:label="MeasurementsAddFragment" />
 </navigation>

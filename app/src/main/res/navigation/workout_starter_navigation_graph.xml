@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/workoutStartScreen"
-        android:name="android.technion.fitracker.user.personal.workout.WorkoutStartScreen"
+        android:name="com.technion.fitracker.user.personal.workout.WorkoutStartScreen"
         android:label="WorkoutStartScreen" >
         <action
             android:id="@+id/action_workoutStartScreen_to_workoutInProgress"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/workoutInProgress"
-        android:name="android.technion.fitracker.user.personal.workout.WorkoutInProgress"
+        android:name="com.technion.fitracker.user.personal.workout.WorkoutInProgress"
         android:label="WorkoutInProgress" >
         <action
             android:id="@+id/action_workoutInProgress_to_workoutSummaryScreen"
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/workoutSummaryScreen"
-        android:name="android.technion.fitracker.user.personal.workout.WorkoutSummaryScreen"
+        android:name="com.technion.fitracker.user.personal.workout.WorkoutSummaryScreen"
         android:label="fragment_workout_summary_screen"
         tools:layout="@layout/fragment_workout_summary_screen" />
 </navigation>

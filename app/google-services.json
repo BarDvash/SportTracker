@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "227928727350-heqa9ekqcjr97uocodip8sqjq6d6nkij.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.technion.fitracker",
+            "certificate_hash": "3a605300a525e58d12a118d57dbb7acc57ad730c"
+          }
+        },
+        {
           "client_id": "227928727350-9b35lbekbinudhqtdi8khn26oa2j8qb2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -44,6 +52,43 @@
           "android_info": {
             "package_name": "android.technion.fitracker",
             "certificate_hash": "a9a1a40f0dcc662e040d721e672a4e0d9c10c425"
+          }
+        },
+        {
+          "client_id": "227928727350-okbq0bdbqj44m608vlpcr8t6thf8fikv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqRxXIsFOEkerbsj641JR_ob5BGK1C7OM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227928727350:android:79e7c97e95236999259d97",
+        "android_client_info": {
+          "package_name": "com.technion.fitracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227928727350-1gqac7ua34tdcrek0o3ds7ucbp1pa4lf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technion.fitracker",
+            "certificate_hash": "d2f012c764b684bae4d6905589513f25f937390e"
           }
         },
         {

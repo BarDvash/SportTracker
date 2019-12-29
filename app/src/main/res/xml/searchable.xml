@@ -3,6 +3,6 @@
     android:hint="@string/search_hint"
     android:label="@string/app_name"
     android:searchMode="queryRewriteFromText"
-    android:searchSuggestAuthority="android.technion.fitracker.MySuggestionProvider"
+    android:searchSuggestAuthority="com.technion.fitracker.MySuggestionProvider"
     android:searchSuggestSelection=" ?">>
 </searchable>
