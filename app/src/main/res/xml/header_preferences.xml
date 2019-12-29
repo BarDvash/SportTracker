@@ -41,7 +41,8 @@
  -->
 
 
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         app:icon="@drawable/ic_security_24dp"
@@ -51,6 +52,16 @@
         <Preference
             app:key="Reset password"
             app:title="Reset password" />
+                android:data="https://fitracker.flycricket.io/privacy.html" />
+        </Preference>
+
+                android:action="android.intent.action.VIEW"
+            <intent
+
+        <Preference
+            app:key="reset password"
+            app:title="reset password" />
+
 
     </PreferenceCategory>
 
