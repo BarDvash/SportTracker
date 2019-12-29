@@ -43,7 +43,7 @@
                         android:paddingLeft="8dp"
                         android:text="@string/last_workouts"
                         android:textColor="@android:color/white"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:paddingStart="8dp" />
                 </LinearLayout>
