@@ -25,7 +25,7 @@ Firebase - https://firebase.google.com/
 Glide - https://github.com/bumptech/glide
 
 ## Authors
-Vova Pharakhin, Alexey Barbotchenko and Bar Dvash.
+Vladimir Parakhin, Alexey Barbotchenko and Bar Dvash.
 
 ## Link to Google Play Store
 
