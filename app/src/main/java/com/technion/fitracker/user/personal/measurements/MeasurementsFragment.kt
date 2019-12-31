@@ -3,9 +3,9 @@ package com.technion.fitracker.user.personal.measurements
 
 import android.content.Intent
 import android.os.Bundle
+import com.technion.fitracker.databinding.FragmentMeasurementsBinding
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
-import com.technion.fitracker.databinding.FragmentMeasurementsBinding
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
 import com.technion.fitracker.user.personal.UserActivity
@@ -29,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
+import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 
@@ -45,6 +46,8 @@ class MeasurementsFragment : Fragment() {
     lateinit var adapter: MeasurementsRecyclerViewAdapter
     lateinit var placeHolder: TextView
     lateinit var measurementsContainer: MaterialCardView
+    val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
+    val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,9 +95,7 @@ class MeasurementsFragment : Fragment() {
         }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
         measurementsContainer.visibility = View.GONE
-        //TODO check for placeholder visibility
         val rec_view = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
-        rec_view.setHasFixedSize(true)
         rec_view.layoutManager = LinearLayoutManager(context)
         adapter = MeasurementsRecyclerViewAdapter(names,values)
         rec_view.adapter = adapter
@@ -115,6 +116,8 @@ class MeasurementsFragment : Fragment() {
                         viewModel.editTextHips.value = ""
                         viewModel.editTextWaist.value = ""
                         viewModel.editTextWeight.value = ""
+//                        viewModel.textViewData.value = ""
+                        viewModel.textViewDate.set("")
                         names.clear()
                         values.clear()
                         adapter.notifyDataSetChanged()
@@ -139,6 +142,11 @@ class MeasurementsFragment : Fragment() {
         viewModel.editTextHips.value = lastRes.hips
         viewModel.editTextWaist.value = lastRes.waist
         viewModel.editTextWeight.value = lastRes.weight
+
+        val date = dateFormat.parse(lastRes.data!!)
+//        viewModel.textViewData.value = newDateFormat.format(date!!)
+        viewModel.textViewDate.set(newDateFormat.format(date!!))
+
         adapter.notifyDataSetChanged()
         ifAllEmpty()
     }

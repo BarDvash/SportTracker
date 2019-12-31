@@ -56,7 +56,6 @@ class MeasurementsAddFragment :Fragment() {
             startActivity(activity)
             true
         }
-        //TODO swap fab with action
         (activity as UserActivity).addAction.setOnMenuItemClickListener {
             if (allEmpty()) {
                 true

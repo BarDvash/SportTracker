@@ -88,7 +88,18 @@
                         android:id="@+id/measurements_rec_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/measurements_card"/>
+                        tools:listitem="@layout/measurements_card">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/fragment_measurements_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="5dp"
+                        android:text="@{viewmodel.textViewDate}"
+                        tools:text="2019/10/12 19.00" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

@@ -9,9 +9,9 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="2dp"
     app:cardElevation="10dp"
     app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
     app:layout_constraintEnd_toEndOf="parent"
@@ -25,12 +25,10 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:fontFamily="sans-serif"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Dish name" />
 
@@ -47,16 +45,6 @@
         app:layout_constraintStart_toEndOf="@+id/nutrition_ele_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="49 kg" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:text="@string/dot"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
