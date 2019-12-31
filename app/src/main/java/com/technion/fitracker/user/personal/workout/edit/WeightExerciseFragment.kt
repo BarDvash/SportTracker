@@ -3,9 +3,6 @@ package com.technion.fitracker.user.personal.workout.edit
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.FragmentWeightExerciseBinding
-import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.FragmentWeightExerciseBinding
+import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 
 
 class WeightExerciseFragment : Fragment(), View.OnClickListener {

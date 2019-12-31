@@ -3,16 +3,11 @@ package com.technion.fitracker.user.personal.workout
 
 import android.os.Bundle
 import android.os.SystemClock
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.ExerciseCompactAdapter
-import com.technion.fitracker.databinding.FragmentWorkoutInProgressBinding
-import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,6 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.ExerciseCompactAdapter
+import com.technion.fitracker.databinding.FragmentWorkoutInProgressBinding
+import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 
 class WorkoutInProgress : Fragment(), View.OnClickListener {
     private lateinit var viewModel: WorkoutStartViewModel
@@ -137,14 +136,14 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
         return true
     }
 
-    private fun stopChrono(){
+    private fun stopChrono() {
         viewModel.stopwatch = SystemClock.elapsedRealtime() - chrono.base
-        chrono.stop();
+        chrono.stop()
     }
 
-    private fun  startChrono(){
-        chrono.setBase(SystemClock.elapsedRealtime() - viewModel.stopwatch);
-        chrono.start();
+    private fun startChrono() {
+        chrono.base = SystemClock.elapsedRealtime() - viewModel.stopwatch
+        chrono.start()
     }
 
     override fun onClick(v: View?) {

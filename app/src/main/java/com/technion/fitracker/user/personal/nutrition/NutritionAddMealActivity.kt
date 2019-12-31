@@ -7,22 +7,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.android.gms.common.util.IOUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.Gson
 import com.technion.fitracker.R
 import com.technion.fitracker.databinding.ActivityAddMealBinding
 import com.technion.fitracker.models.nutrition.AddMealViewModel
-import com.technion.fitracker.models.nutrition.jsonDBModel
 import com.technion.fitracker.user.Meal
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.io.StringWriter
-import java.util.*
-import java.util.stream.Collectors
-import kotlin.collections.ArrayList
 
 
 class NutritionAddMealActivity : AppCompatActivity() {
@@ -93,7 +84,6 @@ class NutritionAddMealActivity : AppCompatActivity() {
     }
 
 
-
     private fun showWarning() {
         MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.warning))
@@ -123,8 +113,8 @@ class NutritionAddMealActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
-                //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
-            }
+                        //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
+                    }
         }
     }
 
@@ -133,7 +123,7 @@ class NutritionAddMealActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {
-            //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
-        }
+                    //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
+                }
     }
 }

@@ -1,11 +1,11 @@
 package com.technion.fitracker.models.workouts
 
-import com.technion.fitracker.models.exercise.ExerciseBaseModel
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.technion.fitracker.models.exercise.ExerciseBaseModel
 
-class WorkoutStartViewModel : ViewModel(){
+class WorkoutStartViewModel : ViewModel() {
     @Bindable
     val workoutID = MutableLiveData<String>()
     @Bindable
@@ -15,7 +15,7 @@ class WorkoutStartViewModel : ViewModel(){
     @Bindable
     val workoutComment = MutableLiveData<String>()
 
-    var stopwatch :Long = 0
+    var stopwatch: Long = 0
     @Bindable
     val comment = MutableLiveData<String>()
 
@@ -24,12 +24,14 @@ class WorkoutStartViewModel : ViewModel(){
 
     var started = false
     val workoutExercises = MutableLiveData<ArrayList<ExerciseBaseModel>>()
+
     init {
         workoutExercises.value = arrayListOf()
     }
 
-    val times = MutableLiveData<Map<String,String>>()
-    init{
-        mapOf<String,String>()
+    val times = MutableLiveData<Map<String, String>>()
+
+    init {
+        mapOf<String, String>()
     }
 }

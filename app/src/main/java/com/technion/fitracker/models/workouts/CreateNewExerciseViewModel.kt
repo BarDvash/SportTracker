@@ -4,7 +4,7 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class CreateNewExerciseViewModel : ViewModel(){
+class CreateNewExerciseViewModel : ViewModel() {
 
     @Bindable
     val aerobic_name = MutableLiveData<String>()

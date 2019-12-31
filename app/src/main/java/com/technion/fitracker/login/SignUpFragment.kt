@@ -3,22 +3,20 @@ package com.technion.fitracker.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import com.technion.fitracker.R
-import com.technion.fitracker.user.User
-import com.technion.fitracker.user.business.BusinessUserActivity
-import com.technion.fitracker.user.personal.UserActivity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.user.User
+import com.technion.fitracker.user.personal.UserActivity
 
 
 class SignUpFragment : Fragment(), View.OnClickListener {
@@ -49,14 +47,13 @@ class SignUpFragment : Fragment(), View.OnClickListener {
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
 
-                if(document.exists()){
+                if (document.exists()) {
                     startUserActivity()
                 }
 
             }.addOnFailureListener {
                 Toast.makeText(context, getString(R.string.database_read_error), Toast.LENGTH_SHORT).show()
             }
-
 
 
         }

@@ -2,10 +2,6 @@ package com.technion.fitracker.user.personal.nutrition
 
 import android.app.Dialog
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.nutrition.NutritionNestedDishAdapter
-import com.technion.fitracker.databinding.FragmentAddDishBinding
-import com.technion.fitracker.models.nutrition.AddMealViewModel
 import android.text.Editable
 import android.view.*
 import android.widget.*
@@ -18,8 +14,11 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.nutrition.NutritionNestedDishAdapter
+import com.technion.fitracker.databinding.FragmentAddDishBinding
+import com.technion.fitracker.models.nutrition.AddMealViewModel
 import com.technion.fitracker.models.nutrition.jsonDBModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -119,7 +118,7 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
 
 
             val nameEditText = dial.findViewById<AutoCompleteTextView>(R.id.dish_name_edittext)
-            val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, foodDb)
+            val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, foodDb)
             nameEditText.setAdapter(adapter)
             nameEditText.threshold = 1
 
@@ -174,7 +173,7 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
         } else {
             ""
         }
-        foodDb  = Gson().fromJson(json, jsonDBModel::class.java).array
+        foodDb = Gson().fromJson(json, jsonDBModel::class.java).array
     }
 
     private fun switchToAddActivity() {
@@ -183,7 +182,7 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
         dial.setTitle(getString(R.string.add_dish))
 
         val nameEditText = dial.findViewById<AutoCompleteTextView>(R.id.dish_name_edittext)
-        val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, foodDb)
+        val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, foodDb)
         nameEditText.setAdapter(adapter)
         nameEditText.threshold = 1
 

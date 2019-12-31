@@ -2,17 +2,8 @@ package com.technion.fitracker.user.personal
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import com.technion.fitracker.R
-import com.technion.fitracker.SettingsActivity
-import com.technion.fitracker.login.FlashSignInActivity
-import com.technion.fitracker.login.LoginActivity
-import com.technion.fitracker.models.UserViewModel
-import com.technion.fitracker.models.nutrition.AddMealViewModel
-import com.technion.fitracker.user.User
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -28,6 +19,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.SettingsActivity
+import com.technion.fitracker.login.LoginActivity
+import com.technion.fitracker.models.UserViewModel
+import com.technion.fitracker.user.User
 
 
 class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -52,8 +48,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         firestore = FirebaseFirestore.getInstance()
         if (auth.currentUser != null) {
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
-            docRef.get().addOnSuccessListener {
-                    document ->
+            docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
                 findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
                 if (!user?.photoURL.isNullOrEmpty()) {
@@ -70,9 +65,9 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(idToken)
-            .requestEmail()
-            .build()
+                .requestIdToken(idToken)
+                .requestEmail()
+                .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
 
@@ -88,7 +83,6 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
 
-
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.action_home -> {
@@ -101,7 +95,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 startFragmentAndPop(R.id.nutritionFragment)
             }
             R.id.action_measurements -> {
-                startFragmentAndPop(R.id.measurementsFragment,true)
+                startFragmentAndPop(R.id.measurementsFragment, true)
             }
         }
         return true
@@ -123,7 +117,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 true
             }
 
-            R.id.user_menu_settings_ac-> {
+            R.id.user_menu_settings_ac -> {
                 val userHome = Intent(applicationContext, SettingsActivity::class.java)
                 startActivity(userHome)
                 true
@@ -143,12 +137,17 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         finish()
     }
 
-    private fun startFragmentAndPop(id: Int, historyActionVisible:Boolean = false, addActionVisible:Boolean = false, arrowBackVisible:Boolean = false) {
+    private fun startFragmentAndPop(
+        id: Int,
+        historyActionVisible: Boolean = false,
+        addActionVisible: Boolean = false,
+        arrowBackVisible: Boolean = false
+    ) {
         userActivityPopBackStack(arrowBackVisible, addActionVisible, historyActionVisible)
         navController.navigate(id)
     }
 
-    public fun userActivityPopBackStack(
+    fun userActivityPopBackStack(
         arrowBackVisible: Boolean,
         addActionVisible: Boolean,
         historyActionVisible: Boolean
@@ -159,7 +158,12 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         navController.popBackStack()
     }
 
-    public fun userActivityStartFragment(id: Int, historyActionVisible:Boolean = false, addActionVisible:Boolean = false, arrowBackVisible:Boolean = false) {
+    fun userActivityStartFragment(
+        id: Int,
+        historyActionVisible: Boolean = false,
+        addActionVisible: Boolean = false,
+        arrowBackVisible: Boolean = false
+    ) {
         supportActionBar?.setDisplayHomeAsUpEnabled(arrowBackVisible)
         addAction.isVisible = addActionVisible
         historyAction.isVisible = historyActionVisible
@@ -167,7 +171,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        userActivityPopBackStack(false,false,true)
+        userActivityPopBackStack(false, false, true)
         return true
     }
 

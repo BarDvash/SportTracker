@@ -1,8 +1,5 @@
 package com.technion.fitracker.adapters.measurements
 
-import com.technion.fitracker.R
-import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
-import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter.ViewHolder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import java.sql.Date
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter.ViewHolder
+import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
 import java.text.SimpleDateFormat
 
 class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<MeasurementsHistoryModel>) : FirestoreRecyclerAdapter<MeasurementsHistoryModel, ViewHolder>(options) {
@@ -61,7 +60,7 @@ class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<Measurement
     }
 
     inner class ViewHolder(view: View) :
-            RecyclerView.ViewHolder(view){
+            RecyclerView.ViewHolder(view) {
         var name_1: TextView = view.findViewById(R.id.measurements_name_1)
         var name_2: TextView = view.findViewById(R.id.measurements_name_2)
         var name_3: TextView = view.findViewById(R.id.measurements_name_3)
@@ -77,11 +76,13 @@ class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<Measurement
         var data_6: TextView = view.findViewById(R.id.measurements_data_6)
 
         var date: TextView = view.findViewById(R.id.measurements_date)
-        var list: HashMap<TextView,TextView> = hashMapOf(name_1 to data_1,
-                                                         name_2 to data_2,
-                                                         name_3 to data_3,
-                                                         name_4 to data_4,
-                                                         name_5 to data_5,
-                                                         name_6 to data_6)
+        var list: HashMap<TextView, TextView> = hashMapOf(
+            name_1 to data_1,
+            name_2 to data_2,
+            name_3 to data_3,
+            name_4 to data_4,
+            name_5 to data_5,
+            name_6 to data_6
+        )
     }
 }

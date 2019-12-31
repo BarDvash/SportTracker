@@ -5,13 +5,10 @@ import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import com.technion.fitracker.adapters.SearchFireStoreAdapter
-import com.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,8 +17,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-
-
+import com.technion.fitracker.adapters.SearchFireStoreAdapter
+import com.technion.fitracker.models.SearchFireStoreModel
 
 
 class SearchableActivity : AppCompatActivity() {
@@ -50,9 +47,9 @@ class SearchableActivity : AppCompatActivity() {
 
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if(tab?.text == "users") {
+                if (tab?.text == "users") {
                     search_users()
-                }else{
+                } else {
                     search_trainers()
                 }
             }
@@ -70,8 +67,6 @@ class SearchableActivity : AppCompatActivity() {
     }
 
 
-
-
     /**If the current activity is the searchable activity and if we set android:launchMode to "singleTop",
      * then the searchable activity receives the ACTION_SEARCH intent with a call to onNewIntent(Intent),
      * passing the new ACTION_SEARCH intent here.
@@ -82,14 +77,14 @@ class SearchableActivity : AppCompatActivity() {
         handleIntent(intent)
     }
 
-    private fun handleIntent(intent: Intent, collection_name : String = "regular_users") {
+    private fun handleIntent(intent: Intent, collection_name: String = "regular_users") {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { str ->
-                current_search_query=str
+                current_search_query = str
                 SearchRecentSuggestions(this, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(str, null)
                 val query = firestore.collection(collection_name).orderBy("name", Query.Direction.ASCENDING).startAt(str).endAt(str + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
-                adapter = SearchFireStoreAdapter(options,this)
+                adapter = SearchFireStoreAdapter(options, this)
                 recyclerView.adapter = adapter
                 adapter.startListening()
             }
@@ -97,8 +92,13 @@ class SearchableActivity : AppCompatActivity() {
 
     }
 
-    private fun search_users() {handleIntent(intent)}
-    private fun search_trainers() {handleIntent(intent,"business_users")}
+    private fun search_users() {
+        handleIntent(intent)
+    }
+
+    private fun search_trainers() {
+        handleIntent(intent, "business_users")
+    }
 
 
     override fun onStart() {
@@ -120,7 +120,6 @@ class SearchableActivity : AppCompatActivity() {
     }
 
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
 
@@ -136,7 +135,6 @@ class SearchableActivity : AppCompatActivity() {
             }
         }
     }
-
 
 
 }

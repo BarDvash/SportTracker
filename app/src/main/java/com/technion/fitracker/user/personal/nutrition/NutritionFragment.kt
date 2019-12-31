@@ -30,7 +30,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var nutrition_recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
     lateinit var fab: ExtendedFloatingActionButton
-    public lateinit var placeholder: TextView
+    lateinit var placeholder: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

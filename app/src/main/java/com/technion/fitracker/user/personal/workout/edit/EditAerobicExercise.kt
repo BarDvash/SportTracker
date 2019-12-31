@@ -2,9 +2,6 @@ package com.technion.fitracker.user.personal.workout.edit
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.ActivityEditAerobicExerciseBinding
-import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.ActivityEditAerobicExerciseBinding
+import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 
 class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: CreateNewExerciseViewModel

@@ -2,11 +2,6 @@ package com.technion.fitracker.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import com.technion.fitracker.R
-import com.technion.fitracker.user.User
-import com.technion.fitracker.user.business.BusinessUserActivity
-import com.technion.fitracker.user.personal.UserActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +21,10 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-
+import com.technion.fitracker.R
+import com.technion.fitracker.user.User
+import com.technion.fitracker.user.business.BusinessUserActivity
+import com.technion.fitracker.user.personal.UserActivity
 
 
 class SignInFragment : Fragment(), View.OnClickListener {
@@ -74,7 +72,6 @@ class SignInFragment : Fragment(), View.OnClickListener {
         emailEditText = view.findViewById(R.id.login_fragment_email)
         passwordEditText = view.findViewById(R.id.login_fragment_pass)
     }
-
 
 
     private fun signIn() {
@@ -208,10 +205,10 @@ class SignInFragment : Fragment(), View.OnClickListener {
                             val business_users_doc_ref = firestore.collection("business_users").document(auth.currentUser!!.uid)
 
                             regular_users_doc_ref.get().addOnSuccessListener {
-                                if(it.exists()){
+                                if (it.exists()) {
                                     enableButtonAndSetText()
                                     startUserActivity()
-                                }else{
+                                } else {
                                     business_users_doc_ref.get().addOnSuccessListener {
                                         enableButtonAndSetText()
                                         startBusinessUserActivity()

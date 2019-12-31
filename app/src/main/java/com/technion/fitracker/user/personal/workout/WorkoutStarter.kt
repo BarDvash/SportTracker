@@ -2,9 +2,6 @@ package com.technion.fitracker.user.personal.workout
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.ActivityWorkoutStarterBinding
-import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +9,9 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.ActivityWorkoutStarterBinding
+import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 
 
 class WorkoutStarter : AppCompatActivity() {

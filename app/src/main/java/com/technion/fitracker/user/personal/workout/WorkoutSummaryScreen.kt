@@ -3,11 +3,6 @@ package com.technion.fitracker.user.personal.workout
 
 import android.graphics.Color
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.ExerciseSummaryAdapter
-import com.technion.fitracker.databinding.FragmentWorkoutSummaryScreenBinding
-import com.technion.fitracker.models.exercise.ExerciseLogModel
-import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +23,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.ExerciseSummaryAdapter
+import com.technion.fitracker.databinding.FragmentWorkoutSummaryScreenBinding
+import com.technion.fitracker.models.exercise.ExerciseLogModel
+import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 import java.text.SimpleDateFormat
-import kotlin.collections.ArrayList
+import java.util.*
 
 
 class WorkoutSummaryScreen : Fragment(), View.OnClickListener {
@@ -150,27 +149,27 @@ class WorkoutSummaryScreen : Fragment(), View.OnClickListener {
         SAD, NEUTRAL, HAPPY, COOL
     }
 
-    private fun setBaseColorLightGray(){
+    private fun setBaseColorLightGray() {
         sadRating.setColorFilter(Color.LTGRAY)
         neutralRating.setColorFilter(Color.LTGRAY)
         happyRating.setColorFilter(Color.LTGRAY)
         coolRating.setColorFilter(Color.LTGRAY)
     }
 
-    private fun setBaseColor(){
+    private fun setBaseColor() {
         sadRating.setColorFilter(Color.BLACK)
         neutralRating.setColorFilter(Color.BLACK)
         happyRating.setColorFilter(Color.BLACK)
         coolRating.setColorFilter(Color.BLACK)
     }
 
-    private fun getSummary(): MutableMap<String, Any?>{
+    private fun getSummary(): MutableMap<String, Any?> {
         val summary: MutableMap<String, Any?> = mutableMapOf()
         summary["workout_name"] = viewModel.workoutName.value
         summary["time_elapsed"] = viewModel.timeElapsed.value
         val exercisesLog: ArrayList<ExerciseLogModel> = arrayListOf()
         viewModel.workoutExercises.value?.let {
-            for(exercise in it){
+            for (exercise in it) {
                 exercisesLog.add(exercise.extractLogModel())
             }
         }
@@ -181,16 +180,16 @@ class WorkoutSummaryScreen : Fragment(), View.OnClickListener {
         return summary
     }
 
-    private fun setSelectedImage(index: Int){
+    private fun setSelectedImage(index: Int) {
         var color = Color.RED
-        if(viewModel.workoutRate == index){
+        if (viewModel.workoutRate == index) {
             setBaseColor()
             viewModel.workoutRate = null
             return
-        }else{
+        } else {
             viewModel.workoutRate = index
         }
-        when(index){
+        when (index) {
             ExerciseRatings.SAD.ordinal -> {
                 sadRating.setColorFilter(color)
             }

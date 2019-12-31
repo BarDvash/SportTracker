@@ -1,22 +1,11 @@
 package com.technion.fitracker.user.personal.nutrition
 
-import android.content.ClipData
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.nutrition.NutritionMealAdapter
-import com.technion.fitracker.databinding.FragmentAddMealBinding
-import com.technion.fitracker.models.nutrition.AddMealViewModel
-import com.technion.fitracker.user.Meal
 import android.view.*
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
-import androidx.databinding.ObservableList
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -24,12 +13,15 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.nutrition.NutritionMealAdapter
+import com.technion.fitracker.databinding.FragmentAddMealBinding
+import com.technion.fitracker.models.nutrition.AddMealViewModel
 
 
-class NutritionAddMealFragment: Fragment(), View.OnClickListener {
+class NutritionAddMealFragment : Fragment(), View.OnClickListener {
 
     lateinit var adapter: NutritionMealAdapter
     lateinit var navController: NavController
@@ -50,14 +42,14 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = DataBindingUtil.inflate<FragmentAddMealBinding>(inflater, R.layout.fragment_add_meal,container, false)
+        val view = DataBindingUtil.inflate<FragmentAddMealBinding>(inflater, R.layout.fragment_add_meal, container, false)
         view.viewmodel = viewModel
         setHasOptionsMenu(true)
         return view.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.meal_fragment_menu,menu)
+        inflater.inflate(R.menu.meal_fragment_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -71,8 +63,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
         rootActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if (rootActivity.updateData) {
             rootActivity.supportActionBar?.title = getString(R.string.edit_meal)
-        }
-        else {
+        } else {
             rootActivity.supportActionBar?.title = getString(R.string.add_meal_title)
         }
         db = FirebaseFirestore.getInstance()
@@ -101,7 +92,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
             val recView = it.tag as RecyclerView.ViewHolder
             val pos = recView.adapterPosition
             val bundle = bundleOf("dishes" to viewModel.data[pos], "pos" to pos)
-            navController.navigate(R.id.nutritionAddDishFragment,bundle)
+            navController.navigate(R.id.nutritionAddDishFragment, bundle)
         }
         adapter = NutritionMealAdapter(viewModel.data, onClickListener)
 
@@ -127,7 +118,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
             }
 
             R.id.meal_fragment_save -> {
-                if (viewModel.editTextMealName.value.isNullOrEmpty()){
+                if (viewModel.editTextMealName.value.isNullOrEmpty()) {
                     Toast.makeText(context, getString(R.string.provide_name), Toast.LENGTH_SHORT).show()
                     return true
                 }
@@ -147,8 +138,7 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
     private fun setPlaceHolderVisibility() {
         if (viewModel.data.isEmpty()) {
             placeHolder.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             placeHolder.visibility = View.GONE
         }
     }

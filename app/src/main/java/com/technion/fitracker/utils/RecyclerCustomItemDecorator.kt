@@ -1,7 +1,5 @@
 package com.technion.fitracker.utils
 
-import androidx.recyclerview.widget.RecyclerView
-
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -9,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * DividerItemDecorationNoLast is a [RecyclerView.ItemDecoration] that can be used as a divider
@@ -59,7 +58,8 @@ class RecyclerCustomItemDecorator
     fun setOrientation(orientation: Int) {
         if (orientation != HORIZONTAL && orientation != VERTICAL) {
             throw IllegalArgumentException(
-                "Invalid orientation. It should be either HORIZONTAL or VERTICAL")
+                "Invalid orientation. It should be either HORIZONTAL or VERTICAL"
+            )
         }
         mOrientation = orientation
     }
@@ -95,8 +95,10 @@ class RecyclerCustomItemDecorator
         if (parent.clipToPadding) {
             left = parent.paddingLeft
             right = parent.width - parent.paddingRight
-            canvas.clipRect(left, parent.paddingTop, right,
-                            parent.height - parent.paddingBottom)
+            canvas.clipRect(
+                left, parent.paddingTop, right,
+                parent.height - parent.paddingBottom
+            )
         } else {
             left = 0
             right = parent.width
@@ -122,8 +124,10 @@ class RecyclerCustomItemDecorator
         if (parent.clipToPadding) {
             top = parent.paddingTop
             bottom = parent.height - parent.paddingBottom
-            canvas.clipRect(parent.paddingLeft, top,
-                            parent.width - parent.paddingRight, bottom)
+            canvas.clipRect(
+                parent.paddingLeft, top,
+                parent.width - parent.paddingRight, bottom
+            )
         } else {
             top = 0
             bottom = parent.height

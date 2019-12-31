@@ -2,11 +2,6 @@ package com.technion.fitracker.user.personal.measurements
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.FragmentMeasurementAddBinding
-import com.technion.fitracker.models.UserViewModel
-import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
-import com.technion.fitracker.user.personal.UserActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +12,15 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.FragmentMeasurementAddBinding
+import com.technion.fitracker.models.UserViewModel
+import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
+import com.technion.fitracker.user.personal.UserActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MeasurementsAddFragment :Fragment() {
+class MeasurementsAddFragment : Fragment() {
     private lateinit var navController: NavController
 
     private lateinit var auth: FirebaseAuth
@@ -68,11 +68,11 @@ class MeasurementsAddFragment :Fragment() {
             )
             db.collection("regular_users").document(auth.currentUser!!.uid).collection("measurements").add(data)
                     .addOnSuccessListener {
-//                        Toast.makeText(context, getString(R.string.added_success), Toast.LENGTH_SHORT).show()
+                        //                        Toast.makeText(context, getString(R.string.added_success), Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
-//                        Toast.makeText(context, getString(R.string.add_failure), Toast.LENGTH_SHORT).show()
+                        //                        Toast.makeText(context, getString(R.string.add_failure), Toast.LENGTH_SHORT).show()
                     }
-            (activity as UserActivity).userActivityPopBackStack(false,false,true)
+            (activity as UserActivity).userActivityPopBackStack(false, false, true)
             true
         }
     }

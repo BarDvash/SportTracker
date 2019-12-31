@@ -7,4 +7,4 @@ data class AerobicExerciseModel(
     var speed: String? = null,
     var intensity: String? = null,
     var notes: String? = null
-): ExerciseBaseModel("Aerobic")
+) : ExerciseBaseModel("Aerobic")

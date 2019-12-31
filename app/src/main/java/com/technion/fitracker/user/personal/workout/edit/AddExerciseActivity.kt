@@ -1,16 +1,16 @@
 package com.technion.fitracker.user.personal.workout.edit
 
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.viewPages.ExerciseTypeViewPageAdapter
-import com.technion.fitracker.databinding.ActivityAddExerciseBinding
-import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.viewPages.ExerciseTypeViewPageAdapter
+import com.technion.fitracker.databinding.ActivityAddExerciseBinding
+import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
 class AddExerciseActivity : AppCompatActivity() {
