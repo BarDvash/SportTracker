@@ -21,7 +21,6 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
     }
 
     var mOnItemClickListener: View.OnClickListener? = null
-
     inner class WeightViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.weight_element_name)
