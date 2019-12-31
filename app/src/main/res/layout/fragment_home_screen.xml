@@ -25,9 +25,10 @@
             app:strokeColor="#00644747">
 
             <LinearLayout
+                android:id="@+id/recent_workouts_container"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"

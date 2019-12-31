@@ -8,6 +8,7 @@ import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -26,6 +27,7 @@ class HomeScreenFragment : Fragment() {
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var recyclerView: RecyclerView
+    lateinit var recentWorkoutsContainer: LinearLayout
     lateinit var adapter: FirestoreRecyclerAdapter<RecentWorkoutFireStoreModel, RecentWorkoutsFireStoreAdapter.ViewHolder>
 
     override fun onCreateView(
@@ -40,6 +42,7 @@ class HomeScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         super.onViewCreated(view, savedInstanceState)
+        recentWorkoutsContainer = view.findViewById(R.id.recent_workouts_container)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
         recyclerView = view.findViewById(R.id.last_workouts_recycler)
@@ -57,7 +60,7 @@ class HomeScreenFragment : Fragment() {
         val options = FirestoreRecyclerOptions.Builder<RecentWorkoutFireStoreModel>()
                 .setQuery(query, RecentWorkoutFireStoreModel::class.java)
                 .build()
-        adapter = RecentWorkoutsFireStoreAdapter(options)
+        adapter = RecentWorkoutsFireStoreAdapter(options, this)
         recyclerView.adapter = adapter
     }
 

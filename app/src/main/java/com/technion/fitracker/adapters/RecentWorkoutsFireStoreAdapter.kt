@@ -11,8 +11,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.technion.fitracker.user.personal.HomeScreenFragment
+import kotlinx.android.synthetic.main.fragment_home_screen.*
 
-class RecentWorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<RecentWorkoutFireStoreModel>) :
+class RecentWorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<RecentWorkoutFireStoreModel>, val homeScreenFragment: HomeScreenFragment) :
         FirestoreRecyclerAdapter<RecentWorkoutFireStoreModel, RecentWorkoutsFireStoreAdapter.ViewHolder>(options) {
 
     inner class ViewHolder(view: View) :
@@ -26,6 +28,16 @@ class RecentWorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<RecentWor
         val view = LayoutInflater.from(parent.context).inflate(R.layout.element_home_last_workouts,parent,false)
         return ViewHolder(view)
     }
+
+    override fun onDataChanged() {
+        super.onDataChanged()
+        if (itemCount == 0) {
+            homeScreenFragment.recentWorkoutsContainer.visibility = View.GONE
+        } else {
+            homeScreenFragment.recentWorkoutsContainer.visibility = View.VISIBLE
+        }
+    }
+
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int, p2: RecentWorkoutFireStoreModel) {
         Log.w(FragmentActivity.VIBRATOR_SERVICE, "Added " + p2.workout_name)
