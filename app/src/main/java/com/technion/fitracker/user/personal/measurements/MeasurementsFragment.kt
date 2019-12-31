@@ -3,15 +3,7 @@ package com.technion.fitracker.user.personal.measurements
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.method.Touch.onTouchEvent
-import com.technion.fitracker.databinding.FragmentMeasurementsBinding
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
-import com.technion.fitracker.models.UserViewModel
-import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
-import com.technion.fitracker.user.personal.UserActivity
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -25,15 +17,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
+import com.technion.fitracker.databinding.FragmentMeasurementsBinding
+import com.technion.fitracker.models.UserViewModel
+import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
+import com.technion.fitracker.user.personal.UserActivity
 import com.technion.fitracker.utils.RecyclerViewDisableScroll
 import java.text.SimpleDateFormat
-import kotlin.collections.ArrayList
 
 
 class MeasurementsFragment : Fragment() {
@@ -49,6 +45,7 @@ class MeasurementsFragment : Fragment() {
     lateinit var adapter: MeasurementsRecyclerViewAdapter
     lateinit var placeHolder: TextView
     lateinit var measurementsContainer: MaterialCardView
+    lateinit var fab: ExtendedFloatingActionButton
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
     val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
 
@@ -93,18 +90,38 @@ class MeasurementsFragment : Fragment() {
             startActivity(activity)
             true
         }
-        view.findViewById<ExtendedFloatingActionButton>(R.id.measurements_fab).setOnClickListener {
-            (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment,false,true,true)
+        fab = view.findViewById<ExtendedFloatingActionButton>(R.id.measurements_fab).apply {
+            setOnClickListener {
+                (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment, false, true, true)
+            }
         }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
         measurementsContainer.visibility = View.GONE
         val rec_view = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
         rec_view.layoutManager = LinearLayoutManager(context)
-        adapter = MeasurementsRecyclerViewAdapter(names,values)
+        adapter = MeasurementsRecyclerViewAdapter(names, values)
         rec_view.adapter = adapter
-        rec_view.addItemDecoration(DividerItemDecoration(context,
-                DividerItemDecoration.VERTICAL))
+        rec_view.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         rec_view.addOnItemTouchListener(RecyclerViewDisableScroll())
+        rec_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                } else if (dy < 0) {
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         placeHolder = view.findViewById(R.id.measurements_placeholder)
     }
 
@@ -163,17 +180,14 @@ class MeasurementsFragment : Fragment() {
     }
 
     private fun ifAllEmpty() {
-        if (values.isEmpty()){
+        if (values.isEmpty()) {
             placeHolder.visibility = View.VISIBLE
             measurementsContainer.visibility = View.GONE
-        }
-        else{
+        } else {
             placeHolder.visibility = View.GONE
             measurementsContainer.visibility = View.VISIBLE
         }
     }
-
-
 
 
 }

@@ -83,6 +83,20 @@ class NutritionAddMealFragment: Fragment(), View.OnClickListener {
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.add_meal_recview)
         recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                } else if (dy < 0) {
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         val onClickListener = View.OnClickListener {
             val recView = it.tag as RecyclerView.ViewHolder
             val pos = recView.adapterPosition

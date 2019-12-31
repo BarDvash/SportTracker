@@ -47,6 +47,20 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         recyclerView = view.findViewById(R.id.workouts_rec_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                } else if (dy < 0) {
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         val uid = mAuth.currentUser?.uid
         placeholder = view.findViewById(R.id.no_workout_placeholder)
         val query = firestore

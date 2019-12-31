@@ -49,6 +49,7 @@ class HomeScreenFragment : Fragment() {
         recyclerView.addItemDecoration(DividerItemDecoration(context,
                                                              DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         val uid = firebaseAuth.currentUser?.uid
 
         val query = firebaseFirestore
