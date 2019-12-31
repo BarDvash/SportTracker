@@ -2,19 +2,27 @@ package com.technion.fitracker.user.personal.nutrition
 
 
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.ActivityAddMealBinding
-import com.technion.fitracker.models.nutrition.AddMealViewModel
-import com.technion.fitracker.user.Meal
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.gms.common.util.IOUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.ActivityAddMealBinding
+import com.technion.fitracker.models.nutrition.AddMealViewModel
+import com.technion.fitracker.models.nutrition.jsonDBModel
+import com.technion.fitracker.user.Meal
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.StringWriter
+import java.util.*
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 
 class NutritionAddMealActivity : AppCompatActivity() {
@@ -50,6 +58,8 @@ class NutritionAddMealActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         navController = Navigation.findNavController(findViewById(R.id.add_meal_fragment_navigation))
+
+
     }
 
 
@@ -77,11 +87,12 @@ class NutritionAddMealActivity : AppCompatActivity() {
         if (currentFragmentName == "fragment_add_meal") {
 //            viewModel.writeToDB(updateData,db,auth)
             finish()
-        }
-        else
+        } else
             navController.popBackStack()
         return true
     }
+
+
 
     private fun showWarning() {
         MaterialAlertDialogBuilder(this)
@@ -99,28 +110,29 @@ class NutritionAddMealActivity : AppCompatActivity() {
                 }.show()
     }
 
-    fun writeToDB(updateData:Boolean) {
-        val data = Meal(viewModel.editTextMealName.value,viewModel.data)
+    fun writeToDB(updateData: Boolean) {
+        val data = Meal(viewModel.editTextMealName.value, viewModel.data)
         if (!updateData) {
             db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
                 //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
             }
-        }
-        else {
-            db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").document(viewModel.docId!!).set(data).addOnSuccessListener {
-                //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
-            }.addOnFailureListener {
+        } else {
+            db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").document(viewModel.docId!!).set(data)
+                    .addOnSuccessListener {
+                        //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener {
                 //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     fun deleteFromDB() {
-        db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").document(viewModel.docId!!).delete().addOnSuccessListener {
-            //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
+        db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").document(viewModel.docId!!).delete()
+                .addOnSuccessListener {
+                    //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
             //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
         }
     }
