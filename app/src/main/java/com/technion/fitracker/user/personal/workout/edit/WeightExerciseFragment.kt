@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -19,6 +21,7 @@ import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 class WeightExerciseFragment : Fragment(), View.OnClickListener {
     lateinit var addExercise: FloatingActionButton
     lateinit var viewModel: CreateNewExerciseViewModel
+    lateinit var nameEditText: AutoCompleteTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,10 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         addExercise = view.findViewById(R.id.weight_done_fab)
         addExercise.setOnClickListener(this)
+        nameEditText = view.findViewById(R.id.weight_name_input)
+        val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        nameEditText.setAdapter(adapter)
+        nameEditText.threshold = 1
     }
 
     override fun onClick(v: View?) {

@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import com.technion.fitracker.R
 import com.technion.fitracker.databinding.ActivityEditAerobicExerciseBinding
+import com.technion.fitracker.models.nutrition.jsonDBModel
 import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
+import java.util.*
 
 class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: CreateNewExerciseViewModel
@@ -31,7 +36,11 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(findViewById(R.id.edit_aerobic_toolbar))
         supportActionBar?.title = "Edit exercise"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        initDB()
+        val nameEditText = findViewById<AutoCompleteTextView>(R.id.aerobic_edit_name_input)
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        nameEditText.setAdapter(adapter)
+        nameEditText.threshold = 1
         intent.apply {
             viewModel.aerobic_name.value = getStringExtra("name")
             viewModel.aerobic_duration.value = getStringExtra("duration")
@@ -43,6 +52,17 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
         cacheViewModelValues()
         aerobic_edit_done_fab = findViewById(R.id.aerobic_edit_done_fab)
         aerobic_edit_done_fab.setOnClickListener(this)
+    }
+
+    private fun initDB() {
+        val stream = this.assets.open("exercises.json")
+        val s = Scanner(stream).useDelimiter("\\A")
+        val json = if (s.hasNext()) {
+            s.next()
+        } else {
+            ""
+        }
+        viewModel.exerciseDB = Gson().fromJson(json, jsonDBModel::class.java).array
     }
 
     private fun cacheViewModelValues() {

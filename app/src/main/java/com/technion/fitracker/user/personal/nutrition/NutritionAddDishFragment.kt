@@ -166,7 +166,7 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
 
 
     private fun initDB() {
-        val stream = context!!.assets.open("db.json")
+        val stream = context!!.assets.open("dishes.json")
         val s = Scanner(stream).useDelimiter("\\A")
         val json = if (s.hasNext()) {
             s.next()

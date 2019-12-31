@@ -30,4 +30,6 @@ class CreateNewExerciseViewModel : ViewModel() {
     @Bindable
     val weight_notes = MutableLiveData<String>()
 
+    var exerciseDB: Array<String> = arrayOf()
+
 }
