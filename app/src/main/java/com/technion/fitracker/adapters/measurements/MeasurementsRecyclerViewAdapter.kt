@@ -33,4 +33,5 @@ class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, priv
         val name : TextView = view.findViewById(R.id.measurements_ele_name)
         val data: TextView = view.findViewById(R.id.measurements_ele_data)
     }
+
 }
