@@ -47,18 +47,15 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/last_measure_container"
-                style="@style/Widget.MaterialComponents.CardView"
+                style="@style/materialCardRounded"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="#00644747">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,6 +65,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/primaryDarkColor"
                         android:orientation="horizontal">
 
                         <TextView
@@ -75,7 +73,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@color/primaryColor"
                             android:paddingStart="8dp"
                             android:paddingLeft="8dp"
                             android:text="Last Measurement:"
