@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/customers_title"
@@ -16,21 +17,68 @@
             android:text="@string/customers_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
+            android:textColor="@color/light_font"
+            android:shadowColor="@color/text_shadow"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_customer_btn"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/customers_rec_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/customers_title"
+            app:layout_constraintVertical_bias="0.35"
+            tools:background="#e3e3e3"
+            tools:itemCount="5"
+            tools:listitem="@layout/element_customer"
+            tools:orientation="horizontal"
+            tools:scrollbars="horizontal" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/customers_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
-            app:srcCompat="@drawable/ic_add_white_36dp"
+            android:focusable="true"
+            android:text="@string/add_customer"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_add_white_36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/no_customers_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_customers_list_hint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:focusable="true" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
+
+
+
+
+
+
+

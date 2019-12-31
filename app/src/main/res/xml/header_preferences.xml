@@ -14,33 +14,6 @@
   ~ limitations under the License.
   -->
 
-<!---
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <Preference
-        app:fragment="com.technion.fitracker.SettingsActivity$MessagesFragment"
-        app:icon="@drawable/messages"
-        app:key="messages_header"
-        app:title="@string/messages_header" />
-
-    <Preference
-        app:fragment="com.technion.fitracker.SettingsActivity$SyncFragment"
-        app:icon="@drawable/sync"
-        app:key="sync_header"
-        app:title="@string/sync_header" />
-
-    <Preference
-        app:fragment="com.technion.fitracker.SettingsActivity$AboutFragment"
-        app:icon="@drawable/ic_help_outline_black_24dp"
-        app:key="about_header"
-        app:title="@string/about_header" />
-
-
-
-</PreferenceScreen>
- -->
-
-
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
