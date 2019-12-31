@@ -19,6 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.technion.fitracker.models.nutrition.jsonDBModel
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class NutritionAddDishFragment : Fragment(), View.OnClickListener {
 
@@ -28,6 +33,8 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
     lateinit var viewModel: AddMealViewModel
     lateinit var placeHolder: TextView
+
+    var foodDb: Array<String> = arrayOf("")
 
     private var isEditing = false
     private var editPos = -1
@@ -60,7 +67,7 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-
+        initDB()
         placeHolder = view.findViewById(R.id.dish_fragment_placeholder)
         val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.fab_on_add_dish)
         fab.setOnClickListener(this)
@@ -95,7 +102,13 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
             val dial = Dialog(context!!, R.style.WideDialog)
             dial.setContentView(R.layout.nutrition_add_optional_dish)
             dial.setTitle(getString(R.string.edit_dish))
-            val nameEditText = dial.findViewById<EditText>(R.id.dish_name_edittext)
+
+
+            val nameEditText = dial.findViewById<AutoCompleteTextView>(R.id.dish_name_edittext)
+            val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, foodDb)
+            nameEditText.setAdapter(adapter)
+            nameEditText.threshold = 1
+
             val countEditText = dial.findViewById<EditText>(R.id.dish_count_edittext)
             val oldName = Editable.Factory.getInstance().newEditable(names[pos])
             nameEditText.text = Editable.Factory.getInstance().newEditable(names[pos])
@@ -139,11 +152,27 @@ class NutritionAddDishFragment : Fragment(), View.OnClickListener {
     }
 
 
+    private fun initDB() {
+        val stream = context!!.assets.open("db.json")
+        val s = Scanner(stream).useDelimiter("\\A")
+        val json = if (s.hasNext()) {
+            s.next()
+        } else {
+            ""
+        }
+        foodDb  = Gson().fromJson(json, jsonDBModel::class.java).array
+    }
+
     private fun switchToAddActivity() {
         val dial = Dialog(context!!, R.style.WideDialog)
         dial.setContentView(R.layout.nutrition_add_optional_dish)
         dial.setTitle(getString(R.string.add_dish))
-        val nameEditText = dial.findViewById<EditText>(R.id.dish_name_edittext)
+
+        val nameEditText = dial.findViewById<AutoCompleteTextView>(R.id.dish_name_edittext)
+        val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, foodDb)
+        nameEditText.setAdapter(adapter)
+        nameEditText.threshold = 1
+
         val countEditText = dial.findViewById<EditText>(R.id.dish_count_edittext)
         val addButton = dial.findViewById<Button>(R.id.dish_add)
         val deleteButton = dial.findViewById<Button>(R.id.dish_delete)
