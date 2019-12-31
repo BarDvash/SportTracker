@@ -109,4 +109,6 @@
     <string name="title_activity_settings">Settings</string>
     <string name="credits_header">Credits</string>
     <string name="doubleDot">:</string>
+    <string name="add_customer">add client</string>
+    <string name="empty_customers_list_hint">There are no customers added yet!\\nUse + button to add your first customer.</string>
 </resources>
