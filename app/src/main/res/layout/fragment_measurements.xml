@@ -73,9 +73,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:paddingStart="8dp"
                             android:paddingLeft="8dp"
-                            android:text="Last Measurement:"
+                            android:text="Last Measurement"
                             android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
