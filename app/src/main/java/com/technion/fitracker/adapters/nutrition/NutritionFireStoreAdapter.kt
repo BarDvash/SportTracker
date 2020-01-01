@@ -1,18 +1,10 @@
 package com.technion.fitracker.adapters.nutrition
 
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter.ViewHolder
-import com.technion.fitracker.models.exercise.AerobicExerciseModel
-import com.technion.fitracker.models.exercise.ExerciseBaseModel
-import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
-import com.technion.fitracker.user.Meal
-import com.technion.fitracker.user.personal.nutrition.NutritionFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -21,7 +13,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
-import java.lang.StringBuilder
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter.ViewHolder
+import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
+import com.technion.fitracker.user.Meal
+import com.technion.fitracker.user.personal.nutrition.NutritionFragment
+import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 
 class NutritionFireStoreAdapter(
     options: FirestoreRecyclerOptions<NutritionFireStoreModel>,
@@ -56,7 +53,7 @@ class NutritionFireStoreAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: NutritionFireStoreModel) {
         holder.name.text = item.name
-        holder.overlay.setOnClickListener{
+        holder.overlay.setOnClickListener {
             holder.view.callOnClick()
         }
         firestore.collection("regular_users").document(auth.currentUser!!.uid).collection("meals")
@@ -92,9 +89,11 @@ class NutritionFireStoreAdapter(
             counts.add(sbCount.toString().substringBeforeLast('\n'))
         }
         holder.recView.apply {
-            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(holder.recView.context)
             adapter = NutritionNestedAdapter(names, counts)
+            addItemDecoration(
+                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+            )
         }
     }
 

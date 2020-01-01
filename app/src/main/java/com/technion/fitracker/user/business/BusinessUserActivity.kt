@@ -1,16 +1,11 @@
 package com.technion.fitracker.user.business
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.SettingsActivity
-import com.technion.fitracker.login.LoginActivity
-import com.technion.fitracker.user.User
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
@@ -22,6 +17,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.SettingsActivity
+import com.technion.fitracker.login.LoginActivity
+import com.technion.fitracker.user.User
 
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -59,9 +58,9 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         }
         findViewById<BottomNavigationView>(R.id.business_bottom_navigation).setOnNavigationItemSelectedListener(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(idToken)
-            .requestEmail()
-            .build()
+                .requestIdToken(idToken)
+                .requestEmail()
+                .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
     }
@@ -89,9 +88,9 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
             R.id.business_user_menu_logout_ac -> {
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()
-                    .addOnCompleteListener(this) {
-                        startLoginActivity()
-                    }
+                        .addOnCompleteListener(this) {
+                            startLoginActivity()
+                        }
                 true
             }
 
@@ -100,7 +99,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 true
             }
 
-            R.id.business_user_menu_settings_ac-> {
+            R.id.business_user_menu_settings_ac -> {
                 val userHome = Intent(applicationContext, SettingsActivity::class.java)
                 startActivity(userHome)
                 true

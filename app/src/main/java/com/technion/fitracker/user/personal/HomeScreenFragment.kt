@@ -2,9 +2,6 @@ package com.technion.fitracker.user.personal
 
 
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
-import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +17,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
+import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
+import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 
 
 class HomeScreenFragment : Fragment() {
@@ -46,8 +47,10 @@ class HomeScreenFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
         recyclerView = view.findViewById(R.id.last_workouts_recycler)
-        recyclerView.addItemDecoration(DividerItemDecoration(context,
-                                                             DividerItemDecoration.VERTICAL))
+        recyclerView.addItemDecoration(
+            RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+        )
+        recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = LinearLayoutManager(context)
         val uid = firebaseAuth.currentUser?.uid
 

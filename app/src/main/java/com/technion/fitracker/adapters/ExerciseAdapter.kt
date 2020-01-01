@@ -1,17 +1,14 @@
 package com.technion.fitracker.adapters
 
-import com.technion.fitracker.R
-import com.technion.fitracker.models.exercise.AerobicExerciseModel
-import com.technion.fitracker.models.exercise.ExerciseBaseModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
-
-
+import com.technion.fitracker.R
+import com.technion.fitracker.models.exercise.AerobicExerciseModel
+import com.technion.fitracker.models.exercise.ExerciseBaseModel
 
 
 class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -30,8 +27,9 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         var repetitions: TextView = view.findViewById(R.id.weight_element_repetitions)
         var rest: TextView = view.findViewById(R.id.weight_element_rest)
         var notes: TextView = view.findViewById(R.id.weight_element_notes)
+
         init {
-            view.setTag(this)
+            view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
     }
@@ -43,8 +41,9 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
         var speed: TextView = view.findViewById(R.id.aerobic_element_speed)
         var intensity: TextView = view.findViewById(R.id.aerobic_element_intensity)
         var notes: TextView = view.findViewById(R.id.aerobic_element_notes)
+
         init {
-            view.setTag(this)
+            view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
     }
@@ -110,7 +109,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
 
         } else {
             (textView?.parent as LinearLayout).visibility = View.VISIBLE
-            textView?.text = field
+            textView.text = field
         }
     }
 

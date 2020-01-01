@@ -32,14 +32,27 @@
             app:icon="@drawable/ic_add_white_36dp"
             android:focusable="true" />
 
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/add_dish_recview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_add_dish_toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/activity_add_dish_toolbar"
@@ -49,13 +62,13 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ToolbarTheme"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:menu="@menu/dish_fragment_menu"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:subtitleTextColor="@android:color/white"
-            app:titleTextColor="@android:color/white"/>
+            app:titleTextColor="@android:color/white" />
 
         <TextView
             android:id="@+id/dish_fragment_placeholder"
@@ -66,6 +79,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/add_dish_recview" />
+
+        <TextView
+            android:id="@+id/textView16"
+            style="@style/user_fragment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Options"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_add_dish_toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -39,7 +39,7 @@
     <string name="empty_dish_list_hint">There are no options added yet!\nUse + button to add first dish option.</string>
     <string name="empty_meal_list_hint">There are no dishes added yet!\nUse + button to add first dish.</string>
     <string name="empty_measurements_list_hint">There are no measurements added yet!\nUse + button to add first measurement.</string>
-    <string name="empty_nutrition_list_hint">There are no nutrition menus added yet!\nUse + button to add first nutrition menu.</string>
+    <string name="empty_nutrition_list_hint">There are no meals in your nutrition menu yet!\nUse + button to add first meal.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="duration_hint">Duration</string>
     <string name="speed_hint">Speed</string>
@@ -54,7 +54,7 @@
     <string name="description_hint">Description</string>
     <string name="save">Save</string>
     <string name="add_meal_title">Add meal</string>
-    <string name="add_new_dish">Add new dish option</string>
+    <string name="add_new_dish">Add new dish</string>
     <string name="search_hint">Search users</string>
     <string name="search_users_tab">users</string>
     <string name="search_trainers_tab">trainers</string>
@@ -64,7 +64,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="name_shouldnt_be_empty">Name should not be empty</string>
-    <string name="add_dish">Add a new dish</string>
+    <string name="add_dish">Add new option</string>
     <string name="edit_meal">Edit the meal</string>
     <string name="edit_dish">Edit the dish</string>
     <string name="share">Share</string>
@@ -87,7 +87,7 @@
     <string name="weight_">Weight:</string>
     <string name="add_dish_option">Add dish option</string>
     <string name="add_dish_c">Add dish</string>
-    <string name="last_workouts">Last workouts:</string>
+    <string name="last_workouts">Last workouts</string>
     <string name="add_measure">Add measure</string>
     <string name="add_meal">Add meal</string>
     <string name="add_workout">Add workout</string>
@@ -102,7 +102,7 @@
     <string name="time_elapsed">Time elapsed:</string>
     <string name="how_did_you_feel">How did you feel?</string>
     <string name="name">Name</string>
-    <string name="count">Count</string>
+    <string name="count"><Quantity></Quantity></string>
     <string name="dot">•</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>

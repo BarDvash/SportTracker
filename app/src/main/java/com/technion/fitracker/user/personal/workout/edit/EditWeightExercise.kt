@@ -2,18 +2,23 @@ package com.technion.fitracker.user.personal.workout.edit
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.ActivityEditWeightExerciseBinding
-import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.ActivityEditWeightExerciseBinding
+import com.technion.fitracker.models.nutrition.jsonDBModel
+import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
+import java.util.*
 
 class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
     private lateinit var viewModel: CreateNewExerciseViewModel
@@ -31,6 +36,10 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(findViewById(R.id.edit_weight_toolbar))
         supportActionBar?.title = "Edit exercise"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        initDB()
+        val nameEditText = findViewById<AutoCompleteTextView>(R.id.weight_edit_name_input)
+        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        nameEditText.setAdapter(adapter)
         intent.apply {
             viewModel.weight_name.value = getStringExtra("name")
             viewModel.weight_weight.value = getStringExtra("weight")
@@ -40,9 +49,21 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
             viewModel.weight_notes.value = getStringExtra("notes")
             index = getIntExtra("index", 0)
         }
+
         cacheViewModelValues()
         weightEditDoneFab = findViewById(R.id.weight_edit_done_fab)
         weightEditDoneFab.setOnClickListener(this)
+    }
+
+    private fun initDB() {
+        val stream = this.assets.open("exercises.json")
+        val s = Scanner(stream).useDelimiter("\\A")
+        val json = if (s.hasNext()) {
+            s.next()
+        } else {
+            ""
+        }
+        viewModel.exerciseDB = Gson().fromJson(json, jsonDBModel::class.java).array
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

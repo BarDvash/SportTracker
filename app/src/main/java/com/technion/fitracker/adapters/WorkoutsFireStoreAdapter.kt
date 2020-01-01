@@ -1,11 +1,5 @@
 package com.technion.fitracker.adapters
 
-import com.technion.fitracker.R
-
-import com.technion.fitracker.models.WorkoutFireStoreModel
-import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
-import com.technion.fitracker.user.personal.nutrition.NutritionFragment
-import com.technion.fitracker.user.personal.workout.WorkoutsFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +7,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
+import com.technion.fitracker.models.WorkoutFireStoreModel
+import com.technion.fitracker.user.personal.workout.WorkoutsFragment
 
-class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>,val workoutsFragment: WorkoutsFragment) :
+class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val workoutsFragment: WorkoutsFragment) :
         FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
     var mOnItemClickListener: View.OnClickListener? = null
@@ -24,7 +22,7 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
         viewType: Int
     ): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.element_workout, parent, false)
+                .inflate(R.layout.element_workout, parent, false)
         return ViewHolder(view)
     }
 
@@ -48,11 +46,12 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
 
 
     inner class ViewHolder(view: View) :
-        RecyclerView.ViewHolder(view){
+            RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.workout_name)
         var desc: TextView = view.findViewById(R.id.workout_info)
+
         init {
-            view.setTag(this)
+            view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
 

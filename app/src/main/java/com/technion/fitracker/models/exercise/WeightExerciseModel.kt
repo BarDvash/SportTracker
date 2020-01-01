@@ -1,7 +1,5 @@
 package com.technion.fitracker.models.exercise
 
-import com.technion.fitracker.models.exercise.ExerciseBaseModel
-
 
 data class WeightExerciseModel(
     var name: String? = null,

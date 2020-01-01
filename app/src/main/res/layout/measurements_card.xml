@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:orientation="horizontal"
         android:paddingTop="2dp"
         android:paddingBottom="4dp"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="sans-serif"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Dish name" />
 
@@ -61,7 +62,7 @@
             android:layout_marginLeft="24dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/linearLayout5"
             app:layout_constraintTop_toTopOf="parent"

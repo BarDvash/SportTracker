@@ -66,29 +66,30 @@
                 android:id="@+id/create_workout_desc_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={newWorkoutViewModel.workout_desc}"/>
+                android:text="@={newWorkoutViewModel.workout_desc}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/no_workouts_hint"
             android:layout_width="283dp"
             android:layout_height="42dp"
+            android:layout_marginTop="128dp"
             android:hint="@string/empty_workout_list_hint"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/create_workout_toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/create_workout_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout"
+            app:layout_constraintTop_toBottomOf="@+id/divider9"
             app:layout_constraintVertical_bias="1.0"
             tools:itemCount="2"
             tools:listitem="@layout/element_weight_workout" />
@@ -107,6 +108,26 @@
             app:icon="@drawable/ic_add_white_36dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/textView19"
+            style="@style/user_fragment_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Exercises"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout" />
+
+        <View
+            android:id="@+id/divider9"
+            android:layout_width="409dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

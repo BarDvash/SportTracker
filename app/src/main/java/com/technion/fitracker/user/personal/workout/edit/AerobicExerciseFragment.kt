@@ -3,17 +3,19 @@ package com.technion.fitracker.user.personal.workout.edit
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.databinding.FragmentAerobicExerciseBinding
-import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.technion.fitracker.R
+import com.technion.fitracker.databinding.FragmentAerobicExerciseBinding
+import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 
 
 class AerobicExerciseFragment : Fragment(), View.OnClickListener {
@@ -41,7 +43,10 @@ class AerobicExerciseFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         addExercise = view.findViewById(R.id.aerobic_done_fab)
         addExercise.setOnClickListener(this)
-
+        val nameEditText = view.findViewById<AutoCompleteTextView>(R.id.aerobic_name_input)
+        val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        nameEditText.setAdapter(adapter)
+        nameEditText.threshold = 1
     }
 
 

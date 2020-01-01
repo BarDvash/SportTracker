@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/card3"
-        style="@style/Widget.MaterialComponents.CardView"
+    style="@style/materialCardRounded"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -13,13 +13,10 @@
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="10dp"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="#00644747">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +39,7 @@
                 android:fontFamily="sans-serif"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Dish name" />
 
@@ -59,17 +56,6 @@
                 app:layout_constraintStart_toEndOf="@+id/nutrition_meal_name"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="49 kg" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/dot"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

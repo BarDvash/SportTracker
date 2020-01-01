@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/empty_measurements_list_hint"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,18 +48,15 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/last_measure_container"
-                style="@style/Widget.MaterialComponents.CardView"
+                style="@style/materialCardRounded"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:strokeColor="#00644747">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,6 +66,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/primaryDarkColor"
                         android:orientation="horizontal">
 
                         <TextView
@@ -75,10 +74,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@color/primaryColor"
+                            android:gravity="center"
                             android:paddingStart="8dp"
                             android:paddingLeft="8dp"
-                            android:text="Last Measurement:"
+                            android:text="Last Measurement"
                             android:textColor="@android:color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -88,7 +87,18 @@
                         android:id="@+id/measurements_rec_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/measurements_card"/>
+                        tools:listitem="@layout/measurements_card">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/fragment_measurements_data"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:padding="5dp"
+                        android:text="@{viewmodel.textViewDate}"
+                        tools:text="2019/10/12 19.00" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

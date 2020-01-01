@@ -3,24 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card"
-    style="@style/Widget.MaterialComponents.CardView"
+    style="@style/materialCardRounded"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginLeft="8dp"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="16dp"
     android:layout_marginEnd="8dp"
     android:layout_marginRight="8dp"
     android:clickable="true"
     android:focusable="true"
-    android:minHeight="100dp"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="10dp"
+    android:minHeight="75dp"
     app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:strokeColor="#00644747">
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -32,45 +29,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/workout_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif"
-            android:textSize="18sp"
-
-            android:textStyle="bold"
+            android:background="@color/primaryDarkColor"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Workout Name" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/workout_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:fontFamily="sans-serif"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Workout Name" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/workout_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider2"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
             tools:text="Workout info" />
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="6dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/workout_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

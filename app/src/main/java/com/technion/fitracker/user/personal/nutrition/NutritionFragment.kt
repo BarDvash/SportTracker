@@ -2,29 +2,24 @@ package com.technion.fitracker.user.personal.nutrition
 
 
 import android.content.Intent
-import android.database.DataSetObserver
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
-import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.databinding.ObservableArrayList
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.textview.MaterialTextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
+import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
 
 /**
  * A simple [Fragment] subclass.
@@ -35,7 +30,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var nutrition_recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>
     lateinit var fab: ExtendedFloatingActionButton
-    public lateinit var placeholder: TextView
+    lateinit var placeholder: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +49,20 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         nutrition_recyclerView = view.findViewById(R.id.nutrition_rec_view)
         nutrition_recyclerView.setHasFixedSize(true)
         nutrition_recyclerView.layoutManager = LinearLayoutManager(context)
+        nutrition_recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                } else if (dy < 0) {
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         placeholder = view.findViewById(R.id.nutrition_placeholder)
         val uid = mAuth.currentUser?.uid
         val query =
@@ -76,10 +85,10 @@ class NutritionFragment : Fragment(), View.OnClickListener {
                         startActivity(userHome)
                     }.addOnFailureListener {
 
-            }
+                    }
 
         }
-        adapter = NutritionFireStoreAdapter(options, onClickListener,this)
+        adapter = NutritionFireStoreAdapter(options, onClickListener, this)
         nutrition_recyclerView.adapter = adapter
     }
 

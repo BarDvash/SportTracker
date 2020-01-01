@@ -3,17 +3,8 @@ package com.technion.fitracker.user.personal.workout
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.ExerciseAdapter
-import com.technion.fitracker.databinding.FragmentWorkoutStartScreenBinding
-import com.technion.fitracker.models.exercise.AerobicExerciseModel
-import com.technion.fitracker.models.exercise.ExerciseBaseModel
-import com.technion.fitracker.models.exercise.WeightExerciseModel
-import com.technion.fitracker.models.workouts.WorkoutStartViewModel
-import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 import android.util.Log
 import android.view.*
-import android.widget.Chronometer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,6 +18,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.ExerciseAdapter
+import com.technion.fitracker.databinding.FragmentWorkoutStartScreenBinding
+import com.technion.fitracker.models.exercise.AerobicExerciseModel
+import com.technion.fitracker.models.exercise.ExerciseBaseModel
+import com.technion.fitracker.models.exercise.WeightExerciseModel
+import com.technion.fitracker.models.workouts.WorkoutStartViewModel
+import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 
 
 class WorkoutStartScreen : Fragment(), View.OnClickListener {
@@ -36,7 +35,6 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
     private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var navController: NavController
     private lateinit var viewAdapter: ExerciseAdapter
-
 
 
     lateinit var mAuth: FirebaseAuth
@@ -74,6 +72,20 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) {
+                        if (fab.isShown) {
+                            fab.hide()
+                        }
+                    } else if (dy < 0) {
+                        if (!fab.isShown) {
+                            fab.show()
+                        }
+                    }
+                }
+            })
         }!!
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -172,8 +184,8 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
     private fun deleteWorkoutFromDB() {
         firestore.collection("regular_users").document(mAuth.currentUser?.uid!!).collection("workouts")
                 .document(viewModel.workoutID.value!!).delete().addOnSuccessListener {
-            Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot deleted with ID: " + viewModel.workoutID.value)
-        }
+                    Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot deleted with ID: " + viewModel.workoutID.value)
+                }
                 .addOnFailureListener { e -> Log.w(FragmentActivity.VIBRATOR_SERVICE, "Error deleting document", e) }
     }
 

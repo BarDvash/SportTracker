@@ -1,6 +1,7 @@
 package com.technion.fitracker.models
 
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -23,5 +24,8 @@ class UserViewModel : ViewModel() {
 
     @Bindable
     val editTextBiceps = MutableLiveData<String>()
+
+    @Bindable
+    val textViewDate = ObservableField("")
 
 }

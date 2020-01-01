@@ -1,17 +1,16 @@
 package com.technion.fitracker.user.personal.measurements
 
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter
-import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter
+import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
 
 
 class MeasurementsHistoryActivity : AppCompatActivity() {

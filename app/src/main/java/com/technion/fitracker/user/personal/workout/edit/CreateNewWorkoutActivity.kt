@@ -2,15 +2,6 @@ package com.technion.fitracker.user.personal.workout.edit
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.ExerciseAdapter
-import com.technion.fitracker.databinding.ActivityCreateNewWorkoutBinding
-import com.technion.fitracker.models.exercise.AerobicExerciseModel
-import com.technion.fitracker.models.exercise.ExerciseBaseModel
-import com.technion.fitracker.models.exercise.WeightExerciseModel
-import com.technion.fitracker.models.workouts.CreateWorkoutViewModel
-import com.technion.fitracker.user.personal.workout.WorkoutStarter
-import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity.ResultCodes.*
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -27,6 +18,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.ExerciseAdapter
+import com.technion.fitracker.databinding.ActivityCreateNewWorkoutBinding
+import com.technion.fitracker.models.exercise.AerobicExerciseModel
+import com.technion.fitracker.models.exercise.ExerciseBaseModel
+import com.technion.fitracker.models.exercise.WeightExerciseModel
+import com.technion.fitracker.models.workouts.CreateWorkoutViewModel
+import com.technion.fitracker.user.personal.workout.WorkoutStarter
+import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity.ResultCodes.*
 
 
 class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
@@ -101,6 +101,20 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy > 0) {
+                        if (fab.isShown) {
+                            fab.hide()
+                        }
+                    } else if (dy < 0) {
+                        if (!fab.isShown) {
+                            fab.show()
+                        }
+                    }
+                }
+            })
 
         }
         fab = findViewById(R.id.add_exercise_fab)

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card4"
-    style="@style/Widget.MaterialComponents.CardView"
+    style="@style/materialCardRounded"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -13,13 +13,11 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="10dp"
     app:layout_constraintBottom_toTopOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:strokeColor="#00644747">
+    >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -200,15 +198,23 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="• Weight:" />
 
-        <TextView
-            android:id="@+id/measurements_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="test" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryDarkColor"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/measurements_date"
+                style="@style/user_fragment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="test" />
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

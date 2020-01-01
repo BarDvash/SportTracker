@@ -3,10 +3,6 @@ package com.technion.fitracker.user.personal.workout
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
-import com.technion.fitracker.models.WorkoutFireStoreModel
-import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +17,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.technion.fitracker.R
+import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
+import com.technion.fitracker.models.WorkoutFireStoreModel
+import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 
 
 class WorkoutsFragment : Fragment(), View.OnClickListener {
@@ -30,7 +30,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
     private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>
-    public lateinit var placeholder: TextView
+    lateinit var placeholder: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +47,20 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         recyclerView = view.findViewById(R.id.workouts_rec_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    if (fab.isShown) {
+                        fab.hide()
+                    }
+                } else if (dy < 0) {
+                    if (!fab.isShown) {
+                        fab.show()
+                    }
+                }
+            }
+        })
         val uid = mAuth.currentUser?.uid
         placeholder = view.findViewById(R.id.no_workout_placeholder)
         val query = firestore

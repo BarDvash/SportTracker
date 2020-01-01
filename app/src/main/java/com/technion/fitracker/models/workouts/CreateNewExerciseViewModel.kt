@@ -4,7 +4,7 @@ import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class CreateNewExerciseViewModel : ViewModel(){
+class CreateNewExerciseViewModel : ViewModel() {
 
     @Bindable
     val aerobic_name = MutableLiveData<String>()
@@ -29,5 +29,7 @@ class CreateNewExerciseViewModel : ViewModel(){
     val weight_rest = MutableLiveData<String>()
     @Bindable
     val weight_notes = MutableLiveData<String>()
+
+    var exerciseDB: Array<String> = arrayOf()
 
 }
