@@ -20,6 +20,7 @@ import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
+import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 
 
 class HomeScreenFragment : Fragment() {
@@ -47,10 +48,7 @@ class HomeScreenFragment : Fragment() {
         firebaseFirestore = FirebaseFirestore.getInstance()
         recyclerView = view.findViewById(R.id.last_workouts_recycler)
         recyclerView.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
+            RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
         )
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = LinearLayoutManager(context)
