@@ -20,9 +20,13 @@
         app:icon = "@drawable/ic_copyright_24dp">
 
         <Preference
-            app:summary="Icon made by Freepik from www.flaticon.com" />
+            app:summary="Icons made by Freepik from www.flaticon.com" />
         <Preference
-            app:summary="Icon made by Icongeek26 from www.flaticon.com" />
+            app:summary="Icons made by Icongeek26 from www.flaticon.com" />
+        <Preference
+            app:summary="Icons made by Gregor Cresnar from www.flaticon.com" />
+        <Preference
+            app:summary="Icons made by Vectors Market from www.flaticon.com" />
 
 
     </PreferenceCategory>

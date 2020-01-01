@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.technion.fitracker.R
 import com.technion.fitracker.user.User
 import com.technion.fitracker.user.business.BusinessUserActivity
-import com.technion.fitracker.user.personal.UserActivity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -84,7 +83,7 @@ class SignUpBusinessFragment : Fragment(), View.OnClickListener {
             .addOnCompleteListener(activity!!) { task ->
                 if (task.isSuccessful) {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
-                    val user = User(name = userProvidedName, phone = phone)
+                    val user = User(name = userProvidedName, phone = phone, uid = uid, type = "business")
                     firestore.collection("business_users").document(uid!!).set(user).addOnSuccessListener {
                         startBusinessUserActivity()
                         signUpButton.isEnabled = true

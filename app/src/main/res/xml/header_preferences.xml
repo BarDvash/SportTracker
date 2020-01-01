@@ -16,6 +16,20 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        app:icon="@drawable/ic_account_circle_black_24dp"
+        app:key="account_category"
+        app:title="Account">
+
+        <Preference
+            app:key="Account_settings"
+            app:title="Account settings"
+            app:fragment="com.technion.fitracker.SettingsActivity$AboutFragment">
+        </Preference>
+
+
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         app:icon="@drawable/ic_security_24dp"

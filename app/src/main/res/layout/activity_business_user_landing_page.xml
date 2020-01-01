@@ -48,28 +48,49 @@
         app:layout_constraintTop_toBottomOf="@+id/search_result_landing_page_user_avatar"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="51dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="282dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.115"
+        app:layout_constraintStart_toEndOf="@+id/imageView7"
+        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
+        app:layout_constraintVertical_bias="0.025"
+        app:srcCompat="@drawable/ic_whatsapp_with_colors" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="50dp"
+        android:layout_height="42dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_result_landing_page_user_name"
+        app:layout_constraintVertical_bias="0.052"
+        app:srcCompat="@drawable/ic_email" />
 
     <Button
-        android:id="@+id/add_as_button"
+        android:id="@+id/button"
         android:layout_width="81dp"
         android:layout_height="49dp"
         android:layout_marginTop="278dp"
-        android:onClick="addAs"
+        android:text="add as trainer"
         android:textSize="10dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintEnd_toStartOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.848"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible" />
+        app:layout_constraintVertical_bias="0.039" />
 
     <TextView
         android:id="@+id/textView17"
         android:layout_width="130dp"
         android:layout_height="53dp"
-        android:layout_marginBottom="220dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

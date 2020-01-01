@@ -2,7 +2,6 @@ package com.technion.fitracker.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import com.technion.fitracker.R
 import com.technion.fitracker.user.User
 import com.technion.fitracker.user.business.BusinessUserActivity
@@ -140,7 +139,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
                         val uid = FirebaseAuth.getInstance().currentUser?.uid
                         val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
                         val user =
-                            User(name = auth.currentUser?.displayName, photoURL = photoUrl.toString())
+                            User(name = auth.currentUser?.displayName, photoURL = photoUrl.toString(), uid = uid, type = "regular")
                         firestore.collection("regular_users").document(uid!!).get().addOnCompleteListener {
                             val doc = it.result
                             if (doc?.exists()!!) {

@@ -1,10 +1,9 @@
 package com.technion.fitracker.adapters
 
-import android.app.Activity
+
 import android.content.Context
 import android.content.Intent
 import com.technion.fitracker.R
-import com.technion.fitracker.SearchableActivity
 import com.technion.fitracker.UserLandingPageActivity
 import com.technion.fitracker.models.SearchFireStoreModel
 import com.technion.fitracker.adapters.SearchFireStoreAdapter.ViewHolder
@@ -13,8 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -29,8 +26,7 @@ class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreMo
 
     var mOnItemClickListener: View.OnClickListener? = null
     var activity = input_activity
-    lateinit var user_name: String
-    lateinit var photo_url: String
+
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
@@ -67,6 +63,7 @@ class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreMo
                 val user_landing_page = Intent(holder.itemView.context, UserLandingPageActivity::class.java)
                 user_landing_page.putExtra("user_name", item.name)
                 user_landing_page.putExtra("photo_url", item?.photoURL)
+                user_landing_page.putExtra("uid", item?.uid)
                 holder.itemView.context.startActivity(user_landing_page)
             }
 

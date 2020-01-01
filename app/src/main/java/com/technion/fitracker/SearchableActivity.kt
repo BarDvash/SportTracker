@@ -9,9 +9,6 @@ import com.technion.fitracker.adapters.SearchFireStoreAdapter
 import com.technion.fitracker.models.SearchFireStoreModel
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,9 +26,7 @@ class SearchableActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
     lateinit var tab_layout: TabLayout
-    lateinit var onItemClickListener: View.OnClickListener
     lateinit var current_search_query: String
-    lateinit var searchWidget: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //calling the overridden onCreate function
