@@ -73,12 +73,12 @@
             android:id="@+id/no_workouts_hint"
             android:layout_width="283dp"
             android:layout_height="42dp"
+            android:layout_marginTop="128dp"
             android:hint="@string/empty_workout_list_hint"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/create_workout_toolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/create_workout_desc_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/create_workout_recycler"
