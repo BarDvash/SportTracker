@@ -57,10 +57,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
 
-            <View
-                android:id="@+id/overlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/nutrition_dishes_rec_view"
@@ -70,6 +67,11 @@
                 android:paddingBottom="5dp"
                 tools:itemCount="5"
                 tools:listitem="@layout/nutrition_detailed_card" />
+
+            <View
+                android:id="@+id/overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 

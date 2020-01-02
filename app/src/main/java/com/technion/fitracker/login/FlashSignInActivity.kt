@@ -1,14 +1,14 @@
 package com.technion.fitracker.login
 
 import android.content.Intent
-import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import android.os.Bundle
 import com.technion.fitracker.R
 import com.technion.fitracker.user.business.BusinessUserActivity
 import com.technion.fitracker.user.personal.UserActivity
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 class FlashSignInActivity : AppCompatActivity() {
@@ -24,15 +24,20 @@ class FlashSignInActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
 
         if (auth.currentUser != null) {
-            var regular_users_doc = firestore.collection("regular_users").document(auth.currentUser!!.uid)
-            var business_users_doc = firestore.collection("business_users").document(auth.currentUser!!.uid)
+            val regularUsersDoc = firestore.collection("regular_users").document(auth.currentUser!!.uid)
+            val businessUsersDoc = firestore.collection("business_users").document(auth.currentUser!!.uid)
 
-            regular_users_doc.get().addOnSuccessListener {
+            regularUsersDoc.get().addOnSuccessListener {
                 if (it.exists()) {
                     startUserActivity()
                 } else {
-                    business_users_doc.get().addOnSuccessListener {
-                        startBusinessUserActivity()
+                    businessUsersDoc.get().addOnSuccessListener {
+                        if (it.exists()) {
+                            startBusinessUserActivity()
+                        }
+                        else {
+                            startLoginActivity()
+                        }
                     }
                 }
             }.addOnFailureListener {
