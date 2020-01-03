@@ -42,7 +42,6 @@ class MeasurementsFragment : Fragment() {
     lateinit var view: FragmentMeasurementsBinding
     val names: ArrayList<String> = ArrayList()
     val values: ArrayList<String> = ArrayList()
-    lateinit var adapter: MeasurementsRecyclerViewAdapter
     lateinit var placeHolder: TextView
     lateinit var measurementsContainer: MaterialCardView
     lateinit var fab: ExtendedFloatingActionButton
@@ -97,18 +96,18 @@ class MeasurementsFragment : Fragment() {
         }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
         measurementsContainer.visibility = View.GONE
-        val rec_view = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
-        rec_view.layoutManager = LinearLayoutManager(context)
-        adapter = MeasurementsRecyclerViewAdapter(names, values)
-        rec_view.adapter = adapter
-        rec_view.addItemDecoration(
+        viewModel.measurementRV  = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
+        viewModel.measurementRV?.layoutManager = LinearLayoutManager(context)
+        viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values)
+        viewModel.measurementRV?.adapter = viewModel.measurementsRVAdapter
+        viewModel.measurementRV?.addItemDecoration(
             DividerItemDecoration(
                 context,
                 DividerItemDecoration.VERTICAL
             )
         )
-        rec_view.addOnItemTouchListener(RecyclerViewDisableScroll())
-        rec_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        viewModel.measurementRV?.addOnItemTouchListener(RecyclerViewDisableScroll())
+        viewModel.measurementRV?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
@@ -141,7 +140,7 @@ class MeasurementsFragment : Fragment() {
                         viewModel.textViewDate.set("")
                         names.clear()
                         values.clear()
-                        adapter.notifyDataSetChanged()
+                        viewModel.measurementsRVAdapter?.notifyDataSetChanged()
                         ifAllEmpty()
                     }
                 }
@@ -168,7 +167,7 @@ class MeasurementsFragment : Fragment() {
 //        viewModel.textViewData.value = newDateFormat.format(date!!)
         viewModel.textViewDate.set(newDateFormat.format(date!!))
 
-        adapter.notifyDataSetChanged()
+        viewModel.measurementsRVAdapter?.notifyDataSetChanged()
         ifAllEmpty()
     }
 

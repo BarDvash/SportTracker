@@ -33,7 +33,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var historyAction: MenuItem
     lateinit var addAction: MenuItem
-    lateinit var viewModel: ViewModel
+    lateinit var viewModel: UserViewModel
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
@@ -84,17 +84,30 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
+        val dest = navController.currentDestination?.label
         when (menuItem.itemId) {
             R.id.action_home -> {
+                if(dest == "HomeScreen"){
+                    return true
+                }
                 startFragmentAndPop(R.id.homeScreenFragment)
             }
             R.id.action_workouts -> {
+                if(dest == "fragment_workouts"){
+                    return true
+                }
                 startFragmentAndPop(R.id.workoutsFragment)
             }
             R.id.action_nutrition -> {
+                if(dest == "fragment_nutrition"){
+                    return true
+                }
                 startFragmentAndPop(R.id.nutritionFragment)
             }
             R.id.action_measurements -> {
+                if(dest == "fragment_measurements"){
+                    return true
+                }
                 startFragmentAndPop(R.id.measurementsFragment, true)
             }
         }
@@ -129,6 +142,14 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        //TODO: questionable, might be hurting performance ?
+        viewModel.homeAdapter?.stopListening()
+        viewModel.nutritionAdapter?.stopListening()
+        viewModel.workoutsAdapter?.stopListening()
     }
 
     private fun startLoginActivity() {
