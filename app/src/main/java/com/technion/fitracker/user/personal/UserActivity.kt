@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -45,6 +47,9 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setSupportActionBar(findViewById(R.id.user_toolbar))
         navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
         auth = FirebaseAuth.getInstance()
+        val userAvatar = findViewById<ImageView>(R.id.user_avatar)
+        val userName = findViewById<TextView>(R.id.user_name)
+        userName.animation = AnimationUtils.loadAnimation(this,R.anim.fab_transition)
         firestore = FirebaseFirestore.getInstance()
         if (auth.currentUser != null) {
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
@@ -59,10 +64,12 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             .skipMemoryCache(true) //2
                             .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                             .transform(CircleCrop()) //4
-                            .into(findViewById(R.id.user_avatar))
+                            .into(userAvatar)
+
                 }
             }
         }
+        userAvatar.animation = AnimationUtils.loadAnimation(this,R.anim.user_avatar_anim)
         findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(idToken)

@@ -1,18 +1,21 @@
 package com.technion.fitracker.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.card.MaterialCardView
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
 import com.technion.fitracker.models.WorkoutFireStoreModel
 import com.technion.fitracker.user.personal.workout.WorkoutsFragment
 
-class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val workoutsFragment: WorkoutsFragment) :
+class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val workoutsFragment: WorkoutsFragment, val mContext: Context) :
         FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
     var mOnItemClickListener: View.OnClickListener? = null
@@ -31,6 +34,7 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
         position: Int,
         item: WorkoutFireStoreModel
     ) {
+        holder.containter.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         holder.name.text = item.name
         holder.desc.text = item.desc
     }
@@ -47,6 +51,7 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
 
     inner class ViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
+        var containter: MaterialCardView = view.findViewById(R.id.card)
         var name: TextView = view.findViewById(R.id.workout_name)
         var desc: TextView = view.findViewById(R.id.workout_info)
 

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -34,6 +35,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
     lateinit var fab: ExtendedFloatingActionButton
     lateinit var placeholder: TextView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
@@ -57,6 +59,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         firestore = FirebaseFirestore.getInstance()
         fab = view.findViewById(R.id.nutrition_fab)
         fab.setOnClickListener(this)
+        fab.animation = AnimationUtils.loadAnimation(context!!,R.anim.fab_transition)
         val uid = mAuth.currentUser?.uid
         val query =
             firestore.collection("regular_users").document(uid!!).collection("meals")
@@ -81,7 +84,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
                     }
 
         }
-        viewModel.nutritionAdapter = NutritionFireStoreAdapter(options, onClickListener, this)
+        viewModel.nutritionAdapter = NutritionFireStoreAdapter(options, onClickListener, this,context!!)
         viewModel.nutritionRV = view.findViewById<RecyclerView>(R.id.nutrition_rec_view).apply{
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
@@ -108,8 +111,8 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         super.onStart()
         viewModel.nutritionAdapter?.startListening()
 
-    }
 
+    }
 
     override fun onClick(v: View?) {
         when (v!!.id) {

@@ -1,14 +1,18 @@
 package com.technion.fitracker.adapters.nutrition
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -23,7 +27,8 @@ import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 class NutritionFireStoreAdapter(
     options: FirestoreRecyclerOptions<NutritionFireStoreModel>,
     val onItemClickListener: View.OnClickListener,
-    val nutritionFragment: NutritionFragment
+    val nutritionFragment: NutritionFragment,
+    val mContext: Context
 ) :
         FirestoreRecyclerAdapter<NutritionFireStoreModel, ViewHolder>(options) {
 
@@ -52,6 +57,7 @@ class NutritionFireStoreAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: NutritionFireStoreModel) {
+        holder.container.animation = AnimationUtils.loadAnimation(mContext,R.anim.scale_in_card)
         holder.name.text = item.name
         holder.overlay.setOnClickListener {
             holder.view.callOnClick()
@@ -99,6 +105,7 @@ class NutritionFireStoreAdapter(
 
     class ViewHolder(var view: View) :
             RecyclerView.ViewHolder(view) {
+        var container: MaterialCardView = view.findViewById(R.id.card)
         var name: TextView = view.findViewById(R.id.nutritionName)
         var recView: RecyclerView = view.findViewById(R.id.nutrition_dishes_rec_view)
         var overlay: View = view.findViewById(R.id.overlay)

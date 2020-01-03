@@ -1,11 +1,15 @@
 package com.technion.fitracker.user.personal
 
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat.animate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -32,7 +37,8 @@ class HomeScreenFragment : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var viewModel: UserViewModel
     lateinit var recentWorkoutsContainer: LinearLayout
-
+    private lateinit var contentView: MaterialCardView
+    private var shortAnimationDuration: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +65,8 @@ class HomeScreenFragment : Fragment() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
         val uid = firebaseAuth.currentUser?.uid
-
+        contentView = view.findViewById(R.id.last_workout_container)
+        shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
         val query = firebaseFirestore
                 .collection("regular_users")
                 .document(uid!!)
@@ -77,6 +84,8 @@ class HomeScreenFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.homeAdapter
         }
+        contentView.visibility = View.GONE
+        crossfade()
     }
 
     override fun onStart() {
@@ -84,5 +93,23 @@ class HomeScreenFragment : Fragment() {
         viewModel.homeAdapter?.startListening()
     }
 
+    private fun crossfade() {
+        contentView.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        // participate in layout passes, etc.)
+    }
 
 }
