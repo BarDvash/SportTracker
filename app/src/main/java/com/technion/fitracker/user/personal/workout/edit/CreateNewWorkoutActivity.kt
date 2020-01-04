@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -88,7 +89,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-        viewAdapter = ExerciseAdapter(exercises!!).apply {
+        viewAdapter = ExerciseAdapter(exercises!!, this).apply {
             mOnItemClickListener = onItemClickListener
         }
         if (!viewModel.workoutID.value.isNullOrEmpty()) {
@@ -106,11 +107,13 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0) {
                         if (fab.isShown) {
-                            fab.hide()
+                            fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_down))
+                            fab.visibility = View.GONE
                         }
                     } else if (dy < 0) {
                         if (!fab.isShown) {
-                            fab.show()
+                            fab.visibility = View.VISIBLE
+                            fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_up))
                         }
                     }
                 }

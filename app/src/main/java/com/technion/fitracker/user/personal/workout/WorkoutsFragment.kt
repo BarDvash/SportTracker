@@ -89,11 +89,13 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0) {
                         if (fab.isShown) {
-                            fab.hide()
+                            fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_down))
+                            fab.visibility = View.GONE
                         }
                     } else if (dy < 0) {
                         if (!fab.isShown) {
-                            fab.show()
+                            fab.visibility = View.VISIBLE
+                            fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_up))
                         }
                     }
                 }
