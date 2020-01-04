@@ -1,6 +1,5 @@
 package com.technion.fitracker
 
-
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
@@ -22,25 +21,21 @@ import com.technion.fitracker.models.SearchFireStoreModel
 class SearchableActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
     lateinit var recyclerView: RecyclerView
-    lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
     lateinit var tab_layout: TabLayout
+    lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
     lateinit var current_search_query: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) //calling the overridden onCreate function
         setContentView(R.layout.search_activity) //set the relevant activity layout
-        //initializes:
         setSupportActionBar(findViewById(R.id.search_toolbar))
+
+
         firestore = FirebaseFirestore.getInstance()
         recyclerView = findViewById(R.id.search_rec_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-
         tab_layout = findViewById(R.id.tabLayout)
-
-
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.text == "users") {
@@ -49,16 +44,11 @@ class SearchableActivity : AppCompatActivity() {
                     search_trainers()
                 }
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
-
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
-
-
         })
-
         handleIntent(intent)
     }
 

@@ -8,73 +8,72 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.technion.fitracker.user.business.CustomerData
-import kotlin.reflect.KClass
 
 class UserLandingPageActivity : AppCompatActivity() {
+
+    //declaration of the activity instance variables:
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    private var user_name : String? = null
-    private var photo_url : String? = null
-    private var viewed_user_id : String? = null
+
+    private var viewed_user_name: String? = null
+    private var viewed_user_photo_url: String? = null
+    private var viewed_user_id: String? = null
+    private var viewed_user_type: String? = null
+
+    private var current_user_type: String? = null
+    private var current_user_id: String? = null
+    private var current_user_name: String? = null
+    private var current_user_photo_url: String? = null
 
     private lateinit var name_view: TextView
     private lateinit var image_view: ImageView
     private lateinit var add_button: Button
+    //////////////////////////////////////
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_landing_page)
         setSupportActionBar(findViewById(R.id.search_toolbar))
+
+        //initialize instance variables:
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-
         var bundle: Bundle? = intent.extras
-        user_name = bundle!!.getString("user_name")
-        photo_url = bundle!!.getString("photo_url")
+        viewed_user_name = bundle!!.getString("user_name")
+        viewed_user_photo_url = bundle!!.getString("photo_url")
         viewed_user_id = bundle!!.getString("uid")
+        viewed_user_type = bundle!!.getString("type")
+
+        current_user_id = FirebaseAuth.getInstance().currentUser?.uid
 
         name_view = findViewById(R.id.search_result_landing_page_user_name)
-        image_view= findViewById(R.id.search_result_landing_page_user_avatar)
-        add_button= findViewById(R.id.add_as_button)
-
-
-        //set button, according to who is current user and who is the viewed user:
-        var current_user_id = FirebaseAuth.getInstance().currentUser?.uid
-        if(isUserAppeardInRegularUsersCollection(current_user_id) && (!(isUserAppeardInRegularUsersCollection(viewed_user_id)))){
-            add_button.visibility = View.VISIBLE
-            add_button.text = "Add as trainer"
-        }else if(isUserAppeardInRegularUsersCollection(viewed_user_id) && (!(isUserAppeardInRegularUsersCollection(current_user_id)))){
-            add_button.visibility = View.VISIBLE
-            add_button.text = "Add as trainee"
-        }
-
-
-
-        name_view.text = user_name
-
-        if (!photo_url.isNullOrEmpty()) {
-            //Glide.with(activity).load(item.photoURL).into(holder.user_image)
-
+        name_view.text = viewed_user_name
+        image_view = findViewById(R.id.search_result_landing_page_user_avatar)
+        if (!viewed_user_photo_url.isNullOrEmpty()) {
             Glide.with(this) //1
-                    .load(photo_url)
+                    .load(viewed_user_photo_url)
                     .placeholder(R.drawable.user_avatar)
                     .error(R.drawable.user_avatar)
                     .skipMemoryCache(true) //2
                     .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                     .transform(CircleCrop()) //4
                     .into(image_view)
-
         }
+        add_button = findViewById(R.id.add_as_button)
+        /////////////////////////////////////
 
+        //set button visibility and text, according to who is current user and who is the viewed user:
+        setButton()
+        //////////////////////////////////////////////////////////////////////////////////////////////
     }
-
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,31 +100,62 @@ class UserLandingPageActivity : AppCompatActivity() {
         }
     }
 
+    //TODO show a toast if customer already in  the list
     fun addAs(view: View) {
-        var current_user_id = FirebaseAuth.getInstance().currentUser?.uid
-        var current_user_id_no_null  = ""//TODO: not elegant find another solution
-        if(current_user_id!=null){
-            current_user_id_no_null = current_user_id //TODO: not elegant find another solution
-        }
-        if(isUserAppeardInRegularUsersCollection(current_user_id) && (!(isUserAppeardInRegularUsersCollection(viewed_user_id)))){
-            firestore.collection("regular_users").document(current_user_id_no_null).update("personal_trainer_uid",viewed_user_id)//
-        }else if(isUserAppeardInRegularUsersCollection(viewed_user_id) && (!(isUserAppeardInRegularUsersCollection(current_user_id)))){
-            firestore.collection("business_users").document(current_user_id_no_null).collection("customers").add(CustomerData(user_name,photo_url,viewed_user_id))
+        if (current_user_type == "regular" && viewed_user_type == "business") {
+            firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid", viewed_user_id)
+            Toast.makeText(this, viewed_user_name + " added as your personal trainer", Toast.LENGTH_LONG).show()
+
+            //insert the current regular user to the customers list of the viewed business user:
+            val cutomer = hashMapOf(
+                "customer_name" to current_user_name,
+                "customer_photo_url" to current_user_photo_url,
+                "customer_id" to current_user_id
+            )
+            firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).set(cutomer)
+
+
+        } else if (viewed_user_type == "regular" && current_user_type == "business") {
+            //add customer to the current business user customers list
+            val cutomer = hashMapOf(
+                "customer_name" to viewed_user_name,
+                "customer_photo_url" to viewed_user_photo_url,
+                "customer_id" to viewed_user_id
+            )
+            firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!).set(cutomer)
+            Toast.makeText(this, viewed_user_name + " added as your customer", Toast.LENGTH_LONG).show()
+
+            //change the customer personal trainer to be the current business user
+            firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid", current_user_id)
         }
 
     }
 
-    fun isUserAppeardInRegularUsersCollection(uid: String?): Boolean{
-        var result = false
-        firestore.collection("regular_users").document(uid!!).get().addOnSuccessListener {user_doc->
-            if (user_doc != null) { result =  true }
-        }.addOnFailureListener {
-            //TODO: what we wanna do here ?
-            throw it
-        }
-        return result
-    }
 
+
+
+    fun setButton() {
+        val user_doc = firestore.collection("regular_users").document(current_user_id!!)
+        user_doc.get().addOnSuccessListener {
+            if (it.exists()) {
+                if (viewed_user_type == "business") {
+                    current_user_name  = it.get("name") as String?
+                    current_user_photo_url = it.get("photoURL") as String?
+                    current_user_type = "regular"
+                    add_button.visibility = View.VISIBLE
+                    add_button.text = "Add as trainer"
+                }
+            } else {//if we arrived here current user is business user:
+                if (viewed_user_type == "regular") {
+                    current_user_name  = it.get("name") as String?
+                    current_user_photo_url = it.get("photoURL") as String?
+                    current_user_type = "business"
+                    add_button.visibility = View.VISIBLE
+                    add_button.text = "Add as trainee"
+                }
+            }
+        }.addOnFailureListener { Toast.makeText(this, "Lost internet connection", Toast.LENGTH_LONG).show() }//lost internet connection TODO:!
+    }
 }
 
-//val uid = FirebaseAuth.getInstance().currentUser?.uid
+

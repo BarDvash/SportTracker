@@ -25,7 +25,6 @@ import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivit
 
 class WorkoutsFragment : Fragment(), View.OnClickListener {
     private lateinit var mAuth: FirebaseAuth
-
     lateinit var firestore: FirebaseFirestore
     private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var recyclerView: RecyclerView

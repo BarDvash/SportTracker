@@ -40,51 +40,54 @@ app:strokeColor="#00644747">
         android:layout_marginRight="16dp"
         android:contentDescription="@string/user_avatar"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:srcCompat="@drawable/user_avatar"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/customer_name"
-        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/user_avatar" />
 
     <TextView
         android:id="@+id/customer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="132dp"
-        android:layout_marginLeft="132dp"
         android:fontFamily="sans-serif"
         android:textSize="18sp"
 
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.339"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.629"
         tools:text="Customer Name" />
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_width="37dp"
+        android:layout_height="31dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginRight="52dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/customer_name"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673"
         app:srcCompat="@drawable/ic_whatsapp_with_colors" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="36dp"
-        android:layout_height="34dp"
+        android:layout_width="30dp"
+        android:layout_height="29dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.272"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.673"
         app:srcCompat="@drawable/ic_telephone" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

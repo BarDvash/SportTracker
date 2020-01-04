@@ -47,9 +47,7 @@ class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreMo
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: SearchFireStoreModel) {
         holder.name.text = item.name
         if (!item?.photoURL.isNullOrEmpty()) {
-            //Glide.with(activity).load(item.photoURL).into(holder.user_image)
-
-            Glide.with(activity) //1
+                    Glide.with(activity) //1
                     .load(item?.photoURL)
                     .placeholder(R.drawable.user_avatar)
                     .error(R.drawable.user_avatar)
@@ -57,17 +55,14 @@ class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreMo
                     .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                     .transform(CircleCrop()) //4
                     .into(holder.user_image)
-
-
-            holder.itemView.setOnClickListener {
-                val user_landing_page = Intent(holder.itemView.context, UserLandingPageActivity::class.java)
-                user_landing_page.putExtra("user_name", item.name)
-                user_landing_page.putExtra("photo_url", item?.photoURL)
-                user_landing_page.putExtra("uid", item?.uid)
-                holder.itemView.context.startActivity(user_landing_page)
-            }
-
-
+        }
+        holder.itemView.setOnClickListener {
+            val user_landing_page = Intent(holder.itemView.context, UserLandingPageActivity::class.java)
+            user_landing_page.putExtra("user_name", item.name)
+            user_landing_page.putExtra("photo_url", item?.photoURL)
+            user_landing_page.putExtra("uid", item?.uid)
+            user_landing_page.putExtra("type", item?.type)
+            holder.itemView.context.startActivity(user_landing_page)
         }
     }
 }
