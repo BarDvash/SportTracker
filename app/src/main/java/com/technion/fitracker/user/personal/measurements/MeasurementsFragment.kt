@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.view.ViewCompat.animate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -42,12 +44,12 @@ class MeasurementsFragment : Fragment() {
     lateinit var view: FragmentMeasurementsBinding
     val names: ArrayList<String> = ArrayList()
     val values: ArrayList<String> = ArrayList()
-    lateinit var adapter: MeasurementsRecyclerViewAdapter
     lateinit var placeHolder: TextView
     lateinit var measurementsContainer: MaterialCardView
     lateinit var fab: ExtendedFloatingActionButton
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
     val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
+    private var shortAnimationDuration: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,10 +72,9 @@ class MeasurementsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
-
         names.clear()
         values.clear()
-
+        shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
         db.collection("regular_users").document(auth.currentUser!!.uid).collection("measurements")
                 .orderBy("data", Query.Direction.DESCENDING).get(Source.CACHE).addOnSuccessListener { it_1 ->
                     if (!it_1.isEmpty) {
@@ -94,21 +95,22 @@ class MeasurementsFragment : Fragment() {
             setOnClickListener {
                 (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment, false, true, true)
             }
+            animation = AnimationUtils.loadAnimation(context!!, R.anim.fab_transition)
         }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
         measurementsContainer.visibility = View.GONE
-        val rec_view = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
-        rec_view.layoutManager = LinearLayoutManager(context)
-        adapter = MeasurementsRecyclerViewAdapter(names, values)
-        rec_view.adapter = adapter
-        rec_view.addItemDecoration(
+        viewModel.measurementRV  = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
+        viewModel.measurementRV?.layoutManager = LinearLayoutManager(context)
+        viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values)
+        viewModel.measurementRV?.adapter = viewModel.measurementsRVAdapter
+        viewModel.measurementRV?.addItemDecoration(
             DividerItemDecoration(
                 context,
                 DividerItemDecoration.VERTICAL
             )
         )
-        rec_view.addOnItemTouchListener(RecyclerViewDisableScroll())
-        rec_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        viewModel.measurementRV?.addOnItemTouchListener(RecyclerViewDisableScroll())
+        viewModel.measurementRV?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
@@ -123,6 +125,7 @@ class MeasurementsFragment : Fragment() {
             }
         })
         placeHolder = view.findViewById(R.id.measurements_placeholder)
+
     }
 
     private fun getLatestFieldsFromDB() {
@@ -141,7 +144,7 @@ class MeasurementsFragment : Fragment() {
                         viewModel.textViewDate.set("")
                         names.clear()
                         values.clear()
-                        adapter.notifyDataSetChanged()
+                        viewModel.measurementsRVAdapter?.notifyDataSetChanged()
                         ifAllEmpty()
                     }
                 }
@@ -168,7 +171,7 @@ class MeasurementsFragment : Fragment() {
 //        viewModel.textViewData.value = newDateFormat.format(date!!)
         viewModel.textViewDate.set(newDateFormat.format(date!!))
 
-        adapter.notifyDataSetChanged()
+        viewModel.measurementsRVAdapter?.notifyDataSetChanged()
         ifAllEmpty()
     }
 
@@ -179,13 +182,34 @@ class MeasurementsFragment : Fragment() {
         }
     }
 
+    private fun crossfade() {
+        measurementsContainer.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        // participate in layout passes, etc.)
+    }
+
     private fun ifAllEmpty() {
         if (values.isEmpty()) {
             placeHolder.visibility = View.VISIBLE
             measurementsContainer.visibility = View.GONE
         } else {
             placeHolder.visibility = View.GONE
-            measurementsContainer.visibility = View.VISIBLE
+            if(measurementsContainer.visibility == View.GONE){
+                crossfade()
+            }
         }
     }
 

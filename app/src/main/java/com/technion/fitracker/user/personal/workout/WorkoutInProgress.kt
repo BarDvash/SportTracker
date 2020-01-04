@@ -1,12 +1,15 @@
 package com.technion.fitracker.user.personal.workout
 
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Chronometer
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -16,6 +19,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.technion.fitracker.R
@@ -66,19 +70,27 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                 if (it.done) {
                     if (it.type == "Weight") {
                         (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.VISIBLE
+                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
+                        viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!,R.anim.hide) //
                         viewHolder.weightBodyLayout.visibility = View.GONE
                     } else {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.VISIBLE
+                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
+                        viewHolder.aerobicBodyLayout.animation = AnimationUtils.loadAnimation(context!!,R.anim.hide)
                         viewHolder.aerobicBodyLayout.visibility = View.GONE
                     }
                     model.time_done = chrono.text.toString()
                 } else {
                     if (it.type == "Weight") {
                         (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.GONE
+                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
                         viewHolder.weightBodyLayout.visibility = View.VISIBLE
+                        viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
                     } else {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.GONE
+                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
                         viewHolder.aerobicBodyLayout.visibility = View.VISIBLE
+                        viewHolder.aerobicBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
                     }
                     model.time_done = null
                 }
@@ -86,13 +98,14 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
 
         }
         val exercises = viewModel.workoutExercises.value
-        viewAdapter = ExerciseCompactAdapter(exercises!!).apply {
+        viewAdapter = ExerciseCompactAdapter(exercises!!, context!!).apply {
             mOnItemClickListener = onItemClickListener
         }
-        recyclerView = activity?.findViewById<RecyclerView>(R.id.workout_in_progress_recycle).apply {
-            this?.setHasFixedSize(true)
-            this?.layoutManager = viewManager
-            this?.adapter = viewAdapter
+        recyclerView = activity?.findViewById<RecyclerView>(R.id.workout_in_progress_recycle)?.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false;
 
         }!!
         activity?.let {

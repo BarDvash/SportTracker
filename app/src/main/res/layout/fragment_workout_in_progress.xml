@@ -68,10 +68,12 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="88dp"
                 android:paddingLeft="4dp"
                 android:paddingTop="4dp"
                 android:paddingRight="4dp"
-                android:paddingBottom="4dp"
+
+
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,15 +102,15 @@
                     android:id="@+id/play_stop_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_pause_button"
-                    app:layout_anchor="@id/bottom_app_bar" />
+                    app:layout_anchor="@id/bottom_app_bar"
+                    app:srcCompat="@drawable/ic_pause_button" />
 
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/coordinatorLayout_2"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -127,8 +129,8 @@
                     android:id="@+id/finish_fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_racing_flag"
-                    app:layout_anchor="@id/bottom_app_bar_2" />
+                    app:layout_anchor="@id/bottom_app_bar_2"
+                    app:srcCompat="@drawable/ic_racing_flag" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

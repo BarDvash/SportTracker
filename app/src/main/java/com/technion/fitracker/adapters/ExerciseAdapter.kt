@@ -1,17 +1,21 @@
 package com.technion.fitracker.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.technion.fitracker.R
 import com.technion.fitracker.models.exercise.AerobicExerciseModel
 import com.technion.fitracker.models.exercise.ExerciseBaseModel
 
 
-class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>,val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class HolderPosition {
         AEROBIC, WEIGHT
@@ -21,6 +25,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
 
     inner class WeightViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
+        var container: MaterialCardView = view.findViewById(R.id.weight_ele_container)
         var name: TextView = view.findViewById(R.id.weight_element_name)
         var weight: TextView = view.findViewById(R.id.weight_element_weight)
         var sets: TextView = view.findViewById(R.id.weight_element_sets)
@@ -36,6 +41,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
 
     inner class AerobicViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
+        var container: MaterialCardView = view.findViewById(R.id.aerobic_ele_container)
         var name: TextView = view.findViewById(R.id.aerobic_element_name)
         var duration: TextView = view.findViewById(R.id.aerobic_element_duration)
         var speed: TextView = view.findViewById(R.id.aerobic_element_speed)
@@ -87,6 +93,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
             setViewHolderElement(aerobicHolder.speed, aerobicElement?.speed)
             setViewHolderElement(aerobicHolder.intensity, aerobicElement?.intensity)
             setViewHolderElement(aerobicHolder.notes, aerobicElement?.notes)
+            aerobicHolder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         } else {
             val weightElement = myDataset[position].downcastToWeight()
             val weightHolder = (holder as WeightViewHolder)
@@ -96,6 +103,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>) : Rec
             setViewHolderElement(weightHolder.repetitions, weightElement?.repetitions)
             setViewHolderElement(weightHolder.rest, weightElement?.rest)
             setViewHolderElement(weightHolder.notes, weightElement?.notes)
+            weightHolder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         }
 
     }

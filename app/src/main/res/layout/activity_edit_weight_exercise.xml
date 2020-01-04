@@ -47,6 +47,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/weight_edit_name_input"
+                android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

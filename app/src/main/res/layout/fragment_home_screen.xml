@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".user.personal.HomeScreenFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.technion.fitracker.models.UserViewModel" />
+    </data>
+
+    <FrameLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".user.personal.HomeScreenFragment">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
 
@@ -103,6 +113,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/last_workout_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -114,51 +125,46 @@
             app:layout_constraintTop_toBottomOf="@id/personal_trainer_card"
             >
 
-            <LinearLayout
-                android:id="@+id/recent_workouts_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                tools:visibility="visible">
-
                 <LinearLayout
+                    android:id="@+id/recent_workouts_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/primaryDarkColor"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/textView15"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:paddingStart="8dp"
-                        android:paddingLeft="8dp"
-                        android:text="@string/last_workouts"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:background="@color/primaryDarkColor"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView15"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:paddingStart="8dp"
+                            android:paddingLeft="8dp"
+                            android:text="@string/last_workouts"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/last_workouts_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        tools:itemCount="5"
+                        tools:listitem="@layout/element_home_last_workouts" />
+
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/last_workouts_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    tools:listitem="@layout/element_home_last_workouts"
-                    tools:itemCount="5"/>
-
-            </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
-
-
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+    </FrameLayout>
+</layout>
