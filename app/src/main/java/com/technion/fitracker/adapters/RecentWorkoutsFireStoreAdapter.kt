@@ -42,7 +42,6 @@ class RecentWorkoutsFireStoreAdapter(
 
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int, p2: RecentWorkoutFireStoreModel) {
-        Log.w(FragmentActivity.VIBRATOR_SERVICE, "Added " + p2.workout_name)
         p0.workoutName.text = p2.workout_name
         p0.dateTime.text = p2.date_time
     }

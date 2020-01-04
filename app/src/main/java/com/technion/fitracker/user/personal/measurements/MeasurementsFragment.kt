@@ -95,7 +95,7 @@ class MeasurementsFragment : Fragment() {
             setOnClickListener {
                 (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment, false, true, true)
             }
-            animation = AnimationUtils.loadAnimation(context!!, R.anim.fab_transition)
+            animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
         }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
         measurementsContainer.visibility = View.GONE
