@@ -59,7 +59,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fab = view.findViewById<ExtendedFloatingActionButton>(R.id.workouts_fab)
-        fab.animation = AnimationUtils.loadAnimation(context!!, R.anim.fab_transition)
+        fab.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
         val uid = mAuth.currentUser?.uid

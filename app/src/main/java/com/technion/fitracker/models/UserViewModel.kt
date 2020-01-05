@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.technion.fitracker.adapters.MyTrainerFireStoreAdapter
 import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
@@ -14,9 +15,14 @@ import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 
 class UserViewModel : ViewModel() {
+
     //Home fields
-    var homeRV: RecyclerView? = null
-    var homeAdapter: FirestoreRecyclerAdapter<RecentWorkoutFireStoreModel, RecentWorkoutsFireStoreAdapter.ViewHolder>? = null
+    var homeRecentWorkoutRV: RecyclerView? = null
+    var homeRecentWorkoutsAdapter: RecentWorkoutsFireStoreAdapter? = null
+
+    var personalTrainerUID: String? = null
+    var personalTrainerRV: RecyclerView? = null
+    var personalTrainerAdapter: MyTrainerFireStoreAdapter? = null
 
     //Nutrition fields
     var nutritionRV: RecyclerView? = null
@@ -28,8 +34,9 @@ class UserViewModel : ViewModel() {
 
     //MeasurementsFragment fields
     var measurementRV: RecyclerView? = null
-
     var measurementsRVAdapter: MeasurementsRecyclerViewAdapter? = null
+
+
 
     @Bindable
     val editTextWeight = MutableLiveData<String>()

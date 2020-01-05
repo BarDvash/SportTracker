@@ -12,7 +12,6 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -53,15 +52,19 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setSupportActionBar(findViewById(R.id.user_toolbar))
         navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
         auth = FirebaseAuth.getInstance()
+
         val userAvatar = findViewById<ImageView>(R.id.user_avatar)
         val userName = findViewById<TextView>(R.id.user_name)
+        userAvatar.animation = AnimationUtils.loadAnimation(this,R.anim.user_avatar_anim)
         userName.animation = AnimationUtils.loadAnimation(this,R.anim.fab_transition)
+
         firestore = FirebaseFirestore.getInstance()
         if (auth.currentUser != null) {
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
                 findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
+                viewModel.personalTrainerUID = user?.personal_trainer_uid
                 if (!user?.photoURL.isNullOrEmpty()) {
                     Glide.with(this) //1
                             .load(user?.photoURL)
@@ -75,7 +78,6 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
             }
         }
-        userAvatar.animation = AnimationUtils.loadAnimation(this,R.anim.user_avatar_anim)
         findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(idToken)
@@ -177,7 +179,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onStop() {
         super.onStop()
         //TODO: questionable, might be hurting performance ?
-        viewModel.homeAdapter?.stopListening()
+        viewModel.homeRecentWorkoutsAdapter?.stopListening()
         viewModel.nutritionAdapter?.stopListening()
         viewModel.workoutsAdapter?.stopListening()
     }
