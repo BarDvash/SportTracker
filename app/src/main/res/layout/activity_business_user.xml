@@ -63,17 +63,17 @@ tools:context=".user.business.BusinessUserActivity">
     app:layout_constraintTop_toBottomOf="@+id/business_user_name"
     />
 
-<fragment
-    android:id="@+id/business_fragment_host"
-    android:name="androidx.navigation.fragment.NavHostFragment"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    app:defaultNavHost="true"
-    app:layout_constraintBottom_toTopOf="@+id/divider"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/business_divider"
-    app:navGraph="@navigation/business_navigation_graph" />
+    <fragment
+        android:id="@+id/business_fragment_host"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@+id/business_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/business_divider"
+        app:navGraph="@navigation/business_navigation_graph" />
 
 <View
     android:id="@+id/divider"

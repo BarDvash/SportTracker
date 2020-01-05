@@ -76,4 +76,5 @@ dependencies {
 
     //viewPager
     implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }

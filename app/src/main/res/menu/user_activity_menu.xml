@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-     >
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item
+        android:id="@+id/user_menu_pending_requests_ac"
+        android:title="Pending Requests" />
+
     <item
         android:id="@+id/measurements_history"
         android:title="@string/history"
         android:visible="false"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/user_menu_settings_ac"
         android:icon="@drawable/ic_settings_black_24dp"

@@ -111,4 +111,7 @@
     <string name="doubleDot">:</string>
     <string name="add_customer">add client</string>
     <string name="empty_customers_list_hint">There are no customers added yet!\\nUse + button to add your first customer.</string>
+    <string name="empty_pending_requests_list_hint">There are no pending requests.</string>
+    <string name="channel_name">Notifications</string>
+    <string name="channel_description">channel description - edit on @strings</string>
 </resources>

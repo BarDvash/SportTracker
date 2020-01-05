@@ -1,6 +1,10 @@
 package com.technion.fitracker.user.business
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +21,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
+import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
@@ -63,6 +69,12 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 .build()
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
+
+
+        createNotificationChannel()
+        //subscribe to topics
+        val topic1_name = "trainee_ask_trainer_push_notification"+auth.currentUser!!.uid
+        FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -86,6 +98,12 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
             R.id.business_user_menu_logout_ac -> {
+
+
+                //unsubscribe from topics
+                val topic1_name = "trainee_ask_trainer_push_notification"+auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
+
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()
                         .addOnCompleteListener(this) {
@@ -104,6 +122,13 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 startActivity(userHome)
                 true
             }
+            R.id.business_user_menu_pending_requests_ac -> {
+                val userHome = Intent(applicationContext, PendingRequestsActivity::class.java)
+                userHome.putExtra("user_type", "business")
+                startActivity(userHome)
+                true
+            }
+
 
             else -> {
                 // If we got here, the user's action was not recognized.
@@ -117,5 +142,24 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         val userHome = Intent(applicationContext, LoginActivity::class.java)
         startActivity(userHome)
         finish()
+    }
+
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val id = "M_CH_ID"
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(id, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 }

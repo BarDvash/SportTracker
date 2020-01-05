@@ -11,9 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PendingRequestsActivity"></activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".user.personal.workout.WorkoutStarter" />
         <activity android:name=".user.personal.workout.edit.EditAerobicExercise" />
@@ -55,6 +56,16 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".user.personal.measurements.MeasurementsHistoryActivity" />
+
+
+
+        <service android:name=".services.MyService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

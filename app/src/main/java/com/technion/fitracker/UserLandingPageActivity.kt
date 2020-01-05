@@ -103,8 +103,11 @@ class UserLandingPageActivity : AppCompatActivity() {
     //TODO show a toast if customer already in  the list
     fun addAs(view: View) {
         if (current_user_type == "regular" && viewed_user_type == "business") {
+
+            /**
             firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid", viewed_user_id)
             Toast.makeText(this, viewed_user_name + " added as your personal trainer", Toast.LENGTH_LONG).show()
+
 
             //insert the current regular user to the customers list of the viewed business user:
             val cutomer = hashMapOf(
@@ -113,7 +116,15 @@ class UserLandingPageActivity : AppCompatActivity() {
                 "customer_id" to current_user_id
             )
             firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).set(cutomer)
-
+            **/
+            val user = hashMapOf(
+                "user_name" to current_user_name,
+                "user_photo_url" to current_user_photo_url,
+                "user_id" to current_user_id
+            )
+            firestore.collection("business_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!).set(user)
+            Toast.makeText(this, "sent request to be "+viewed_user_name+"'s trainee", Toast.LENGTH_LONG).show()
+            //TODO: change button here ! and make sure the button stays changed by defined it somwhere
 
         } else if (viewed_user_type == "regular" && current_user_type == "business") {
             //add customer to the current business user customers list

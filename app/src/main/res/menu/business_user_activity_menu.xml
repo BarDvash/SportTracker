@@ -2,6 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+        android:id="@+id/business_user_menu_pending_requests_ac"
+        android:title="Pending Requests" />
+
     <item
         android:id="@+id/business_user_menu_settings_ac"
         android:icon="@drawable/ic_settings_black_24dp"
