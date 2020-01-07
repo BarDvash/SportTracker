@@ -39,7 +39,7 @@ class UserLandingPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_landing_page)
-        setSupportActionBar(findViewById(R.id.search_toolbar))
+        setSupportActionBar(findViewById(R.id.search_results_toolbar))
 
         //initialize instance variables:
         firestore = FirebaseFirestore.getInstance()

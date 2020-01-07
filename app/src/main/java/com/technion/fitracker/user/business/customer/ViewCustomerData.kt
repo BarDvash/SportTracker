@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.viewpager.widget.ViewPager
 import com.technion.fitracker.R
-import com.technion.fitracker.adapters.viewPages.ExerciseTypeViewPageAdapter
+import com.technion.fitracker.adapters.viewPages.TabsFragmentPagerAdapter
 import com.technion.fitracker.models.CustomerDataViewModel
 import kotlinx.android.synthetic.main.activity_view_customer_data.*
 
 class ViewCustomerData : AppCompatActivity() {
     lateinit var navController: NavController
-    lateinit var adapter: ExerciseTypeViewPageAdapter
+    lateinit var adapter: TabsFragmentPagerAdapter
     private lateinit var viewPager: ViewPager
     lateinit var viewModel: CustomerDataViewModel
 
@@ -28,7 +28,7 @@ class ViewCustomerData : AppCompatActivity() {
             title = "${viewModel.customerName}'s Data"
             setDisplayHomeAsUpEnabled(true)
         }
-        adapter = ExerciseTypeViewPageAdapter(supportFragmentManager).apply {
+        adapter = TabsFragmentPagerAdapter(supportFragmentManager).apply {
             addFragment(CustomerWorkoutsFragment(), "Workouts")
             addFragment(CustomerNutritionFragment(), "Nutrition")
             addFragment(CustomerMeasurementFragment(), "Measurements")
@@ -41,7 +41,4 @@ class ViewCustomerData : AppCompatActivity() {
         finish()
         return true
     }
-
-
-
 }
