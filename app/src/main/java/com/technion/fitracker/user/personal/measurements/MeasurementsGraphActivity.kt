@@ -53,7 +53,7 @@ class MeasurementsGraphActivity : AppCompatActivity() {
             val entries = ArrayList<Entry>()
             var i = 0
             for (element in it) {
-                if (element.getString(translationTable[name]!!) == null) {
+                if (element.getString(translationTable[name]!!).isNullOrEmpty()) {
                     continue
                 }
                 val doc = element.toObject(MeasurementsHistoryModel::class.java)
