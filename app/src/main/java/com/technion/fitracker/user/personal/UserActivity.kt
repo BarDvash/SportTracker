@@ -64,7 +64,11 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
                 findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
+
                 viewModel.personalTrainerUID = user?.personal_trainer_uid
+                viewModel.user_name = user?.name
+                viewModel.user_photo_url = user?.photoURL
+
                 if (!user?.photoURL.isNullOrEmpty()) {
                     Glide.with(this) //1
                             .load(user?.photoURL)
@@ -164,6 +168,11 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.user_menu_pending_requests_ac -> {
                 val userHome = Intent(applicationContext, PendingRequestsActivity::class.java)
                 userHome.putExtra("user_type", "regular")
+
+
+                userHome.putExtra("user_name", viewModel.user_name)
+                userHome.putExtra("user_photo_url",  viewModel.user_photo_url)
+
                 startActivity(userHome)
                 true
             }

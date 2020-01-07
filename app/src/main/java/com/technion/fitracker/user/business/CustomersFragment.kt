@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -18,14 +19,18 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.CustomersFireStoreAdapter
+import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.models.CustomersFireStoreModel
+
+
+
 
 
 class CustomersFragment : Fragment() {
 
     private lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
-
+    private lateinit var viewModel: BusinessUserViewModel
     private lateinit var fab: ExtendedFloatingActionButton
     private lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<CustomersFireStoreModel, CustomersFireStoreAdapter.ViewHolder>
@@ -36,12 +41,18 @@ class CustomersFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_business_customers, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this)[BusinessUserViewModel::class.java]
+        } ?: throw Exception("Invalid Fragment, customers fragment")
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-
         fab = view.findViewById(R.id.customers_fab)
         recyclerView = view.findViewById(R.id.customers_rec_view)
         recyclerView.setHasFixedSize(true)

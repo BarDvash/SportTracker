@@ -16,6 +16,11 @@ import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 
 class UserViewModel : ViewModel() {
 
+    //bar dvash fields:
+    var user_type: String? = null
+    var user_name: String? = null
+    var user_photo_url: String? = null
+
     //Home fields
     var homeRecentWorkoutRV: RecyclerView? = null
     var homeRecentWorkoutsAdapter: RecentWorkoutsFireStoreAdapter? = null

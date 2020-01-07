@@ -20,6 +20,8 @@ class PendingRequestsActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
 
     var user_type: String? = null
+    var user_name: String? = null
+    var user_photo_url: String? = null
 
     private lateinit var recyclerView: RecyclerView
     lateinit var adapter: FirestoreRecyclerAdapter<PendingRequestFireStoreModel, PendingRequestFireStoreAdapter.ViewHolder>
@@ -44,6 +46,9 @@ class PendingRequestsActivity : AppCompatActivity() {
 
         var bundle: Bundle? = intent.extras
         user_type =  bundle!!.getString("user_type")
+        user_name =  bundle!!.getString("user_name")
+        user_photo_url =  bundle!!.getString("user_photo_url")
+
         val query = firestore.collection(user_type+"_users").document(uid!!).collection("requests").orderBy("user_name", Query.Direction.ASCENDING)
 
 

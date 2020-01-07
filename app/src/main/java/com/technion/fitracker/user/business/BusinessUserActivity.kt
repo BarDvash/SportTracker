@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
@@ -26,6 +27,8 @@ import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
+import com.technion.fitracker.models.BusinessUserViewModel
+import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.user.User
 
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +37,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var viewModel: BusinessUserViewModel
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
@@ -42,6 +46,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_business_user)
         setSupportActionBar(findViewById(R.id.business_user_toolbar))
+        viewModel = ViewModelProviders.of(this)[BusinessUserViewModel::class.java]
         navController = Navigation.findNavController(findViewById(R.id.business_fragment_host))
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -50,6 +55,11 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
                 findViewById<TextView>(R.id.business_user_name).text = user?.name ?: "Username"
+
+                viewModel.user_name = user?.name
+                viewModel.user_photo_url = user?.photoURL
+
+
                 if (!user?.photoURL.isNullOrEmpty()) {
                     Glide.with(this) //1
                             .load(user?.photoURL)
@@ -75,7 +85,18 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         //subscribe to topics
         val topic1_name = "trainee_ask_trainer_push_notification"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
+        val topic2_name = "you_have_new_customer"+auth.currentUser!!.uid
+        FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
     }
+
+
+
+    override fun onStop() {
+        super.onStop()
+        //TODO: questionable, might be hurting performance ?
+        viewModel.notifications_adapter?.stopListening()
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
@@ -103,6 +124,8 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 //unsubscribe from topics
                 val topic1_name = "trainee_ask_trainer_push_notification"+auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
+                val topic2_name = "you_have_new_customer"+auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
 
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()
@@ -125,6 +148,10 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
             R.id.business_user_menu_pending_requests_ac -> {
                 val userHome = Intent(applicationContext, PendingRequestsActivity::class.java)
                 userHome.putExtra("user_type", "business")
+
+                userHome.putExtra("user_name", viewModel.user_name)
+                userHome.putExtra("user_photo_url",  viewModel.user_photo_url)
+
                 startActivity(userHome)
                 true
             }

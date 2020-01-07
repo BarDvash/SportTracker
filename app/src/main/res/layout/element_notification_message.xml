@@ -27,11 +27,11 @@ android:layout_margin="8dp">
 
 
     <TextView
-        android:id="@+id/recent_workout_date_time"
+        android:id="@+id/notification_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="2019-03-28 at 17:03"
-        android:textSize="18dp"/>
+        tools:text="notitfication"
+        android:textSize="14dp"/>
 
 </LinearLayout>
 

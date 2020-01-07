@@ -1,7 +1,6 @@
 package com.technion.fitracker.adapters
 
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,8 +22,10 @@ import com.technion.fitracker.R
 import com.technion.fitracker.models.PendingRequestFireStoreModel
 
 
-
-class PendingRequestFireStoreAdapter(options: FirestoreRecyclerOptions<PendingRequestFireStoreModel>, val pending_request_activity: PendingRequestsActivity) :
+class PendingRequestFireStoreAdapter(
+    options: FirestoreRecyclerOptions<PendingRequestFireStoreModel>,
+    val pending_request_activity: PendingRequestsActivity
+) :
         FirestoreRecyclerAdapter<PendingRequestFireStoreModel, PendingRequestFireStoreAdapter.ViewHolder>(options) {
 
     var mOnItemClickListener: View.OnClickListener? = null
@@ -32,22 +33,22 @@ class PendingRequestFireStoreAdapter(options: FirestoreRecyclerOptions<PendingRe
     private var current_user_id: String? = null
 
 
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
+
         var user_name: TextView = view.findViewById(R.id.pending_request_user_name)
         var user_image_view: ImageView = view.findViewById(R.id.pending_request_imageView)
         var button: Button = view.findViewById(R.id.pending_request_button)
     }
 
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.element_pending_request, parent, false)
+        firestore = FirebaseFirestore.getInstance()
+        current_user_id = FirebaseAuth.getInstance().currentUser?.uid
         return ViewHolder(view)
     }
 
@@ -73,32 +74,86 @@ class PendingRequestFireStoreAdapter(options: FirestoreRecyclerOptions<PendingRe
         }
 
 
-        if(pending_request_activity.user_type == "business"){
+        if (pending_request_activity.user_type == "business") {
             holder.button.text = "accept as trainee"
-        }else{
+        } else {
             holder.button.text = "accept as trainer"
         }
 
         holder.button.setOnClickListener {
-            //add viewed user to customers
-            val cutomer = hashMapOf(
-                "customer_name" to user_name_value,
-                "customer_photo_url" to user_photo_url,
-                "customer_id" to user_id
-            )
-            firestore = FirebaseFirestore.getInstance()
-            current_user_id = FirebaseAuth.getInstance().currentUser?.uid
-            firestore.collection("business_users").document(current_user_id!!).collection("customers").document(user_id!!).set(cutomer)
 
-            //delete it from pending request
-            firestore.collection("business_users").document(current_user_id!!).collection("requests").document(user_id!!).delete()
+
+            if (pending_request_activity.user_type == "business") {
+                //add viewed user to customers
+                val cutomer = hashMapOf(
+                    "customer_name" to user_name_value,
+                    "customer_photo_url" to user_photo_url,
+                    "customer_id" to user_id
+                )
+
+                firestore.collection("business_users").document(current_user_id!!).collection("customers").document(user_id!!).set(cutomer)
+
+                //delete it from pending request
+                firestore.collection("business_users").document(current_user_id!!).collection("requests").document(user_id).delete()
+
+                //TODO: maybe we want to move it to cloud functions:
+                //change the customer personal trainer to be the current business user
+                firestore.collection("regular_users").document(user_id).update("personal_trainer_uid", current_user_id)
+            } else {//if it's regular user
+
+                val cutomer = hashMapOf(
+                    "customer_name" to pending_request_activity.user_name,
+                    "customer_photo_url" to pending_request_activity.user_photo_url,
+                    "customer_id" to current_user_id
+                )
+
+
+                firestore.collection("business_users").document(user_id!!).collection("customers").document(current_user_id!!).set(cutomer)
+
+                //delete it from pending request
+                firestore.collection("regular_users").document(current_user_id!!).collection("requests").document(user_id).delete()
+
+
+                //change the current  user's personal trainer to be the one he accepted his invitation:
+                firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid", user_id)
+            }
         }
 
     }
 
     override fun onDataChanged() {
         super.onDataChanged()
+
+
+
+
         if (itemCount <= 0) {
+
+            firestore = FirebaseFirestore.getInstance()
+            current_user_id = FirebaseAuth.getInstance().currentUser?.uid
+            if (pending_request_activity.user_type == "business") {
+                var user_doc =
+                    firestore.collection("business_users").document(current_user_id!!).collection("notifications").document("pending_requests")
+                user_doc.get().addOnSuccessListener {
+                    if (it.exists()) {
+                        firestore.collection("business_users").document(current_user_id!!).collection("notifications").document("pending_requests")
+                                .delete()
+                    }
+                }
+
+            } else {
+                var user_doc =
+                    firestore.collection("regular_users").document(current_user_id!!).collection("notifications").document("pending_requests")
+                user_doc.get().addOnSuccessListener {
+                    if (it.exists()) {
+                        firestore.collection("regular_users").document(current_user_id!!).collection("notifications").document("pending_requests")
+                                .delete()
+                    }
+                }
+            }
+
+
+
             pending_request_activity.placeholder.visibility = View.VISIBLE
         } else {
             pending_request_activity.placeholder.visibility = View.GONE

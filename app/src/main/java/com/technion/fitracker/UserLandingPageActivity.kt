@@ -48,9 +48,9 @@ class UserLandingPageActivity : AppCompatActivity() {
 
         var bundle: Bundle? = intent.extras
         viewed_user_name = bundle!!.getString("user_name")
-        viewed_user_photo_url = bundle!!.getString("photo_url")
-        viewed_user_id = bundle!!.getString("uid")
-        viewed_user_type = bundle!!.getString("type")
+        viewed_user_photo_url = bundle.getString("photo_url")
+        viewed_user_id = bundle.getString("uid")
+        viewed_user_type = bundle.getString("type")
 
         current_user_id = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -102,67 +102,49 @@ class UserLandingPageActivity : AppCompatActivity() {
 
     //TODO show a toast if customer already in  the list
     fun addAs(view: View) {
-        if (current_user_type == "regular" && viewed_user_type == "business") {
 
-            /**
-            firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid", viewed_user_id)
-            Toast.makeText(this, viewed_user_name + " added as your personal trainer", Toast.LENGTH_LONG).show()
+        val user = hashMapOf(
+            "user_name" to current_user_name,
+            "user_photo_url" to current_user_photo_url,
+            "user_id" to current_user_id
+        )
 
-
-            //insert the current regular user to the customers list of the viewed business user:
-            val cutomer = hashMapOf(
-                "customer_name" to current_user_name,
-                "customer_photo_url" to current_user_photo_url,
-                "customer_id" to current_user_id
-            )
-            firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).set(cutomer)
-            **/
-            val user = hashMapOf(
-                "user_name" to current_user_name,
-                "user_photo_url" to current_user_photo_url,
-                "user_id" to current_user_id
-            )
+        if (current_user_type == "regular" && viewed_user_type == "business") { //when user send request to trainer to be his personal trainer
             firestore.collection("business_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!).set(user)
-            Toast.makeText(this, "sent request to be "+viewed_user_name+"'s trainee", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "sent request to be " + viewed_user_name + "'s trainee", Toast.LENGTH_LONG).show()
             //TODO: change button here ! and make sure the button stays changed by defined it somwhere
 
-        } else if (viewed_user_type == "regular" && current_user_type == "business") {
-            //add customer to the current business user customers list
-            val cutomer = hashMapOf(
-                "customer_name" to viewed_user_name,
-                "customer_photo_url" to viewed_user_photo_url,
-                "customer_id" to viewed_user_id
-            )
-            firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!).set(cutomer)
-            Toast.makeText(this, viewed_user_name + " added as your customer", Toast.LENGTH_LONG).show()
-
-            //change the customer personal trainer to be the current business user
-            firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid", current_user_id)
+        } else if (viewed_user_type == "regular" && current_user_type == "business") {//when trainer send request to user to be his personal trainer
+            firestore.collection("regular_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!).set(user)
+            Toast.makeText(this, "sent request to be " + viewed_user_name + "'s personal trainer", Toast.LENGTH_LONG).show()
+            //TODO: change button here ! and make sure the button stays changed by defined it somwhere
         }
 
     }
 
 
-
-
     fun setButton() {
-        val user_doc = firestore.collection("regular_users").document(current_user_id!!)
+        //TODO: best way it wil be to use viewmodel and to pass current user type to searchableActivity
+        var user_doc = firestore.collection("regular_users").document(current_user_id!!)
         user_doc.get().addOnSuccessListener {
             if (it.exists()) {
                 if (viewed_user_type == "business") {
-                    current_user_name  = it.get("name") as String?
+                    current_user_name = it.get("name") as String?
                     current_user_photo_url = it.get("photoURL") as String?
                     current_user_type = "regular"
                     add_button.visibility = View.VISIBLE
                     add_button.text = "Add as trainer"
                 }
             } else {//if we arrived here current user is business user:
-                if (viewed_user_type == "regular") {
-                    current_user_name  = it.get("name") as String?
-                    current_user_photo_url = it.get("photoURL") as String?
-                    current_user_type = "business"
-                    add_button.visibility = View.VISIBLE
-                    add_button.text = "Add as trainee"
+                user_doc = firestore.collection("business_users").document(current_user_id!!)
+                user_doc.get().addOnSuccessListener {
+                    if (viewed_user_type == "regular") {
+                        current_user_name = it.get("name") as String?
+                        current_user_photo_url = it.get("photoURL") as String?
+                        current_user_type = "business"
+                        add_button.visibility = View.VISIBLE
+                        add_button.text = "Add as trainee"
+                    }
                 }
             }
         }.addOnFailureListener { Toast.makeText(this, "Lost internet connection", Toast.LENGTH_LONG).show() }//lost internet connection TODO:!
