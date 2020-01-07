@@ -96,8 +96,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
         val topic2_name = "workout_update"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
-
-
+        val topic3_name = "nutrition_menu_update"+auth.currentUser!!.uid
+        FirebaseMessaging.getInstance().subscribeToTopic(topic3_name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -150,6 +150,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
                 val topic2_name = "workout_update"+auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
+                val topic3_name = "nutrition_menu_update"+auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic3_name)
 
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()

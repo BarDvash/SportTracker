@@ -23,10 +23,12 @@ class NutritionAddMealActivity : AppCompatActivity() {
     lateinit var db: FirebaseFirestore
     var updateData: Boolean = false
     var uid: String? = null
+    var isTrainer: Boolean = false
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        firestore = FirebaseFirestore.getInstance()
         viewModel = ViewModelProviders.of(this)[AddMealViewModel::class.java]
         val binding =
             DataBindingUtil.setContentView<ActivityAddMealBinding>(this, R.layout.activity_add_meal)
@@ -37,6 +39,9 @@ class NutritionAddMealActivity : AppCompatActivity() {
         val params = intent.extras
         val list = params?.get("list")
         uid = params?.get("userID") as String? ?: auth.currentUser!!.uid
+        if (params?.get("userID") as String? != null) {
+            isTrainer = true
+        }
         if (list != null) {
             updateData = true
             val menu = params.get("list") as ArrayList<Map<String, String>>
@@ -118,6 +123,12 @@ class NutritionAddMealActivity : AppCompatActivity() {
                         //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
                     }
         }
+        //for cloud function
+        if(isTrainer){//if the user who updated the workout is business
+            //create this document to make the cloud function to operate and notify trainee
+            firestore.collection("regular_users").document(uid!!).collection("updates").document("nutrition_menu_update").set(hashMapOf("nutrition_menu_update" to "yes"))
+        }
+        //until here
     }
 
     fun deleteFromDB() {
