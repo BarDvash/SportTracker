@@ -29,7 +29,7 @@ import java.lang.Exception
 /**
  * A simple [Fragment] subclass.
  */
-class CustomerWorkouts : Fragment(), View.OnClickListener {
+class CustomerWorkoutsFragment : Fragment(), View.OnClickListener {
     private lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
     private lateinit var fab: ExtendedFloatingActionButton
@@ -66,7 +66,7 @@ class CustomerWorkouts : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this,context!!,"Trainer").apply {
+        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this,context!!).apply {
             mOnItemClickListener = View.OnClickListener { v ->
                 val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
                 val snapshot: DocumentSnapshot = viewModel.workoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)!!

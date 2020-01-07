@@ -43,7 +43,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/weight_hint"
-                    android:text="@={viewmodel.editTextWeight}"/>
+                    android:inputType="number"
+                    android:text="@={viewmodel.editTextWeight}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +60,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/fat_hint"
-                    android:text="@={viewmodel.editTextBodyFat}"/>
+                    android:inputType="number"
+                    android:text="@={viewmodel.editTextBodyFat}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,7 +77,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/chest_hint"
-                    android:text="@={viewmodel.editTextChest}"/>
+                    android:inputType="number"
+                    android:text="@={viewmodel.editTextChest}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -91,7 +94,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/waist_hint"
-                    android:text="@={viewmodel.editTextWaist}"/>
+                    android:inputType="number"
+                    android:text="@={viewmodel.editTextWaist}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +111,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hips_hint"
-                    android:text="@={viewmodel.editTextHips}"/>
+                    android:inputType="number"
+                    android:text="@={viewmodel.editTextHips}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -123,7 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/biceps_hint"
-                    android:text="@={viewmodel.editTextBiceps}"/>
+                    android:inputType="number"
+                    android:text="@={viewmodel.editTextBiceps}" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

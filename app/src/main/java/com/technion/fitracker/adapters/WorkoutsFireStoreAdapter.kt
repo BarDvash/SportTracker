@@ -14,10 +14,10 @@ import com.google.android.material.card.MaterialCardView
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
 import com.technion.fitracker.models.WorkoutFireStoreModel
-import com.technion.fitracker.user.business.customer.CustomerWorkouts
+import com.technion.fitracker.user.business.customer.CustomerWorkoutsFragment
 import com.technion.fitracker.user.personal.workout.WorkoutsFragment
 
-class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val workoutsFragment: Fragment, val mContext: Context, val fragmentContaining: String) :
+class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val fragment: Fragment, val mContext: Context) :
         FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
     var mOnItemClickListener: View.OnClickListener? = null
@@ -43,22 +43,23 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
 
     override fun onDataChanged() {
         super.onDataChanged()
-        var fragmentType: Fragment? = null
-        when(fragmentContaining) {
-            "User" -> {
-                fragmentType = workoutsFragment as WorkoutsFragment
-                if (itemCount <= 0) {
-                    fragmentType.placeholder.visibility = View.VISIBLE
-                } else {
-                    fragmentType.placeholder.visibility = View.GONE
+        when (fragment) {
+            is WorkoutsFragment -> {
+                fragment.apply {
+                    if (itemCount <= 0) {
+                        placeholder.visibility = View.VISIBLE
+                    } else {
+                        placeholder.visibility = View.GONE
+                    }
                 }
             }
-            "Trainer" -> {
-                fragmentType = workoutsFragment as CustomerWorkouts
-                if (itemCount <= 0) {
-                    fragmentType.placeholder.visibility = View.VISIBLE
-                } else {
-                    fragmentType.placeholder.visibility = View.GONE
+            is CustomerWorkoutsFragment -> {
+                fragment.apply {
+                    if (itemCount <= 0) {
+                        placeholder.visibility = View.VISIBLE
+                    } else {
+                        placeholder.visibility = View.GONE
+                    }
                 }
             }
         }

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -66,11 +67,13 @@ class CustomersFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     if (fab.isShown) {
-                        fab.hide()
+                        fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_down))
+                        fab.visibility = View.GONE
                     }
                 } else if (dy < 0) {
                     if (!fab.isShown) {
-                        fab.show()
+                        fab.visibility = View.VISIBLE
+                        fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_up))
                     }
                 }
             }
