@@ -38,17 +38,17 @@ class SearchableActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.search_results_toolbar))
 
         supportActionBar?.apply {
-        setDisplayHomeAsUpEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
         }
 
         //initialize the activity's variable:
 
         view_pager = findViewById(R.id.search_results_Content)
         tabs_adapter = TabsFragmentPagerAdapter(supportFragmentManager).apply {
-            trainees_results_fragment =TraineeSearchResultsFragment()
+            trainees_results_fragment = TraineeSearchResultsFragment()
             trainers_results_fragment = TrainerSearchResultsFragment()
             addFragment(trainees_results_fragment, "Users")
-            addFragment( trainers_results_fragment, "Trainers")
+            addFragment(trainers_results_fragment, "Trainers")
         }
         view_pager.adapter = tabs_adapter
         search_results_tabs.setupWithViewPager(view_pager)
@@ -68,32 +68,36 @@ class SearchableActivity : AppCompatActivity() {
     }
 
 
-
-/**
+    /**
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.search_menu, menu)
-        return true
+    super.onCreateOptionsMenu(menu)
+    menuInflater.inflate(R.menu.search_menu, menu)
+    return true
 
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
+    return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
 
-            R.id.search_from_searchActivity -> {
-                onSearchRequested()
-                true
-            }
-
-            else -> {
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                super.onOptionsItemSelected(item)
-            }
-        }
+    R.id.search_from_searchActivity -> {
+    onSearchRequested()
+    true
     }
 
-**/
+    else -> {
+    // If we got here, the user's action was not recognized.
+    // Invoke the superclass to handle it.
+    super.onOptionsItemSelected(item)
+    }
+    }
+    }
+
+     **/
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 }
 
