@@ -44,14 +44,14 @@ class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, priv
     ) {
         holder.name.text = names[position]
         holder.data.text = values[position]
+        if (nameToUnits.containsKey(names[position])) {
+            holder.units.text = nameToUnits[names[position]]
+        }
         holder.imageButton.setOnClickListener {
-            val bundle = bundleOf("name" to names[position], "userID" to userID)
+            val bundle = bundleOf("name" to names[position], "userID" to userID, "units" to holder.units.text)
             val activity = Intent(holder.context, MeasurementsGraphActivity::class.java)
             activity.putExtras(bundle)
             startActivity(holder.context, activity, bundle)
-        }
-        if (nameToUnits.containsKey(names[position])) {
-            holder.unuts.text = nameToUnits[names[position]]
         }
     }
 
@@ -60,7 +60,7 @@ class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, priv
         val name: TextView = view.findViewById(R.id.measurements_ele_name)
         val data: TextView = view.findViewById(R.id.measurements_ele_data)
         val imageButton: ImageView = view.findViewById(R.id.measurment_history_image)
-        val unuts: TextView = view.findViewById(R.id.measure_units)
+        val units: TextView = view.findViewById(R.id.measure_units)
         val context = view.context
     }
 
