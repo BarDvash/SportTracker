@@ -1,8 +1,8 @@
-package com.technion.fitracker.user.personal.measurements
+package com.technion.fitracker.user.business.customer
 
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -23,21 +22,21 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
-import com.technion.fitracker.databinding.FragmentMeasurementsBinding
-import com.technion.fitracker.models.UserViewModel
+import com.technion.fitracker.databinding.FragmentCustomerMeasurementBinding
+import com.technion.fitracker.models.CustomerDataViewModel
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
-import com.technion.fitracker.user.personal.UserActivity
 import java.text.SimpleDateFormat
 
-
-class MeasurementsFragment : Fragment() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class CustomerMeasurementFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
-    lateinit var viewModel: UserViewModel
+    lateinit var viewModel: CustomerDataViewModel
     val names: ArrayList<String> = ArrayList()
     val values: ArrayList<String> = ArrayList()
     lateinit var placeHolder: TextView
-    lateinit var fab: ExtendedFloatingActionButton
     lateinit var measurementsContainer: MaterialCardView
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
     val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
@@ -46,8 +45,8 @@ class MeasurementsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this)[UserViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
+            ViewModelProviders.of(this)[CustomerDataViewModel::class.java]
+        } ?: throw Exception("Invalid CustomerMeasurementFragment in activity!")
     }
 
     override fun onCreateView(
@@ -55,7 +54,7 @@ class MeasurementsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view =
-            DataBindingUtil.inflate<FragmentMeasurementsBinding>(inflater, R.layout.fragment_measurements, container, false)
+            DataBindingUtil.inflate<FragmentCustomerMeasurementBinding>(inflater, R.layout.fragment_customer_measurement, container, false)
         view.viewmodel = viewModel
         return view.root
     }
@@ -67,32 +66,20 @@ class MeasurementsFragment : Fragment() {
         names.clear()
         values.clear()
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
-        db.collection("regular_users").document(auth.currentUser!!.uid).collection("measurements")
-                .orderBy("data", Query.Direction.DESCENDING).get(Source.CACHE).addOnSuccessListener { it_1 ->
-                    if (!it_1.isEmpty) {
-                        initFieldsWithLatestMeasurement(it_1)
+        db.collection("regular_users").document(viewModel.customerID!!).collection("measurements")
+                .orderBy("data", Query.Direction.DESCENDING).get(Source.CACHE).addOnSuccessListener { innerIt ->
+                    if (!innerIt.isEmpty) {
+                        initFieldsWithLatestMeasurement(innerIt)
                     }
                     getLatestFieldsFromDB()
                 }.addOnFailureListener {
                     getLatestFieldsFromDB()
                 }
-
-        (activity as UserActivity).historyAction.setOnMenuItemClickListener {
-            val activity = Intent(context, MeasurementsHistoryActivity::class.java)
-            startActivity(activity)
-            true
-        }
-        fab = view.findViewById<ExtendedFloatingActionButton>(R.id.measurements_fab).apply {
-            setOnClickListener {
-                (activity as UserActivity).userActivityStartFragment(R.id.measurementsAddFragment, false, true, true)
-            }
-            animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
-        }
-        measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
+        measurementsContainer = view.findViewById<MaterialCardView>(R.id.customer_last_measure_container)
         measurementsContainer.visibility = View.GONE
-        viewModel.measurementRV  = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
+        viewModel.measurementRV  = view.findViewById<RecyclerView>(R.id.customer_measurements_rec_view)
         viewModel.measurementRV?.layoutManager = LinearLayoutManager(context)
-        viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values)
+        viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values,viewModel.customerID)
         viewModel.measurementRV?.adapter = viewModel.measurementsRVAdapter
         viewModel.measurementRV?.addItemDecoration(
             DividerItemDecoration(
@@ -100,14 +87,11 @@ class MeasurementsFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-
-
-        placeHolder = view.findViewById(R.id.measurements_placeholder)
-
+        placeHolder = view.findViewById(R.id.customer_measurements_placeholder)
     }
 
     private fun getLatestFieldsFromDB() {
-        db.collection("regular_users").document(auth.currentUser!!.uid).collection("measurements")
+        db.collection("regular_users").document(viewModel.customerID!!).collection("measurements")
                 .orderBy("data", Query.Direction.DESCENDING).get().addOnSuccessListener {
                     if (!it.isEmpty) {
                         initFieldsWithLatestMeasurement(it)
@@ -190,6 +174,4 @@ class MeasurementsFragment : Fragment() {
             }
         }
     }
-
-
 }

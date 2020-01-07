@@ -1,6 +1,8 @@
 package com.technion.fitracker.user.personal.measurements
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
@@ -24,6 +26,7 @@ class MeasurementsGraphActivity : AppCompatActivity() {
     var adapter: MeasurementsFireStoreAdapter? = null
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
     val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
+    var uid: String? = null
     val translationTable =
         hashMapOf(
             "Biceps" to "biceps",
@@ -45,11 +48,12 @@ class MeasurementsGraphActivity : AppCompatActivity() {
 
         val params = intent.extras
         val name = params?.get("name") as String
+        uid = params.get("userID") as String? ?: auth.currentUser!!.uid
         val dates = ArrayList<String>()
-
+        Log.d(Context.VIBRATOR_SERVICE,(params.get("userID") as String?).toString())
 
         val chart = findViewById<LineChart>(R.id.chart)
-        db.collection("regular_users").document(auth.currentUser!!.uid).collection("measurements").orderBy("data").get().addOnSuccessListener {
+        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data").get().addOnSuccessListener {
             val entries = ArrayList<Entry>()
             var i = 0
             for (element in it) {

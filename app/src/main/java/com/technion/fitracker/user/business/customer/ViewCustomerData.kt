@@ -31,7 +31,7 @@ class ViewCustomerData : AppCompatActivity() {
         adapter = ExerciseTypeViewPageAdapter(supportFragmentManager).apply {
             addFragment(CustomerWorkoutsFragment(), "Workouts")
             addFragment(CustomerNutritionFragment(), "Nutrition")
-            addFragment(CustomerWorkoutsFragment(), "Measurements")
+            addFragment(CustomerMeasurementFragment(), "Measurements")
         }
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
