@@ -41,7 +41,8 @@ class PendingRequestFireStoreAdapter(
 
         var user_name: TextView = view.findViewById(R.id.pending_request_user_name)
         var user_image_view: ImageView = view.findViewById(R.id.pending_request_imageView)
-        var button: Button = view.findViewById(R.id.pending_request_button)
+        var accept_button: Button = view.findViewById(R.id.accept_pending_request_button)
+        var decline_button: Button = view.findViewById(R.id.decline_pending_request_button)
     }
 
 
@@ -74,13 +75,7 @@ class PendingRequestFireStoreAdapter(
         }
 
 
-        if (pending_request_activity.user_type == "business") {
-            holder.button.text = "accept as trainee"
-        } else {
-            holder.button.text = "accept as trainer"
-        }
-
-        holder.button.setOnClickListener {
+        holder.accept_button.setOnClickListener {
 
 
             if (pending_request_activity.user_type == "business") {
@@ -128,7 +123,19 @@ class PendingRequestFireStoreAdapter(
             }
         }
 
+
+
+        holder.decline_button.setOnClickListener {
+            if (pending_request_activity.user_type == "business") {
+                //delete it from pending request
+                firestore.collection("business_users").document(current_user_id!!).collection("requests").document(user_id!!).delete()
+            } else {//if it's regular user
+                //delete it from pending request
+                firestore.collection("regular_users").document(current_user_id!!).collection("requests").document(user_id!!).delete()
+            }
+        }
     }
+
 
     override fun onDataChanged() {
         super.onDataChanged()
