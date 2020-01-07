@@ -29,7 +29,7 @@ import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 
 class HomeScreenFragment : Fragment() {
 
-    private lateinit var viewModel: BusinessUserViewModel
+    lateinit var viewModel: BusinessUserViewModel
 
 
     private lateinit var navController: NavController

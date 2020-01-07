@@ -54,6 +54,10 @@ exports.trainee_sent_request = functions.firestore.document('/business_users/{tr
            timeToLive: 60 * 60 * 24
        };
 
+
+        let deleteDoc = db.collection('regular_users').doc(trainee_id).collection('approved_requests').doc(trainer_id).delete();
+
+
        return admin.messaging().sendToTopic("trainer_accepted_trainee_request"+trainee_id, payload, options);
    });
 
@@ -79,6 +83,8 @@ exports.trainee_sent_request = functions.firestore.document('/business_users/{tr
            priority: "high",
            timeToLive: 60 * 60 * 24
        };
+
+       let deleteDoc = db.collection('business_users').doc(trainer_id).collection('approved_requests').doc(trainee_id).delete();
 
        return admin.messaging().sendToTopic("trainee_accepted_trainer_request"+trainer_id, payload, options);
    });

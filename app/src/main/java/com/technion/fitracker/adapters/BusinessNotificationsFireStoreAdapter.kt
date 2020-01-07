@@ -2,6 +2,7 @@ package com.technion.fitracker.adapters
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.user.business.HomeScreenFragment
@@ -43,6 +45,19 @@ class BusinessNotificationsFireStoreAdapter(options: FirestoreRecyclerOptions<No
     ) {
         val notification = item.notification
         holder.notification.text = notification
+
+
+
+
+        holder.itemView.setOnClickListener {
+            if (notification == "you have new pending requests") {
+                val user_pending_requests = Intent(holder.itemView.context, PendingRequestsActivity::class.java)
+                user_pending_requests.putExtra("user_type", "business")
+                user_pending_requests.putExtra("user_name", fragment.viewModel.user_name)
+                user_pending_requests.putExtra("user_photo_url", fragment.viewModel.user_photo_url)
+                holder.itemView.context.startActivity(user_pending_requests)
+            }
+        }
     }
 
 

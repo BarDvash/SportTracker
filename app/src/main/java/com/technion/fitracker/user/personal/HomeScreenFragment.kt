@@ -39,7 +39,7 @@ class HomeScreenFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var viewModel: UserViewModel
+    lateinit var viewModel: UserViewModel
     lateinit var recentWorkoutsContainer: LinearLayout
     private lateinit var workoutsContentView: MaterialCardView
     private lateinit var personalTrainerContentView: MaterialCardView
