@@ -42,6 +42,8 @@ class MeasurementsGraphActivity : AppCompatActivity() {
             "Weight" to "weight"
         )
 
+    private val maxResults = 5
+
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +65,7 @@ class MeasurementsGraphActivity : AppCompatActivity() {
         db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data",Query.Direction.DESCENDING).get().addOnSuccessListener {
             val entries = ArrayList<BarEntry>()
             var i = 0
-            val docs = takeLastDocs(5,it)
+            val docs = takeLastDocs(maxResults, it)
             for (element in docs) {
                 if (element.getString(translationTable[name]!!).isNullOrEmpty()) {
                     continue
