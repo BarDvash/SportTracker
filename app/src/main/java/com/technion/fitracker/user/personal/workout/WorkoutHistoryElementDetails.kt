@@ -35,6 +35,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
     lateinit var ratingImage: ImageView
     lateinit var commentHolder: LinearLayout
     var uid: String? = null
+    var isTrainer: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,6 +53,9 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
         mFirestore = FirebaseFirestore.getInstance()
         ratingImage = findViewById(R.id.workout_rating)
         commentHolder = findViewById(R.id.workout_comment_container)
+        if(params?.get("userID") as String? != null){
+            isTrainer = true
+        }
         uid = params?.get("userID") as String? ?: mAuth.currentUser!!.uid
         viewModel.timeElapsed.value = params?.get("time_elapsed") as String?
         viewModel.workoutID = params?.get("id") as String?
@@ -100,16 +104,25 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.workout_history_menu, menu)
+        if(isTrainer == false){
+            menu?.add(0, 1, Menu.NONE, "Delete")?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            menu?.add(0, 2, Menu.NONE, "Share")?.apply {
+                setIcon(R.drawable.ic_share)
+                setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+            }
+        }
         return true
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val delete_action = 1
+        val share_action = 2
         when (item.itemId) {
-            R.id.log_share -> {
+            share_action -> {
                 //TODO:
             }
-            R.id.log_delete -> {
+            delete_action -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Delete workout activity?")
                         .setPositiveButton(
                             "Yes"

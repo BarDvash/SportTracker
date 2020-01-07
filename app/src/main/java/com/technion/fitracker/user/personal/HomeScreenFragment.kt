@@ -108,9 +108,9 @@ class HomeScreenFragment : Fragment() {
             adapter = viewModel.notifications_adapter
         }
 
-        workoutsContentView = view.findViewById(R.id.last_workout_container)
         personalTrainerContentView = view.findViewById(R.id.personal_trainer_card)
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
+        workoutsContentView = view.findViewById(R.id.last_workout_container)
         val query = firebaseFirestore
                 .collection("regular_users")
                 .document(current_user_id!!)

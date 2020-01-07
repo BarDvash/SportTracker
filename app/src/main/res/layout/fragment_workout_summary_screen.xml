@@ -203,7 +203,6 @@
                     android:gravity="start|top"
                     android:hint="@string/how_did_it_go"
                     android:inputType="textMultiLine"
-                    android:maxLines="0"
                     android:text="@={viewModel.comment}" />
             </com.google.android.material.textfield.TextInputLayout>
 

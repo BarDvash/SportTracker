@@ -88,7 +88,7 @@ class HomeScreenFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.notifications_adapter
         }
-        notifications_container.visibility = View.GONE
+        notifications_content_view.visibility = View.GONE
         crossfade()
     }
 
