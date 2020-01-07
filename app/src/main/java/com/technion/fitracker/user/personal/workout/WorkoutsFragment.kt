@@ -72,7 +72,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this,context!!,"User").apply {
+        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this,context!!).apply {
             mOnItemClickListener = View.OnClickListener { v ->
                 val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
                 val snapshot: DocumentSnapshot = viewModel.workoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)!!

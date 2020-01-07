@@ -5,12 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.viewpager.widget.ViewPager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.viewPages.ExerciseTypeViewPageAdapter
 import com.technion.fitracker.models.CustomerDataViewModel
-import com.technion.fitracker.user.personal.workout.WorkoutsFragment
 import kotlinx.android.synthetic.main.activity_view_customer_data.*
 
 class ViewCustomerData : AppCompatActivity() {
@@ -32,13 +29,19 @@ class ViewCustomerData : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         adapter = ExerciseTypeViewPageAdapter(supportFragmentManager).apply {
-            addFragment(CustomerWorkouts(), "Workouts")
-            addFragment(CustomerWorkouts(), "Nutrition")
-            addFragment(CustomerWorkouts(), "Measurements")
+            addFragment(CustomerWorkoutsFragment(), "Workouts")
+            addFragment(CustomerNutritionFragment(), "Nutrition")
+            addFragment(CustomerWorkoutsFragment(), "Measurements")
         }
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
 
 
 }

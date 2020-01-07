@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,14 +21,16 @@ import com.technion.fitracker.R
 import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter.ViewHolder
 import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
 import com.technion.fitracker.user.Meal
+import com.technion.fitracker.user.business.customer.CustomerNutritionFragment
 import com.technion.fitracker.user.personal.nutrition.NutritionFragment
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 
 class NutritionFireStoreAdapter(
     options: FirestoreRecyclerOptions<NutritionFireStoreModel>,
     val onItemClickListener: View.OnClickListener,
-    val nutritionFragment: NutritionFragment,
-    val mContext: Context
+    val fragment: Fragment,
+    val mContext: Context,
+    val userID: String? = null
 ) :
         FirestoreRecyclerAdapter<NutritionFireStoreModel, ViewHolder>(options) {
 
@@ -37,12 +39,28 @@ class NutritionFireStoreAdapter(
 
     override fun onDataChanged() {
         super.onDataChanged()
-        if (itemCount <= 0) {
-            nutritionFragment.placeholder.visibility = View.VISIBLE
-        } else {
-            nutritionFragment.placeholder.visibility = View.GONE
+        when (fragment) {
+            is NutritionFragment -> {
+                (fragment as NutritionFragment).apply {
+                    if (itemCount <= 0) {
+                        placeholder.visibility = View.VISIBLE
+                    } else {
+                        placeholder.visibility = View.GONE
+                    }
+                }
+            }
+            is CustomerNutritionFragment -> {
+                (fragment as CustomerNutritionFragment).apply {
+                    if (itemCount <= 0) {
+                        placeholder.visibility = View.VISIBLE
+                    } else {
+                        placeholder.visibility = View.GONE
+                    }
+                }
+            }
         }
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -57,20 +75,22 @@ class NutritionFireStoreAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: NutritionFireStoreModel) {
-        holder.container.animation = AnimationUtils.loadAnimation(mContext,R.anim.scale_in_card)
+        holder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         holder.name.text = item.name
         holder.overlay.setOnClickListener {
             holder.view.callOnClick()
         }
-        firestore.collection("regular_users").document(auth.currentUser!!.uid).collection("meals")
+
+        val uid = userID ?: auth.currentUser!!.uid
+        firestore.collection("regular_users").document(uid).collection("meals")
                 .whereEqualTo("name", item.name).get(Source.CACHE).addOnSuccessListener { documents ->
                     initInnerRecycler(documents, holder)
-                    firestore.collection("regular_users").document(auth.currentUser!!.uid).collection("meals")
+                    firestore.collection("regular_users").document(uid).collection("meals")
                             .whereEqualTo("name", item.name).get().addOnSuccessListener { documents2 ->
                                 initInnerRecycler(documents2, holder)
                             }
                 }.addOnFailureListener {
-                    firestore.collection("regular_users").document(auth.currentUser!!.uid).collection("meals")
+                    firestore.collection("regular_users").document(uid).collection("meals")
                             .whereEqualTo("name", item.name).get().addOnSuccessListener { documents2 ->
                                 initInnerRecycler(documents2, holder)
                             }

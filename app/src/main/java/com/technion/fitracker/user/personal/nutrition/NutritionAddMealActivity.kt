@@ -22,6 +22,7 @@ class NutritionAddMealActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
     var updateData: Boolean = false
+    var uid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,7 @@ class NutritionAddMealActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         val params = intent.extras
         val list = params?.get("list")
+        uid = params?.get("userID") as String? ?: auth.currentUser!!.uid
         if (list != null) {
             updateData = true
             val menu = params.get("list") as ArrayList<Map<String, String>>
@@ -103,13 +105,13 @@ class NutritionAddMealActivity : AppCompatActivity() {
     fun writeToDB(updateData: Boolean) {
         val data = Meal(viewModel.editTextMealName.value, viewModel.data)
         if (!updateData) {
-            db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").add(data).addOnSuccessListener {
+            db.collection("regular_users").document(uid!!).collection("meals").add(data).addOnSuccessListener {
                 //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
             }.addOnFailureListener {
                 //                    Toast.makeText(context,"nope",Toast.LENGTH_SHORT).show()
             }
         } else {
-            db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").document(viewModel.docId!!).set(data)
+            db.collection("regular_users").document(uid!!).collection("meals").document(viewModel.docId!!).set(data)
                     .addOnSuccessListener {
                         //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
@@ -119,7 +121,7 @@ class NutritionAddMealActivity : AppCompatActivity() {
     }
 
     fun deleteFromDB() {
-        db.collection("regular_users").document(auth.currentUser!!.uid).collection("meals").document(viewModel.docId!!).delete()
+        db.collection("regular_users").document(uid!!).collection("meals").document(viewModel.docId!!).delete()
                 .addOnSuccessListener {
                     //                    Toast.makeText(context,"done",Toast.LENGTH_SHORT).show()
                 }.addOnFailureListener {

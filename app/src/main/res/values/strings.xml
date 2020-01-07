@@ -36,10 +36,13 @@
     <string name="workout_name_field_hint">Workout Name</string>
     <string name="empty_workout_list_hint">There are no exercises added yet!\nUse + button to add first exercise.</string>
     <string name="empty_workouts_list_hint">There are no workouts added yet!\nUse + button to add first workout.</string>
+    <string name="empty_customer_workouts_list_hint">The customer has no workouts yet\nUse + button to add first workout.</string>
     <string name="empty_dish_list_hint">There are no options added yet!\nUse + button to add first dish option.</string>
     <string name="empty_meal_list_hint">There are no dishes added yet!\nUse + button to add first dish.</string>
     <string name="empty_measurements_list_hint">There are no measurements added yet!\nUse + button to add first measurement.</string>
+    <string name="empty_customer_measurements_list_hint">The customer hadn\'t measured himself yet.</string>
     <string name="empty_nutrition_list_hint">There are no meals in your nutrition menu yet!\nUse + button to add first meal.</string>
+    <string name="empty_customer_nutrition_list_hint">There customer hadn\'t added any meals yet!\nUse + button to add first meal.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="duration_hint">Duration</string>
     <string name="speed_hint">Speed</string>
@@ -109,7 +112,7 @@
     <string name="title_activity_settings">Settings</string>
     <string name="credits_header">Credits</string>
     <string name="doubleDot">:</string>
-    <string name="add_customer">add client</string>
+    <string name="add_customer">Add client</string>
     <string name="empty_customers_list_hint">There are no customers added yet!\\nUse + button to add your first customer.</string>
     <string name="empty_pending_requests_list_hint">There are no pending requests.</string>
     <string name="channel_name">Notifications</string>
