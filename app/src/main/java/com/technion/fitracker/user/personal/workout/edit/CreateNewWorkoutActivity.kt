@@ -141,6 +141,14 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         when (item.itemId) {
             R.id.new_workout_save_item -> {
                 saveWorkoutToFirestore()
+
+                //for cloud functions:
+                if(traineeUid != null){//if the user who updated the workout is business
+                    //create this document to make the cloud function to operate and notify trainee
+                    firestore.collection("regular_users").document(traineeUid!!).collection("updates").document("workout_update").set(hashMapOf("workout_update" to "yes"))
+                }
+                //until here
+
             }
             deleteAction -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")

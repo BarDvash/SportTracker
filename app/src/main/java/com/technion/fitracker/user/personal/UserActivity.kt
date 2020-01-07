@@ -94,6 +94,9 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         //subscribe to unique topic:
         val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
+        val topic2_name = "workout_update"+auth.currentUser!!.uid
+        FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
+
 
     }
 
@@ -145,6 +148,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 //unsubscribe from topics
                 val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
+                val topic2_name = "workout_update"+auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
 
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()

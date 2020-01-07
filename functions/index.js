@@ -91,6 +91,34 @@ exports.trainee_sent_request = functions.firestore.document('/business_users/{tr
 
 
 
+      exports.workout_update = functions.firestore.document('/regular_users/{trainee_id}/updates/workout_update').onCreate((snap, context) => {
+      	const trainee_id = context.params.trainee_id;
+
+          console.log('Push notification event triggered');
+
+          // Create a notification
+          const payload = {
+              notification: {
+      			title: 'workout plan update',
+      			body:'you personal trainer updated your workout plan!',
+                  sound: "default"
+              },
+          };
+
+          //Create an options object that contains the time to live for the notification and the priority
+          const options = {
+              priority: "high",
+              timeToLive: 60 * 60 * 24
+          };
+
+          let deleteDoc = db.collection('regular_users').doc(trainee_id).collection('updates').doc('workout_update').delete();
+
+          return admin.messaging().sendToTopic("workout_update"+trainee_id, payload, options);
+      });
+
+
+
+
 
 //not notifications cloud functions:
 
