@@ -52,7 +52,7 @@ class MeasurementsAddFragment : Fragment() {
 
         navController = Navigation.findNavController(view)
         (activity as UserActivity).historyAction.setOnMenuItemClickListener {
-            val activity = Intent(context, MeasurementsHistoryActivity::class.java)
+            val activity = Intent(context, MeasurementsGraphActivity::class.java)
             startActivity(activity)
             true
         }

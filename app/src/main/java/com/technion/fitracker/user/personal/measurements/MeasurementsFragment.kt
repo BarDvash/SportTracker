@@ -8,12 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.core.view.ViewCompat.animate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +27,6 @@ import com.technion.fitracker.databinding.FragmentMeasurementsBinding
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
 import com.technion.fitracker.user.personal.UserActivity
-import com.technion.fitracker.utils.RecyclerViewDisableScroll
 import java.text.SimpleDateFormat
 
 
@@ -105,7 +101,7 @@ class MeasurementsFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-        viewModel.measurementRV?.addOnItemTouchListener(RecyclerViewDisableScroll())
+//        viewModel.measurementRV?.addOnItemTouchListener(RecyclerViewDisableScroll())
         viewModel.measurementRV?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
