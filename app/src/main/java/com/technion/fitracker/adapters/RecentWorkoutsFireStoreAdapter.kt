@@ -19,10 +19,16 @@ class RecentWorkoutsFireStoreAdapter(
 ) :
         FirestoreRecyclerAdapter<RecentWorkoutFireStoreModel, RecentWorkoutsFireStoreAdapter.ViewHolder>(options) {
 
+    var mOnItemClickListener: View.OnClickListener? = null
+
     inner class ViewHolder(view: View) :
             RecyclerView.ViewHolder(view) {
         var workoutName: TextView = view.findViewById(R.id.recent_workout_name)
         var dateTime: TextView = view.findViewById(R.id.recent_workout_date_time)
+        init {
+            view.tag = this
+            view.setOnClickListener(mOnItemClickListener)
+        }
 
     }
 
