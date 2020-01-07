@@ -108,8 +108,6 @@ class CustomerNutritionFragment : Fragment(), View.OnClickListener{
     override fun onStart() {
         super.onStart()
         viewModel.nutritionAdapter?.startListening()
-
-
     }
 
     override fun onClick(v: View?) {

@@ -13,7 +13,7 @@ import com.technion.fitracker.models.nutrition.jsonDBModel
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import com.technion.fitracker.adapters.viewPages.ExerciseTypeViewPageAdapter
+import com.technion.fitracker.adapters.viewPages.TabsFragmentPagerAdapter
 import com.technion.fitracker.databinding.ActivityAddExerciseBinding
 import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import kotlinx.android.synthetic.main.activity_add_exercise.*
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_add_exercise.*
 class AddExerciseActivity : AppCompatActivity() {
     lateinit var viewModel: CreateNewExerciseViewModel
     lateinit var navController: NavController
-    lateinit var adapter: ExerciseTypeViewPageAdapter
+    lateinit var adapter: TabsFragmentPagerAdapter
     lateinit var viewPager: ViewPager
     private val WEIGHT_PAGE = 0
     private val AEROBIC_PAGE = 1
@@ -39,7 +39,7 @@ class AddExerciseActivity : AppCompatActivity() {
             title = "Add new exercise"
             setDisplayHomeAsUpEnabled(true)
         }
-        adapter = ExerciseTypeViewPageAdapter(supportFragmentManager).apply {
+        adapter = TabsFragmentPagerAdapter(supportFragmentManager).apply {
             addFragment(WeightExerciseFragment(), "Weight")
             addFragment(AerobicExerciseFragment(), "Aerobic")
         }
