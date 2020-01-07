@@ -11,12 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
+        <activity android:name=".user.business.customer.ViewCustomerData"></activity>
         <activity android:name=".PendingRequestsActivity" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity android:screenOrientation="portrait" android:name=".login.LoginActivity" />
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".user.personal.workout.WorkoutStarter" />
         <activity android:name=".user.personal.workout.edit.EditAerobicExercise" />
         <activity android:name=".user.personal.workout.edit.EditWeightExercise" />
@@ -50,8 +53,8 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action
-                    android:screenOrientation="portrait"
-                    android:name="android.intent.action.SEARCH" />
+                    android:name="android.intent.action.SEARCH"
+                    android:screenOrientation="portrait" />
             </intent-filter>
 
             <meta-data
@@ -60,17 +63,15 @@
         </activity>
         <activity android:name=".user.personal.measurements.MeasurementsHistoryActivity" />
 
-
-
-        <service android:name=".services.MyService"
+        <service
+            android:name=".services.MyService"
             android:exported="false">
             <intent-filter>
                 <action
-                    android:screenOrientation="portrait"
-                    android:name="com.google.firebase.MESSAGING_EVENT" />
+                    android:name="com.google.firebase.MESSAGING_EVENT"
+                    android:screenOrientation="portrait" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

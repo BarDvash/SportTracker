@@ -2,11 +2,13 @@ package com.technion.fitracker.user.business
 
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,8 @@ import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.CustomersFireStoreAdapter
 import com.technion.fitracker.models.CustomersFireStoreModel
+import com.technion.fitracker.user.business.customer.ViewCustomerData
+import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 
 
 class CustomersFragment : Fragment() {
@@ -64,7 +68,17 @@ class CustomersFragment : Fragment() {
         placeholder = view.findViewById(R.id.no_customers_placeholder)
         val query = firestore.collection("business_users").document(uid!!).collection("customers").orderBy("customer_name", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<CustomersFireStoreModel>().setQuery(query, CustomersFireStoreModel::class.java).build()
-        adapter = CustomersFireStoreAdapter(options, this)
+        adapter = CustomersFireStoreAdapter(options, this).apply{
+            mOnItemClickListener = View.OnClickListener { v ->
+                val rvh = v.tag as CustomersFireStoreAdapter.ViewHolder
+                val customerID: String? = adapter.snapshots.getSnapshot(rvh.adapterPosition).get("customer_id") as String?
+                val customerName: String? = adapter.snapshots.getSnapshot(rvh.adapterPosition).get("customer_name") as String?
+                val customerView = Intent(context!!, ViewCustomerData::class.java)
+                customerView.putExtra("customerID", customerID)
+                customerView.putExtra("customerName", customerName)
+                startActivity(customerView)
+            }
+        }
         recyclerView.adapter = adapter
         //TODO: initialize fab ?
     }
@@ -78,4 +92,5 @@ class CustomersFragment : Fragment() {
         super.onStop()
         adapter.stopListening()
     }
+
 }
