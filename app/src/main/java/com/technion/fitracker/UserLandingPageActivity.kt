@@ -114,6 +114,7 @@ class UserLandingPageActivity : AppCompatActivity() {
             Toast.makeText(this, "sent request to be " + viewed_user_name + "'s trainee", Toast.LENGTH_LONG).show()
             //TODO: change button here ! and make sure the button stays changed by defined it somwhere
 
+
         } else if (viewed_user_type == "regular" && current_user_type == "business") {//when trainer send request to user to be his personal trainer
             firestore.collection("regular_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!).set(user)
             Toast.makeText(this, "sent request to be " + viewed_user_name + "'s personal trainer", Toast.LENGTH_LONG).show()

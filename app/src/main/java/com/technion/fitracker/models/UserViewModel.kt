@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.technion.fitracker.adapters.MyTrainerFireStoreAdapter
 import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
+import com.technion.fitracker.adapters.UserNotificationsFireStoreAdapter
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
 import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
@@ -29,6 +30,10 @@ class UserViewModel : ViewModel() {
     var personalTrainerRV: RecyclerView? = null
     var personalTrainerAdapter: MyTrainerFireStoreAdapter? = null
 
+
+    var notificaations_rec_view: RecyclerView? = null
+    var notifications_adapter: UserNotificationsFireStoreAdapter? = null
+
     //Nutrition fields
     var nutritionRV: RecyclerView? = null
     var nutritionAdapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>? = null
@@ -40,6 +45,8 @@ class UserViewModel : ViewModel() {
     //MeasurementsFragment fields
     var measurementRV: RecyclerView? = null
     var measurementsRVAdapter: MeasurementsRecyclerViewAdapter? = null
+
+
 
 
 

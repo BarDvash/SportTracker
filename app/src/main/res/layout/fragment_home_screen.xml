@@ -23,6 +23,59 @@
 
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/user_notifications_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/materialCardRounded"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <LinearLayout
+                    android:id="@+id/user_notifications_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/primaryDarkColor"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/user_notification_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:paddingStart="8dp"
+                            android:paddingLeft="8dp"
+                            android:text="Notifications:"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/user_notifications_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="4dp"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/element_notification_message" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/personal_trainer_card"
                 style="@style/materialCardRounded"
                 android:layout_width="0dp"
@@ -32,7 +85,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/user_notifications_card">
 
                 <LinearLayout
                     android:id="@+id/personal_trainer_container"

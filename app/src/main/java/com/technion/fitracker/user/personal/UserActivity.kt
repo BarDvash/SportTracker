@@ -92,7 +92,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         createNotificationChannel()
         //subscribe to unique topic:
-        val topic1_name = "trainer_accept_trainee_request_push_notification"+auth.currentUser!!.uid
+        val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
 
     }
@@ -143,7 +143,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.user_menu_logout_ac -> {
 
                 //unsubscribe from topics
-                val topic1_name = "trainer_accept_trainee_request_push_notification"+auth.currentUser!!.uid
+                val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
 
                 FirebaseAuth.getInstance().signOut()
@@ -191,6 +191,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         viewModel.homeRecentWorkoutsAdapter?.stopListening()
         viewModel.nutritionAdapter?.stopListening()
         viewModel.workoutsAdapter?.stopListening()
+        viewModel.notifications_adapter?.stopListening()
     }
 
     private fun startLoginActivity() {

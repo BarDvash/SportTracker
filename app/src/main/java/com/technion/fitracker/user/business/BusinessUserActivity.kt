@@ -83,9 +83,9 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
         createNotificationChannel()
         //subscribe to topics
-        val topic1_name = "trainee_ask_trainer_push_notification"+auth.currentUser!!.uid
+        val topic1_name = "trainee_sent_request"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
-        val topic2_name = "you_have_new_customer"+auth.currentUser!!.uid
+        val topic2_name = "trainee_accepted_trainer_request"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
     }
 
@@ -122,9 +122,9 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
 
                 //unsubscribe from topics
-                val topic1_name = "trainee_ask_trainer_push_notification"+auth.currentUser!!.uid
+                val topic1_name = "trainee_sent_request"+auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
-                val topic2_name = "you_have_new_customer"+auth.currentUser!!.uid
+                val topic2_name = "trainee_accepted_trainer_request"+auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
 
                 FirebaseAuth.getInstance().signOut()

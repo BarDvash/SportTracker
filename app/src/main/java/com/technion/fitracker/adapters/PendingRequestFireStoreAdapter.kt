@@ -91,6 +91,10 @@ class PendingRequestFireStoreAdapter(
                     "customer_id" to user_id
                 )
 
+                //for cloud functions:
+                firestore.collection("regular_users").document(user_id!!).collection("approved_requests").document(current_user_id!!).set(hashMapOf("id" to current_user_id))
+                //until here
+
                 firestore.collection("business_users").document(current_user_id!!).collection("customers").document(user_id!!).set(cutomer)
 
                 //delete it from pending request
@@ -106,6 +110,11 @@ class PendingRequestFireStoreAdapter(
                     "customer_photo_url" to pending_request_activity.user_photo_url,
                     "customer_id" to current_user_id
                 )
+
+
+                //for cloud functions:
+                firestore.collection("business_users").document(user_id!!).collection("approved_requests").document(current_user_id!!).set(hashMapOf("id" to current_user_id))
+                //until here
 
 
                 firestore.collection("business_users").document(user_id!!).collection("customers").document(current_user_id!!).set(cutomer)

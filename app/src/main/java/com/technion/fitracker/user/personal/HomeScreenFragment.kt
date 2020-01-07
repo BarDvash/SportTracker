@@ -26,7 +26,9 @@ import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.MyTrainerFireStoreAdapter
 import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
+import com.technion.fitracker.adapters.UserNotificationsFireStoreAdapter
 import com.technion.fitracker.databinding.FragmentHomeScreenBinding
+import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.models.PersonalTrainer
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
@@ -46,6 +48,9 @@ class HomeScreenFragment : Fragment() {
     lateinit var personalTrainerContainer: LinearLayout
     lateinit var personalTrainerImageView: ImageView
     lateinit var personalTrainerNameView: TextView
+
+    lateinit var notifications_container: LinearLayout
+    lateinit var notifications_content_view: MaterialCardView
 
     private var current_user_id: String? = null
 
@@ -80,6 +85,25 @@ class HomeScreenFragment : Fragment() {
         recentWorkoutsContainer = view.findViewById(R.id.recent_workouts_container)
         fetchPersonalTrainerUID()
 
+
+        notifications_container = view.findViewById(R.id.user_notifications_container)
+        notifications_content_view = view.findViewById(R.id.user_notifications_card)
+        val notifications_query =
+            firebaseFirestore.collection("regular_users").document(current_user_id!!).collection("notifications")
+                    .orderBy("notification", Query.Direction.DESCENDING).limit(4)
+
+        val notifications_options =
+            FirestoreRecyclerOptions.Builder<NotificationsModel>().setQuery(notifications_query, NotificationsModel::class.java).build()
+
+        viewModel.notifications_adapter = UserNotificationsFireStoreAdapter(notifications_options, this)
+        viewModel.notificaations_rec_view = view.findViewById<RecyclerView>(R.id.user_notifications_recycler).apply {
+            addItemDecoration(
+                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+            )
+            layoutManager = LinearLayoutManager(context)
+            adapter = viewModel.notifications_adapter
+        }
+
         workoutsContentView = view.findViewById(R.id.last_workout_container)
         personalTrainerContentView = view.findViewById(R.id.personal_trainer_card)
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
@@ -100,15 +124,64 @@ class HomeScreenFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.homeRecentWorkoutsAdapter
         }
+
+
+
         workoutsContentView.visibility = View.GONE
         personalTrainerContentView.visibility = View.GONE
+        notifications_container.visibility = View.GONE
         crossfade()
     }
+
+
+    fun fetchPersonalTrainerUID() {
+        if (viewModel.personalTrainerUID == null) {
+            val user_doc = firebaseFirestore.collection("regular_users").document(current_user_id!!)
+            user_doc.get().addOnSuccessListener {
+                if (it.exists()) {
+                    viewModel.personalTrainerUID = it.get("personal_trainer_uid") as String?
+                    viewModel.personalTrainerUID?.let {
+                        val queryPersonalTrainer = firebaseFirestore
+                                .collection("business_users")
+                                .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
+                                .limit(1)
+                        val optionsPersonalTrainer = FirestoreRecyclerOptions.Builder<PersonalTrainer>()
+                                .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
+                                .build()
+                        viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer, this)
+                        viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = viewModel.personalTrainerAdapter
+                        }
+                    }
+                    viewModel.personalTrainerAdapter?.startListening()
+                }
+            }.addOnFailureListener { Toast.makeText(activity, "Lost internet connection", Toast.LENGTH_LONG).show() }//lost internet connection TODO:!
+        } else {
+            viewModel.personalTrainerUID?.let {
+                val queryPersonalTrainer = firebaseFirestore
+                        .collection("business_users")
+                        .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
+                        .limit(1)
+                val optionsPersonalTrainer = FirestoreRecyclerOptions.Builder<PersonalTrainer>()
+                        .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
+                        .build()
+                viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer, this)
+                viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
+                    layoutManager = LinearLayoutManager(context)
+                    adapter = viewModel.personalTrainerAdapter
+                }
+                viewModel.personalTrainerAdapter?.startListening()
+            }
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
         viewModel.homeRecentWorkoutsAdapter?.startListening()
         viewModel.personalTrainerAdapter?.startListening()
+        viewModel.notifications_adapter?.startListening()
     }
 
     private fun crossfade() {
@@ -141,48 +214,21 @@ class HomeScreenFragment : Fragment() {
         // Animate the loading view to 0% opacity. After the animation ends,
         // set its visibility to GONE as an optimization step (it won't
         // participate in layout passes, etc.)
-    }
+        notifications_container.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
 
-
-    fun fetchPersonalTrainerUID() {
-        if(viewModel.personalTrainerUID == null){
-            val user_doc = firebaseFirestore.collection("regular_users").document(current_user_id!!)
-            user_doc.get().addOnSuccessListener {
-                if (it.exists()) {
-                    viewModel.personalTrainerUID = it.get("personal_trainer_uid") as String?
-                    viewModel.personalTrainerUID?.let{
-                        val queryPersonalTrainer = firebaseFirestore
-                                .collection("business_users")
-                                .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
-                                .limit(1)
-                        val optionsPersonalTrainer= FirestoreRecyclerOptions.Builder<PersonalTrainer>()
-                                .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
-                                .build()
-                        viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer,this)
-                        viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
-                            layoutManager = LinearLayoutManager(context)
-                            adapter = viewModel.personalTrainerAdapter
-                        }
-                    }
-                    viewModel.personalTrainerAdapter?.startListening()
-                }
-            }.addOnFailureListener { Toast.makeText(activity, "Lost internet connection", Toast.LENGTH_LONG).show() }//lost internet connection TODO:!
-        }else{
-            viewModel.personalTrainerUID?.let{
-                val queryPersonalTrainer = firebaseFirestore
-                        .collection("business_users")
-                        .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
-                        .limit(1)
-                val optionsPersonalTrainer= FirestoreRecyclerOptions.Builder<PersonalTrainer>()
-                        .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
-                        .build()
-                viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer,this)
-                viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = viewModel.personalTrainerAdapter
-                }
-                viewModel.personalTrainerAdapter?.startListening()
-            }
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
         }
     }
 }
+
+
+
