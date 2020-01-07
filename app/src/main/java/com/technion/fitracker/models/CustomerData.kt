@@ -1,4 +1,4 @@
-package com.technion.fitracker.user.business
+package com.technion.fitracker.models
 
 data class CustomerData(
     val customer_name: String? = null,

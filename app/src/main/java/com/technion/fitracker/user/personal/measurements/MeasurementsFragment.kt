@@ -35,9 +35,6 @@ import java.text.SimpleDateFormat
 
 
 class MeasurementsFragment : Fragment() {
-
-    private lateinit var navController: NavController
-
     private lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
     lateinit var viewModel: UserViewModel
@@ -85,7 +82,6 @@ class MeasurementsFragment : Fragment() {
                     getLatestFieldsFromDB()
                 }
 
-        navController = Navigation.findNavController(view)
         (activity as UserActivity).historyAction.setOnMenuItemClickListener {
             val activity = Intent(context, MeasurementsHistoryActivity::class.java)
             startActivity(activity)

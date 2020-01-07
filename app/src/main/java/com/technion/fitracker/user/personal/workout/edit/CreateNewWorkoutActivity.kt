@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_NEVER
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -43,6 +44,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var viewAdapter: ExerciseAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private var traineeUid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +53,17 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
             DataBindingUtil.setContentView<ActivityCreateNewWorkoutBinding>(this, R.layout.activity_create_new_workout)
         binding.lifecycleOwner = this
         binding.newWorkoutViewModel = viewModel
+        traineeUid = intent.getStringExtra("customerID")
+        viewModel.workoutID.value = intent.getStringExtra("workoutID")
         setSupportActionBar(findViewById(R.id.create_workout_toolbar))
-        supportActionBar?.title = "Create Workout"
+        if (viewModel.workoutID.value != null) {
+            supportActionBar?.title = "Create Workout"
+        }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         firestore = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
         viewManager = LinearLayoutManager(this)
         noWorkoutHint = findViewById(R.id.no_workouts_hint)
-        viewModel.workoutID.value = intent.getStringExtra("workoutID")
         val exercises = viewModel.workout_exercises.value
         val onItemClickListener = View.OnClickListener { v ->
             val viewHolder = v.tag as RecyclerView.ViewHolder
@@ -132,16 +137,38 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val deleteAction = 1
         when (item.itemId) {
             R.id.new_workout_save_item -> {
                 saveWorkoutToFirestore()
             }
-            //Back button
+            deleteAction -> {
+                MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")
+                        .setPositiveButton(
+                            "Yes"
+                        ) { _, _ ->
+                            deleteWorkoutFromDB()
+                            finish()
+
+                        }
+                        .setNegativeButton(
+                            "No"
+                        ) { _, _ ->
+                        }.show()
+            }
             else -> {
                 safeExit()
             }
         }
         return true
+    }
+
+    private fun deleteWorkoutFromDB() {
+        firestore.collection("regular_users").document(traineeUid!!).collection("workouts")
+                .document(viewModel.workoutID.value!!).delete().addOnSuccessListener {
+                    Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot deleted with ID: " + viewModel.workoutID.value)
+                }
+                .addOnFailureListener { e -> Log.w(FragmentActivity.VIBRATOR_SERVICE, "Error deleting document", e) }
     }
 
     private fun setEmptyPlaceholderState() {
@@ -224,6 +251,11 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.add_new_workout_menu, menu)
+
+        if(traineeUid != null){
+            menu?.add(0, 1, Menu.NONE, "Delete")?.setShowAsAction(SHOW_AS_ACTION_NEVER)
+        }
+
         return true
 
     }
@@ -296,7 +328,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
             Toast.makeText(this, "Workout must have at least one exercise!", Toast.LENGTH_LONG).show()
             return
         }
-        val uid = mAuth.currentUser?.uid
+        val uid = traineeUid ?: mAuth.currentUser?.uid
         val workout =
             WorkoutData(viewModel.workout_name.value, viewModel.workout_desc.value, viewModel.workout_exercises.value)
         if (uid != null) {
@@ -326,7 +358,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun extractWorkoutFromDB() {
-        val uid = mAuth.currentUser?.uid
+        val uid = traineeUid ?: mAuth.currentUser?.uid
         if ((viewModel.workout_exercises.value?.size ?: 0) == 0) {
             if (!uid.isNullOrEmpty()) {
                 if (viewModel.workoutID.value != null) {

@@ -19,8 +19,8 @@ import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import kotlinx.android.synthetic.main.activity_add_exercise.*
 
 class AddExerciseActivity : AppCompatActivity() {
-    lateinit var navController: NavController
     lateinit var viewModel: CreateNewExerciseViewModel
+    lateinit var navController: NavController
     lateinit var adapter: ExerciseTypeViewPageAdapter
     lateinit var viewPager: ViewPager
     private val WEIGHT_PAGE = 0

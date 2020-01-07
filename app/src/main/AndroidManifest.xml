@@ -9,13 +9,17 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".PendingRequestsActivity"></activity>
+        <activity android:name=".user.business.customer.ViewCustomerData"></activity>
+        <activity android:name=".PendingRequestsActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity android:name=".login.LoginActivity" />
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".user.personal.workout.WorkoutStarter" />
         <activity android:name=".user.personal.workout.edit.EditAerobicExercise" />
         <activity android:name=".user.personal.workout.edit.EditWeightExercise" />
@@ -48,7 +52,9 @@
             android:name=".SearchableActivity"
             android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action
+                    android:name="android.intent.action.SEARCH"
+                    android:screenOrientation="portrait" />
             </intent-filter>
 
             <meta-data
@@ -57,15 +63,15 @@
         </activity>
         <activity android:name=".user.personal.measurements.MeasurementsHistoryActivity" />
 
-
-
-        <service android:name=".services.MyService"
+        <service
+            android:name=".services.MyService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action
+                    android:name="com.google.firebase.MESSAGING_EVENT"
+                    android:screenOrientation="portrait" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

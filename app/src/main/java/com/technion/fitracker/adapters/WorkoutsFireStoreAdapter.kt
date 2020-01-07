@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -13,9 +14,10 @@ import com.google.android.material.card.MaterialCardView
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter.ViewHolder
 import com.technion.fitracker.models.WorkoutFireStoreModel
+import com.technion.fitracker.user.business.customer.CustomerWorkouts
 import com.technion.fitracker.user.personal.workout.WorkoutsFragment
 
-class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val workoutsFragment: WorkoutsFragment, val mContext: Context) :
+class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStoreModel>, val workoutsFragment: Fragment, val mContext: Context, val fragmentContaining: String) :
         FirestoreRecyclerAdapter<WorkoutFireStoreModel, ViewHolder>(options) {
 
     var mOnItemClickListener: View.OnClickListener? = null
@@ -41,11 +43,27 @@ class WorkoutsFireStoreAdapter(options: FirestoreRecyclerOptions<WorkoutFireStor
 
     override fun onDataChanged() {
         super.onDataChanged()
-        if (itemCount <= 0) {
-            workoutsFragment.placeholder.visibility = View.VISIBLE
-        } else {
-            workoutsFragment.placeholder.visibility = View.GONE
+        var fragmentType: Fragment? = null
+        when(fragmentContaining) {
+            "User" -> {
+                fragmentType = workoutsFragment as WorkoutsFragment
+                if (itemCount <= 0) {
+                    fragmentType.placeholder.visibility = View.VISIBLE
+                } else {
+                    fragmentType.placeholder.visibility = View.GONE
+                }
+            }
+            "Trainer" -> {
+                fragmentType = workoutsFragment as CustomerWorkouts
+                if (itemCount <= 0) {
+                    fragmentType.placeholder.visibility = View.VISIBLE
+                } else {
+                    fragmentType.placeholder.visibility = View.GONE
+                }
+            }
         }
+
+
     }
 
 
