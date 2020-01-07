@@ -1,5 +1,8 @@
 package com.technion.fitracker.models
 
+import androidx.databinding.Bindable
+import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -20,8 +23,23 @@ class CustomerDataViewModel: ViewModel() {
     //MeasurementsFragment fields
     var measurementRV: RecyclerView? = null
     var measurementsRVAdapter: MeasurementsRecyclerViewAdapter? = null
+    @Bindable
+    val editTextWeight = MutableLiveData<String>()
+    @Bindable
+    val editTextBodyFat = MutableLiveData<String>()
+    @Bindable
+    val editTextChest = MutableLiveData<String>()
+    @Bindable
+    val editTextWaist = MutableLiveData<String>()
+    @Bindable
+    val editTextHips = MutableLiveData<String>()
+    @Bindable
+    val editTextBiceps = MutableLiveData<String>()
+    @Bindable
+    val textViewDate = ObservableField("")
 
     //Customer Data
     var customerID: String? = null
     var customerName: String? = null
+
 }

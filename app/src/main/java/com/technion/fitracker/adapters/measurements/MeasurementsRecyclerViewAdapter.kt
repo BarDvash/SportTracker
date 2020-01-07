@@ -12,15 +12,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.technion.fitracker.R
 import com.technion.fitracker.user.personal.measurements.MeasurementsGraphActivity
 
-class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, private val values: ArrayList<String>) :
+class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, private val values: ArrayList<String>,val userID: String? = null) :
         RecyclerView.Adapter<MeasurementsRecyclerViewAdapter.ViewHolder>() {
 
-    private val nameToUnits: HashMap<String,String> = hashMapOf("Biceps" to "(cm)",
-                                                                "Body fat" to "(%)",
-                                                                "Chest" to "(cm)",
-                                                                "Hips" to "(cm)",
-                                                                "Waist" to "(cm)",
-                                                                "Weight" to "(kg)")
+    private val nameToUnits: HashMap<String, String> = hashMapOf(
+        "Biceps" to "(cm)",
+        "Body fat" to "(%)",
+        "Chest" to "(cm)",
+        "Hips" to "(cm)",
+        "Waist" to "(cm)",
+        "Weight" to "(kg)"
+    )
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,12 +45,12 @@ class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, priv
         holder.name.text = names[position]
         holder.data.text = values[position]
         holder.imageButton.setOnClickListener {
-            val bundle = bundleOf("name" to names[position])
+            val bundle = bundleOf("name" to names[position], "userID" to userID)
             val activity = Intent(holder.context, MeasurementsGraphActivity::class.java)
             activity.putExtras(bundle)
-            startActivity(holder.context,activity,bundle)
+            startActivity(holder.context, activity, bundle)
         }
-        if (nameToUnits.containsKey(names[position])){
+        if (nameToUnits.containsKey(names[position])) {
             holder.unuts.text = nameToUnits[names[position]]
         }
     }
