@@ -1,6 +1,7 @@
 package com.technion.fitracker.user.personal
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -31,7 +33,9 @@ import com.technion.fitracker.databinding.FragmentHomeScreenBinding
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.models.PersonalTrainer
 import com.technion.fitracker.models.UserViewModel
+import com.technion.fitracker.models.exercise.ExerciseLogModel
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
+import com.technion.fitracker.user.personal.workout.WorkoutHistoryElementDetails
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 
 
@@ -104,9 +108,9 @@ class HomeScreenFragment : Fragment() {
             adapter = viewModel.notifications_adapter
         }
 
-        workoutsContentView = view.findViewById(R.id.last_workout_container)
         personalTrainerContentView = view.findViewById(R.id.personal_trainer_card)
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
+        workoutsContentView = view.findViewById(R.id.last_workout_container)
         val query = firebaseFirestore
                 .collection("regular_users")
                 .document(current_user_id!!)
@@ -116,7 +120,23 @@ class HomeScreenFragment : Fragment() {
         val options = FirestoreRecyclerOptions.Builder<RecentWorkoutFireStoreModel>()
                 .setQuery(query, RecentWorkoutFireStoreModel::class.java)
                 .build()
-        viewModel.homeRecentWorkoutsAdapter = RecentWorkoutsFireStoreAdapter(options, this)
+        viewModel.homeRecentWorkoutsAdapter = RecentWorkoutsFireStoreAdapter(options, this).apply {
+            mOnItemClickListener = View.OnClickListener { v ->
+                val rvh = v.tag as RecentWorkoutsFireStoreAdapter.ViewHolder
+                val snapshot = viewModel.homeRecentWorkoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)
+                val comment: String? = snapshot?.get("comment") as String?
+                val date_time: String? = snapshot?.get("date_time") as String?
+                val exercisesHashMap: ArrayList<HashMap<String, String?>>? = snapshot?.get("exercises") as ArrayList<HashMap<String,String?>>?
+
+                val rating: Long? = snapshot?.get("rating") as Long?
+                val time_elapsed: String? = snapshot?.get("time_elapsed") as String?
+                val workout_name: String? = snapshot?.get("workout_name") as String?
+                val customerView = Intent(context!!, WorkoutHistoryElementDetails::class.java)
+                val bundle = bundleOf("id" to snapshot?.id,"comment" to comment, "date_time" to date_time, "exercises" to exercisesHashMap, "rating" to rating, "time_elapsed" to time_elapsed, "workout_name" to workout_name)
+                customerView.putExtras(bundle)
+                startActivity(customerView)
+            }
+        }
         viewModel.homeRecentWorkoutRV = view.findViewById<RecyclerView>(R.id.last_workouts_recycler).apply {
             addItemDecoration(
                 RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)

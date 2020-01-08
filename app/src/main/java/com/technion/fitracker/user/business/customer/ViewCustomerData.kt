@@ -29,9 +29,9 @@ class ViewCustomerData : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
         adapter = TabsFragmentPagerAdapter(supportFragmentManager).apply {
+            addFragment(CustomerMeasurementFragment(), "Feed")
             addFragment(CustomerWorkoutsFragment(), "Workouts")
             addFragment(CustomerNutritionFragment(), "Nutrition")
-            addFragment(CustomerMeasurementFragment(), "Measurements")
         }
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)

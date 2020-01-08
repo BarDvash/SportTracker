@@ -1,19 +1,24 @@
 package com.technion.fitracker.user.personal.measurements
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.model.Document
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
@@ -37,6 +42,9 @@ class MeasurementsGraphActivity : AppCompatActivity() {
             "Weight" to "weight"
         )
 
+    private val maxResults = 5
+
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.measurements_graph_activity)
@@ -49,25 +57,30 @@ class MeasurementsGraphActivity : AppCompatActivity() {
         val params = intent.extras
         val name = params?.get("name") as String
         uid = params.get("userID") as String? ?: auth.currentUser!!.uid
+        val units = params.getString("units")
         val dates = ArrayList<String>()
         Log.d(Context.VIBRATOR_SERVICE,(params.get("userID") as String?).toString())
 
-        val chart = findViewById<LineChart>(R.id.chart)
-        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data").get().addOnSuccessListener {
-            val entries = ArrayList<Entry>()
+        val chart = findViewById<BarChart>(R.id.chart)
+        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data",Query.Direction.DESCENDING).get().addOnSuccessListener {
+            val entries = ArrayList<BarEntry>()
             var i = 0
-            for (element in it) {
+            val docs = takeLastDocs(maxResults, it)
+            for (element in docs) {
                 if (element.getString(translationTable[name]!!).isNullOrEmpty()) {
                     continue
                 }
                 val doc = element.toObject(MeasurementsHistoryModel::class.java)
                 val date = dateFormat.parse(doc.data!!)
                 dates.add(getDate(newDateFormat.format(date!!)))
-                entries.add(Entry(i++.toFloat(), element.getString(translationTable[name]!!)!!.toFloat()))
+                entries.add(BarEntry(i++.toFloat(), element.getString(translationTable[name]!!)!!.toFloat()))
             }
-            val dataset = LineDataSet(entries, name)
-            dataset.valueTextSize = 12F
-            val lineData = LineData(dataset)
+            val dataset = BarDataSet(entries, "$name $units")
+            dataset.apply {
+                valueTextSize = 12F
+                color = ColorTemplate.rgb(getString(R.color.secondaryDarkColor))
+            }
+            val lineData = BarData(dataset)
             chart.data = lineData
             val xAxis = chart.xAxis
             xAxis.apply {
@@ -79,13 +92,15 @@ class MeasurementsGraphActivity : AppCompatActivity() {
                         return dates[value.toInt()]
                     }
                 }
+                setDrawGridLines(false)
             }
             chart.axisRight.apply {
                 isEnabled = false
             }
             chart.axisLeft.apply {
-                granularity = 1f
-                textSize = 12F
+                isEnabled = false
+//                granularity = 1f
+//                textSize = 12F
             }
             chart.legend.apply {
                 textSize = 12F
@@ -95,9 +110,23 @@ class MeasurementsGraphActivity : AppCompatActivity() {
                 setDrawInside(false)
             }
             chart.description.isEnabled = false
+            chart.setExtraOffsets(10F, 10F, 10F, 10F)
             chart.invalidate()
         }
 
+    }
+
+    private fun takeLastDocs(num: Int, docs: QuerySnapshot): ArrayList<QueryDocumentSnapshot> {
+        val res = ArrayList<QueryDocumentSnapshot>()
+        var count = 0
+        for (element in docs) {
+            if (count == num) {
+                break
+            }
+            count++
+            res.add(0,element)
+        }
+        return res
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -117,7 +146,7 @@ class MeasurementsGraphActivity : AppCompatActivity() {
 
     private fun getDate(date: String): String {
         val index = date.indexOfLast { x -> x == '-' }
-        return date.substring(0, index)
+        return date.substring(0, index).replace("-"," ")
     }
 
 }

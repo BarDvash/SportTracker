@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
 import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
@@ -37,6 +38,9 @@ class CustomerDataViewModel: ViewModel() {
     val editTextBiceps = MutableLiveData<String>()
     @Bindable
     val textViewDate = ObservableField("")
+
+    var homeRecentWorkoutRV: RecyclerView? = null
+    var homeRecentWorkoutsAdapter: RecentWorkoutsFireStoreAdapter? = null
 
     //Customer Data
     var customerID: String? = null

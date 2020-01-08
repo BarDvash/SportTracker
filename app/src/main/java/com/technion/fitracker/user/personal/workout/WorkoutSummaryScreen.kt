@@ -76,7 +76,6 @@ class WorkoutSummaryScreen : Fragment(), View.OnClickListener {
         appCompatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewAdapter = ExerciseSummaryAdapter(viewModel.workoutExercises.value!!)
         viewManager = LinearLayoutManager(context)
-        //TODO: handle click on ratings
         recyclerView = activity?.findViewById<RecyclerView>(R.id.workout_summary_recycler)?.apply {
             setHasFixedSize(true)
             layoutManager = viewManager

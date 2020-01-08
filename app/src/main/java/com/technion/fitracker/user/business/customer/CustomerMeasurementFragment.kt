@@ -1,19 +1,23 @@
 package com.technion.fitracker.user.business.customer
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -21,10 +25,14 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import com.technion.fitracker.R
+import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
 import com.technion.fitracker.databinding.FragmentCustomerMeasurementBinding
 import com.technion.fitracker.models.CustomerDataViewModel
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
+import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
+import com.technion.fitracker.user.personal.workout.WorkoutHistoryElementDetails
+import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 import java.text.SimpleDateFormat
 
 /**
@@ -40,6 +48,9 @@ class CustomerMeasurementFragment : Fragment() {
     lateinit var measurementsContainer: MaterialCardView
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
     val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
+    private lateinit var workoutsContentView: MaterialCardView
+    lateinit var recentWorkoutsContainer: LinearLayout
+
     private var shortAnimationDuration: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +76,8 @@ class CustomerMeasurementFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         names.clear()
         values.clear()
+        recentWorkoutsContainer = view.findViewById(R.id.recent_workouts_container)
+
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
         db.collection("regular_users").document(viewModel.customerID!!).collection("measurements")
                 .orderBy("data", Query.Direction.DESCENDING).get(Source.CACHE).addOnSuccessListener { innerIt ->
@@ -88,6 +101,51 @@ class CustomerMeasurementFragment : Fragment() {
             )
         )
         placeHolder = view.findViewById(R.id.customer_measurements_placeholder)
+
+        workoutsContentView = view.findViewById(R.id.last_workout_container)
+        val query = db
+                .collection("regular_users")
+                .document(viewModel.customerID!!)
+                .collection("workouts_history")
+                .orderBy("date_time", Query.Direction.DESCENDING)
+                .limit(5)
+        val options = FirestoreRecyclerOptions.Builder<RecentWorkoutFireStoreModel>()
+                .setQuery(query, RecentWorkoutFireStoreModel::class.java)
+                .build()
+        viewModel.homeRecentWorkoutsAdapter = RecentWorkoutsFireStoreAdapter(options, this).apply {
+            mOnItemClickListener = View.OnClickListener { v ->
+                val rvh = v.tag as RecentWorkoutsFireStoreAdapter.ViewHolder
+                val snapshot = viewModel.homeRecentWorkoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)
+                val comment: String? = snapshot?.get("comment") as String?
+                val date_time: String? = snapshot?.get("date_time") as String?
+                val exercisesHashMap: ArrayList<HashMap<String, String?>>? = snapshot?.get("exercises") as ArrayList<HashMap<String,String?>>?
+                val rating: Long? = snapshot?.get("rating") as Long?
+                val time_elapsed: String? = snapshot?.get("time_elapsed") as String?
+                val workout_name: String? = snapshot?.get("workout_name") as String?
+                val customerView = Intent(context!!, WorkoutHistoryElementDetails::class.java)
+                val bundle = bundleOf("userID" to viewModel.customerID, "id" to snapshot?.id,"comment" to comment, "date_time" to date_time, "exercises" to exercisesHashMap, "rating" to rating, "time_elapsed" to time_elapsed, "workout_name" to workout_name)
+                customerView.putExtras(bundle)
+                startActivity(customerView)
+            }
+        }
+        viewModel.homeRecentWorkoutRV = view.findViewById<RecyclerView>(R.id.last_workouts_recycler).apply {
+            addItemDecoration(
+                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+            )
+            layoutManager = LinearLayoutManager(context)
+            adapter = viewModel.homeRecentWorkoutsAdapter
+        }
+
+
+
+        workoutsContentView.visibility = View.GONE
+        crossfade()
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.homeRecentWorkoutsAdapter?.startListening()
     }
 
     private fun getLatestFieldsFromDB() {
@@ -146,6 +204,19 @@ class CustomerMeasurementFragment : Fragment() {
 
     private fun crossfade() {
         measurementsContainer.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        workoutsContentView.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
             // (but fully transparent) during the animation.
             alpha = 0f

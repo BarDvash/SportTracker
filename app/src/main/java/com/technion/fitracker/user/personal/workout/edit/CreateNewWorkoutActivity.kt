@@ -136,6 +136,8 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         setEmptyPlaceholderState()
     }
 
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val deleteAction = 1
         when (item.itemId) {

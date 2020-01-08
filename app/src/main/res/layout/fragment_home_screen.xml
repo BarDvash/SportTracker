@@ -10,7 +10,7 @@
             type="com.technion.fitracker.models.UserViewModel" />
     </data>
 
-    <FrameLayout
+    <ScrollView
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,21 +19,20 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/user_notifications_card"
+                style="@style/materialCardRounded"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/materialCardRounded"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <LinearLayout
                     android:id="@+id/user_notifications_container"
@@ -135,6 +134,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/personal_trainer_card">
@@ -172,7 +173,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="4dp"
-                        tools:itemCount="5"
+                        tools:itemCount="3"
                         tools:listitem="@layout/element_home_last_workouts" />
 
                 </LinearLayout>
@@ -180,5 +181,5 @@
             </com.google.android.material.card.MaterialCardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </FrameLayout>
+    </ScrollView>
 </layout>
