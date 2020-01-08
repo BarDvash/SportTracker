@@ -20,12 +20,16 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 
-class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreModel>, input_activity: Context) :
+class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreModel>, input_activity: Context, input_current_user_type: String?,input_current_user_name: String?,input_current_user_photo_url: String?,input_current_user_phone_number: String?) :
         FirestoreRecyclerAdapter<SearchFireStoreModel, ViewHolder>(options) {
 
 
     var mOnItemClickListener: View.OnClickListener? = null
     var activity = input_activity
+    var current_user_type = input_current_user_type
+    var current_user_name = input_current_user_name
+    var current_user_photo_url = input_current_user_photo_url
+    var current_user_phone_number = input_current_user_phone_number
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -62,6 +66,11 @@ class SearchFireStoreAdapter(options: FirestoreRecyclerOptions<SearchFireStoreMo
             user_landing_page.putExtra("photo_url", item?.photoURL)
             user_landing_page.putExtra("uid", item?.uid)
             user_landing_page.putExtra("type", item?.type)
+            user_landing_page.putExtra("current_user_type", current_user_type)
+            user_landing_page.putExtra("current_user_name", current_user_name)
+            user_landing_page.putExtra("current_user_photo_url", current_user_photo_url)
+            user_landing_page.putExtra("current_user_phone_number", current_user_phone_number)
+
             holder.itemView.context.startActivity(user_landing_page)
         }
     }

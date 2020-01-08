@@ -60,6 +60,7 @@ class PendingRequestFireStoreAdapter(
     ) {
         val user_name_value = item.user_name
         val user_photo_url = item.user_photo_url
+        val user_phone_number = item.user_phone_number
         val user_id = item.user_id
 
         holder.user_name.text = user_name_value
@@ -83,7 +84,8 @@ class PendingRequestFireStoreAdapter(
                 val cutomer = hashMapOf(
                     "customer_name" to user_name_value,
                     "customer_photo_url" to user_photo_url,
-                    "customer_id" to user_id
+                    "customer_id" to user_id,
+                    "customer_phone_number" to user_phone_number
                 )
 
                 //for cloud functions:

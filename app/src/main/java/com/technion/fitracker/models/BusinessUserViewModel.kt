@@ -12,6 +12,7 @@ class BusinessUserViewModel : ViewModel() {
     var user_type: String? = null
     var user_name: String? = null
     var user_photo_url: String? = null
+    var user_phone_number: String? = null
 
 
 

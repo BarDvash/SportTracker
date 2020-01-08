@@ -6,6 +6,7 @@ data class User(
     val photoURL: String? = null,
     val uid: String? = null,
     val type: String? = null,
-    val personal_trainer_uid: String? =null
+    val personal_trainer_uid: String? =null,
+    val phone_number: String? = null
 )
 

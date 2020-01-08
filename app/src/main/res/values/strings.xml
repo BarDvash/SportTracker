@@ -117,4 +117,9 @@
     <string name="empty_pending_requests_list_hint">There are no pending requests.</string>
     <string name="channel_name">Notifications</string>
     <string name="channel_description">channel description - edit on @strings</string>
+    <string name="remove_trainee">remove trainee</string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancle</string>
+    <string name="dialog_remove_trainee_message">Do you want to remove this trainee?</string>
+    <string name="dialog_remove_trainee_title">Remove trainee</string>
 </resources>

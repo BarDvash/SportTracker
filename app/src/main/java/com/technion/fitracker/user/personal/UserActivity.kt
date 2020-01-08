@@ -68,6 +68,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 viewModel.personalTrainerUID = user?.personal_trainer_uid
                 viewModel.user_name = user?.name
                 viewModel.user_photo_url = user?.photoURL
+                viewModel.user_phone_number = user?.phone_number
 
                 if (!user?.photoURL.isNullOrEmpty()) {
                     Glide.with(this) //1
@@ -266,5 +267,17 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+
+    override fun onSearchRequested(): Boolean {
+        val appData = Bundle().apply {
+            putString("user_type","regular")
+            putString("user_name", viewModel.user_name )
+            putString("user_photo_url", viewModel.user_photo_url)
+            putString("user_phone_number_url", viewModel.user_phone_number)
+        }
+        startSearch(null, false, appData, false)
+        return true
     }
 }

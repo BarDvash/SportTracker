@@ -27,6 +27,10 @@ class SearchableActivity : AppCompatActivity() {
     lateinit var tabs_adapter: TabsFragmentPagerAdapter
     private lateinit var view_pager: ViewPager
 
+    var current_user_type: String? = null
+    var current_user_name: String? = null
+    var current_user_photo_url: String? = null
+    var current_user_phone_number: String? = null
 
     lateinit var trainees_results_fragment: TraineeSearchResultsFragment
     lateinit var trainers_results_fragment: TrainerSearchResultsFragment
@@ -42,6 +46,11 @@ class SearchableActivity : AppCompatActivity() {
         }
 
         //initialize the activity's variable:
+
+        current_user_type = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_type")
+        current_user_name = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_name")
+        current_user_photo_url = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_photo_url")
+        current_user_phone_number = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_phone_number")
 
         view_pager = findViewById(R.id.search_results_Content)
         tabs_adapter = TabsFragmentPagerAdapter(supportFragmentManager).apply {

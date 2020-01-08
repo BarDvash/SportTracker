@@ -58,6 +58,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
                 viewModel.user_name = user?.name
                 viewModel.user_photo_url = user?.photoURL
+                viewModel.user_phone_number = user?.phone_number
 
 
                 if (!user?.photoURL.isNullOrEmpty()) {
@@ -188,5 +189,16 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    override fun onSearchRequested(): Boolean {
+        val appData = Bundle().apply {
+            putString("user_type","business")
+            putString("user_name", viewModel.user_name )
+            putString("user_photo_url", viewModel.user_photo_url)
+            putString("user_phone_number_url", viewModel.user_phone_number)
+        }
+        startSearch(null, false, appData, false)
+        return true
     }
 }

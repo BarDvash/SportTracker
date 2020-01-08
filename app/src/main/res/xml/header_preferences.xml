@@ -22,9 +22,18 @@
         app:title="Account">
 
         <Preference
-            app:key="Account_settings"
-            app:title="Account settings"
-            app:fragment="com.technion.fitracker.SettingsActivity$AboutFragment">
+            app:key="replace_phone_number"
+            app:title="Update phone number">
+        </Preference>
+
+        <Preference
+            app:key="replace_photo"
+            app:title="Replace user photo">
+        </Preference>
+
+        <Preference
+            app:key="edit_landing_page"
+            app:title="Edit landing page">
         </Preference>
 
 

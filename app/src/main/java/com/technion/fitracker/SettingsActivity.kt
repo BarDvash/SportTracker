@@ -5,6 +5,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 private const val TITLE_TAG = "settingsActivityTitle"
 
@@ -29,6 +34,9 @@ class SettingsActivity : AppCompatActivity(),
             }
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -91,4 +99,6 @@ class SettingsActivity : AppCompatActivity(),
             setPreferencesFromResource(R.xml.account_preferences, rootKey)
         }
     }
+
+
 }
