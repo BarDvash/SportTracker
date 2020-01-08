@@ -52,7 +52,7 @@ class TrainerSearchResultsFragment : Fragment() {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { current_search_query ->
                 SearchRecentSuggestions(activity, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(current_search_query, null)
-                val query = FirebaseFirestore.getInstance().collection("business_users").orderBy("name", Query.Direction.ASCENDING).startAt(current_search_query).endAt(current_search_query + "\uf8ff")
+                val query = FirebaseFirestore.getInstance().collection("business_users").orderBy("search_field", Query.Direction.ASCENDING).startAt(current_search_query.toLowerCase()).endAt(current_search_query.toLowerCase() + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
                 adapter = SearchFireStoreAdapter(options, context!!, (activity as SearchableActivity).current_user_type,(activity as SearchableActivity).current_user_name,(activity as SearchableActivity).current_user_photo_url,(activity as SearchableActivity).current_user_phone_number)
                 recyclerView.adapter = adapter

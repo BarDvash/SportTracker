@@ -139,7 +139,7 @@ class SignInFragment : Fragment(), View.OnClickListener {
                         val uid = FirebaseAuth.getInstance().currentUser?.uid
                         val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
                         val user =
-                            User(name = auth.currentUser?.displayName, photoURL = photoUrl.toString(), uid = uid, type = "regular")
+                            User(name = auth.currentUser?.displayName, photoURL = photoUrl.toString(), uid = uid, type = "regular", search_field = auth.currentUser?.displayName!!.toLowerCase())
                         firestore.collection("regular_users").document(uid!!).get().addOnCompleteListener {
                             val doc = it.result
                             if (doc?.exists()!!) {
