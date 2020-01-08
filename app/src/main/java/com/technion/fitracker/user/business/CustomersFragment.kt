@@ -31,7 +31,7 @@ import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivit
 
 
 
-class CustomersFragment : Fragment() {
+class CustomersFragment : Fragment() , View.OnClickListener{
 
     private lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
@@ -94,7 +94,15 @@ class CustomersFragment : Fragment() {
             }
         }
         recyclerView.adapter = adapter
-        //TODO: initialize fab ?
+        fab.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v!!.id) {
+            R.id.customers_fab -> {
+                activity!!.onSearchRequested()
+            }
+        }
     }
 
     override fun onStart() {

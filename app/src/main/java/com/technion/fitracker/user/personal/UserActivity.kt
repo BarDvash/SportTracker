@@ -101,14 +101,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         FirebaseMessaging.getInstance().subscribeToTopic(topic3_name)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.user_activity_menu, menu)
-        historyAction = menu?.findItem(R.id.measurements_history)!!
-        addAction = menu.findItem(R.id.measurements_add)
-        return true
 
-    }
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
@@ -142,6 +135,15 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return true
     }
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.user_activity_menu, menu)
+        historyAction = menu?.findItem(R.id.measurements_history)!!
+        addAction = menu.findItem(R.id.measurements_add)
+        return true
+
+    }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
             R.id.user_menu_logout_ac -> {

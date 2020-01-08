@@ -77,7 +77,7 @@ class SearchableActivity : AppCompatActivity() {
     }
 
 
-    /**
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     super.onCreateOptionsMenu(menu)
     menuInflater.inflate(R.menu.search_menu, menu)
@@ -102,10 +102,23 @@ class SearchableActivity : AppCompatActivity() {
     }
     }
 
-     **/
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
+        return true
+    }
+
+    override fun onSearchRequested(): Boolean {
+        val appData = Bundle().apply {
+            putString("user_type",current_user_type)
+            putString("user_name", current_user_name )
+            putString("user_photo_url", current_user_photo_url)
+            putString("user_phone_number_url", current_user_phone_number)
+        }
+
+        startSearch(null, false, appData, false)
         return true
     }
 }

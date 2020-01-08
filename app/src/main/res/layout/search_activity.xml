@@ -24,7 +24,10 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:subtitleTextColor="@android:color/white"
-            app:titleTextColor="@android:color/white" />
+            app:titleTextColor="@android:color/white"
+            app:menu="@menu/search_menu"/>
+
+
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/search_results_tabs"

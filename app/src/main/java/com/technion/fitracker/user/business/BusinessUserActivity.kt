@@ -46,6 +46,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_business_user)
         setSupportActionBar(findViewById(R.id.business_user_toolbar))
+
         viewModel = ViewModelProviders.of(this)[BusinessUserViewModel::class.java]
         navController = Navigation.findNavController(findViewById(R.id.business_fragment_host))
         firestore = FirebaseFirestore.getInstance()
