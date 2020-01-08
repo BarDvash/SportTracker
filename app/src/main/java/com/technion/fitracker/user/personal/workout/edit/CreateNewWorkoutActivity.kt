@@ -147,7 +147,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                 //for cloud functions:
                 if(traineeUid != null){//if the user who updated the workout is business
                     //create this document to make the cloud function to operate and notify trainee
-                    firestore.collection("regular_users").document(traineeUid!!).collection("updates").document("workout_update").set(hashMapOf("workout_update" to "yes"))
+                    firestore.collection("regular_users").document(traineeUid!!).collection("updates").document("workout_update").set(hashMapOf("trainer_id" to mAuth.currentUser?.uid))
                 }
                 //until here
 
