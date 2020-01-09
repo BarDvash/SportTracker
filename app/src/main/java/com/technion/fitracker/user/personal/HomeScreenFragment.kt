@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
@@ -33,7 +31,6 @@ import com.technion.fitracker.databinding.FragmentHomeScreenBinding
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.models.PersonalTrainer
 import com.technion.fitracker.models.UserViewModel
-import com.technion.fitracker.models.exercise.ExerciseLogModel
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 import com.technion.fitracker.user.personal.workout.WorkoutHistoryElementDetails
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
@@ -50,8 +47,6 @@ class HomeScreenFragment : Fragment() {
     private var shortAnimationDuration: Int = 0
 
     lateinit var personalTrainerContainer: LinearLayout
-    lateinit var personalTrainerImageView: ImageView
-    lateinit var personalTrainerNameView: TextView
 
     lateinit var notifications_container: LinearLayout
     lateinit var notifications_content_view: MaterialCardView
@@ -126,13 +121,14 @@ class HomeScreenFragment : Fragment() {
                 val snapshot = viewModel.homeRecentWorkoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)
                 val comment: String? = snapshot?.get("comment") as String?
                 val date_time: String? = snapshot?.get("date_time") as String?
-                val exercisesHashMap: ArrayList<HashMap<String, String?>>? = snapshot?.get("exercises") as ArrayList<HashMap<String,String?>>?
+                val exercisesHashMap: ArrayList<HashMap<String, String?>>? = snapshot?.get("exercises") as ArrayList<HashMap<String, String?>>?
 
                 val rating: Long? = snapshot?.get("rating") as Long?
                 val time_elapsed: String? = snapshot?.get("time_elapsed") as String?
                 val workout_name: String? = snapshot?.get("workout_name") as String?
                 val customerView = Intent(context!!, WorkoutHistoryElementDetails::class.java)
-                val bundle = bundleOf("id" to snapshot?.id,"comment" to comment, "date_time" to date_time, "exercises" to exercisesHashMap, "rating" to rating, "time_elapsed" to time_elapsed, "workout_name" to workout_name)
+                val bundle =
+                    bundleOf("id" to snapshot?.id, "comment" to comment, "date_time" to date_time, "exercises" to exercisesHashMap, "rating" to rating, "time_elapsed" to time_elapsed, "workout_name" to workout_name)
                 customerView.putExtras(bundle)
                 startActivity(customerView)
             }
@@ -193,6 +189,29 @@ class HomeScreenFragment : Fragment() {
                 }
                 viewModel.personalTrainerAdapter?.startListening()
             }
+            val user_doc = firebaseFirestore.collection("regular_users").document(current_user_id!!)
+            user_doc.get().addOnSuccessListener {
+                if (it.exists()) {
+                    val trainer_UID = it.get("personal_trainer_uid") as String?
+                    if (viewModel.personalTrainerUID != trainer_UID) {
+                        viewModel.personalTrainerUID = trainer_UID
+
+                        val queryPersonalTrainer = firebaseFirestore
+                                .collection("business_users")
+                                .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
+                                .limit(1)
+                        val optionsPersonalTrainer = FirestoreRecyclerOptions.Builder<PersonalTrainer>()
+                                .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
+                                .build()
+                        viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer, this)
+                        viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
+                            layoutManager = LinearLayoutManager(context)
+                            adapter = viewModel.personalTrainerAdapter
+                        }
+                        viewModel.personalTrainerAdapter?.startListening()
+                    }
+                }
+            }
         }
     }
 
@@ -200,7 +219,6 @@ class HomeScreenFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.homeRecentWorkoutsAdapter?.startListening()
-        viewModel.personalTrainerAdapter?.startListening()
         viewModel.notifications_adapter?.startListening()
     }
 
@@ -233,6 +251,7 @@ class HomeScreenFragment : Fragment() {
         }
         // Animate the loading view to 0% opacity. After the animation ends,
         // set its visibility to GONE as an optimization step (it won't
+        // participate in layout passes, etc.)
         // participate in layout passes, etc.)
         notifications_container.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
