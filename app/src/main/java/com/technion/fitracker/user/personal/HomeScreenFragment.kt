@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -50,7 +52,7 @@ class HomeScreenFragment : Fragment() {
 
     lateinit var notifications_container: LinearLayout
     lateinit var notifications_content_view: MaterialCardView
-
+    lateinit var placeholder: TextView
     private var current_user_id: String? = null
 
 
@@ -78,15 +80,13 @@ class HomeScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
-
         current_user_id = firebaseAuth.currentUser?.uid
         personalTrainerContainer = view.findViewById(R.id.personal_trainer_container)
         recentWorkoutsContainer = view.findViewById(R.id.recent_workouts_container)
-        fetchPersonalTrainerUID()
-
-
-        notifications_container = view.findViewById(R.id.user_notifications_container)
         notifications_content_view = view.findViewById(R.id.user_notifications_card)
+        notifications_container = view.findViewById(R.id.user_notifications_container)
+        placeholder = view.findViewById(R.id.user_home_placeholder)
+        fetchPersonalTrainerUID()
         val notifications_query =
             firebaseFirestore.collection("regular_users").document(current_user_id!!).collection("notifications")
                     .orderBy("notification", Query.Direction.DESCENDING).limit(4)
@@ -223,6 +223,14 @@ class HomeScreenFragment : Fragment() {
         viewModel.notifications_adapter?.startListening()
     }
 
+    fun setPlaceholder(){
+        if(notifications_content_view.isVisible || personalTrainerContentView.isVisible || workoutsContentView.isVisible){
+            placeholder.visibility = View.GONE
+        }else{
+            placeholder.visibility = View.VISIBLE
+        }
+    }
+
     private fun crossfade() {
         workoutsContentView.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
@@ -238,6 +246,36 @@ class HomeScreenFragment : Fragment() {
                     .setListener(null)
         }
         personalTrainerContentView.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        // Animate the loading view to 0% opacity. After the animation ends,
+        // set its visibility to GONE as an optimization step (it won't
+        // participate in layout passes, etc.)
+        // participate in layout passes, etc.)
+        notifications_container.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        notifications_content_view.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
             // (but fully transparent) during the animation.
             alpha = 0f

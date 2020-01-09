@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -25,6 +27,7 @@ import com.technion.fitracker.adapters.BusinessNotificationsFireStoreAdapter
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
+import org.w3c.dom.Text
 
 
 class HomeScreenFragment : Fragment() {
@@ -38,6 +41,7 @@ class HomeScreenFragment : Fragment() {
     lateinit var notifications_container: LinearLayout
     lateinit var notifications_content_view: MaterialCardView
     private var shortAnimationDuration: Int = 0
+    private lateinit var placeholder: TextView
 
     private var current_user_id: String? = null
 
@@ -70,7 +74,7 @@ class HomeScreenFragment : Fragment() {
         firebaseFirestore = FirebaseFirestore.getInstance()
 
         current_user_id = firebaseAuth.currentUser?.uid
-
+        placeholder = view.findViewById(R.id.business_home_placeholder)
         notifications_container = view.findViewById(R.id.business_user_notifications_container)
         notifications_content_view = view.findViewById(R.id.business_user_notifications_card)
 
@@ -117,6 +121,14 @@ class HomeScreenFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.notifications_adapter?.startListening()
+    }
+
+    fun setPlaceholder() {
+        if(notifications_content_view.isVisible ){
+            placeholder.visibility = View.GONE
+        }else{
+            placeholder.visibility = View.VISIBLE
+        }
     }
 
 }

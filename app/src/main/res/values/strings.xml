@@ -122,4 +122,5 @@
     <string name="cancel">Cancle</string>
     <string name="dialog_remove_trainee_message">Do you want to remove this trainee?</string>
     <string name="dialog_remove_trainee_title">Remove trainee</string>
+    <string name="business_home_placeholder">No upcoming meetings or notifications</string>
 </resources>

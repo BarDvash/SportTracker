@@ -68,5 +68,6 @@ class BusinessNotificationsFireStoreAdapter(options: FirestoreRecyclerOptions<No
         } else {
             fragment.notifications_content_view.visibility = View.VISIBLE
         }
+        fragment.setPlaceholder()
     }
 }

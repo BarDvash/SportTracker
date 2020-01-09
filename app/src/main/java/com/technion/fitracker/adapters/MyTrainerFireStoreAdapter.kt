@@ -41,6 +41,7 @@ class MyTrainerFireStoreAdapter(
         } else {
             homeScreenFragment.personalTrainerContainer.visibility = View.VISIBLE
         }
+        homeScreenFragment.setPlaceholder()
     }
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int, p2: PersonalTrainer) {

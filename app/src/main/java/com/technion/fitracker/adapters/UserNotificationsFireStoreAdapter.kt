@@ -64,5 +64,6 @@ class UserNotificationsFireStoreAdapter(options: FirestoreRecyclerOptions<Notifi
         } else {
             fragment.notifications_content_view.visibility = View.VISIBLE
         }
+        fragment.setPlaceholder()
     }
 }

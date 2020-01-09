@@ -12,10 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".user.personal.workout.WorkoutHistoryElementDetails"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".user.business.customer.ViewCustomerData" android:screenOrientation="portrait" />
-        <activity android:name=".PendingRequestsActivity" android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.workout.WorkoutHistoryElementDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.business.customer.ViewCustomerData"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PendingRequestsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -23,12 +28,24 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.workout.WorkoutStarter" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.workout.edit.EditAerobicExercise" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.workout.edit.EditWeightExercise" android:screenOrientation="portrait" />
-        <activity android:name=".UserLandingPageActivity" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.workout.edit.AddExerciseActivity" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.workout.edit.CreateNewWorkoutActivity" android:screenOrientation="portrait" /> <!-- enable the search dialog to send searches to SearchableActivity from every other activity -->
+        <activity
+            android:name=".user.personal.workout.WorkoutStarter"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.workout.edit.EditAerobicExercise"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.workout.edit.EditWeightExercise"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserLandingPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.workout.edit.AddExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.workout.edit.CreateNewWorkoutActivity"
+            android:screenOrientation="portrait" /> <!-- enable the search dialog to send searches to SearchableActivity from every other activity -->
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".SearchableActivity" />
@@ -37,8 +54,12 @@
             android:name=".MySuggestionProvider"
             android:authorities="com.technion.fitracker.MySuggestionProvider" />
 
-        <activity android:name=".user.business.BusinessUserActivity" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.UserActivity" android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.business.BusinessUserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.UserActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".login.FlashSignInActivity"
             android:screenOrientation="portrait">
@@ -49,8 +70,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".user.personal.nutrition.NutritionAddMealActivity" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.nutrition.NutritionAddDishFragment" android:screenOrientation="portrait" /> <!-- this is the searchable activity; it performs searches -->
+        <activity
+            android:name=".user.personal.nutrition.NutritionAddMealActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.nutrition.NutritionAddDishFragment"
+            android:screenOrientation="portrait" /> <!-- this is the searchable activity; it performs searches -->
         <activity
             android:name=".SearchableActivity"
             android:launchMode="singleTop">
@@ -64,9 +89,12 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".user.personal.measurements.MeasurementsGraphActivity" android:screenOrientation="portrait" />
-        <activity android:name=".user.personal.measurements.MeasurementsHistoryActivity" android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".user.personal.measurements.MeasurementsGraphActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.personal.measurements.MeasurementsHistoryActivity"
+            android:screenOrientation="portrait" />
 
 
         <service
