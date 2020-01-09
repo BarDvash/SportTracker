@@ -195,18 +195,19 @@ class HomeScreenFragment : Fragment() {
                     val trainer_UID = it.get("personal_trainer_uid") as String?
                     if (viewModel.personalTrainerUID != trainer_UID) {
                         viewModel.personalTrainerUID = trainer_UID
-
-                        val queryPersonalTrainer = firebaseFirestore
-                                .collection("business_users")
-                                .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
-                                .limit(1)
-                        val optionsPersonalTrainer = FirestoreRecyclerOptions.Builder<PersonalTrainer>()
-                                .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
-                                .build()
-                        viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer, this)
-                        viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
-                            layoutManager = LinearLayoutManager(context)
-                            adapter = viewModel.personalTrainerAdapter
+                        if(viewModel.personalTrainerUID != null && viewModel.personalTrainerUID != "") {
+                            val queryPersonalTrainer = firebaseFirestore
+                                    .collection("business_users")
+                                    .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
+                                    .limit(1)
+                            val optionsPersonalTrainer = FirestoreRecyclerOptions.Builder<PersonalTrainer>()
+                                    .setQuery(queryPersonalTrainer, PersonalTrainer::class.java)
+                                    .build()
+                            viewModel.personalTrainerAdapter = MyTrainerFireStoreAdapter(optionsPersonalTrainer, this)
+                            viewModel.personalTrainerRV = view?.findViewById<RecyclerView>(R.id.personal_trainer_rv)?.apply {
+                                layoutManager = LinearLayoutManager(context)
+                                adapter = viewModel.personalTrainerAdapter
+                            }
                         }
                         viewModel.personalTrainerAdapter?.startListening()
                     }
