@@ -101,10 +101,6 @@ class CustomersFireStoreAdapter(options: FirestoreRecyclerOptions<CustomersFireS
                 builder.apply {
                     setPositiveButton(R.string.remove, DialogInterface.OnClickListener { dialog, id ->
                         FirebaseFirestore.getInstance().collection("business_users").document(FirebaseAuth.getInstance().currentUser?.uid!!).collection("customers").document(item.customer_id!!).delete() })
-                    setNegativeButton(R.string.cancel, DialogInterface.OnClickListener { dialog, id ->
-                                          // User cancelled the dialog
-                                      })
-
                     setMessage(R.string.dialog_remove_trainee_message)
                     setTitle(R.string.dialog_remove_trainee_title)
                 }

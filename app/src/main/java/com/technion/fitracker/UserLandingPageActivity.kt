@@ -87,13 +87,15 @@ class UserLandingPageActivity : AppCompatActivity() {
         add_button = findViewById(R.id.add_as_button)
         add_button.isEnabled = false
         if(current_user_type == "regular" && viewed_user_type == "business"){
-            add_button.visibility = View.VISIBLE
+            val customer_doc = firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!)
+            customer_doc.get().addOnSuccessListener { if(it.exists()){}else{ add_button.visibility = View.VISIBLE} }
             //get document
             val user_doc = firestore.collection("business_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!)
             user_doc.get().addOnSuccessListener { if(it.exists()){add_button.text = "cancel request"}else{add_button.text = "Add as trainer"}}
 
         }else if(current_user_type == "business" && viewed_user_type == "regular"){
-            add_button.visibility = View.VISIBLE
+            val customer_doc = firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!)
+            customer_doc.get().addOnSuccessListener { if(it.exists()){}else{ add_button.visibility = View.VISIBLE} }
 
             val user_doc = firestore.collection("regular_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!)
             user_doc.get().addOnSuccessListener { if(it.exists()){add_button.text = "cancel request"}else{add_button.text = "Add as trainee"} }
