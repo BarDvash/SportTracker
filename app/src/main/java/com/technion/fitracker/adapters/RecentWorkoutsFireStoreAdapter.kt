@@ -46,6 +46,7 @@ class RecentWorkoutsFireStoreAdapter(
                 } else {
                     fragment.recentWorkoutsContainer.visibility = View.VISIBLE
                 }
+                fragment.setPlaceholder()
             }
             is CustomerMeasurementFragment -> {
                 if (itemCount == 0) {

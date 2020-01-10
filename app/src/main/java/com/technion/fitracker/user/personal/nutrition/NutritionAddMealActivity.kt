@@ -28,14 +28,15 @@ class NutritionAddMealActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+
         viewModel = ViewModelProviders.of(this)[AddMealViewModel::class.java]
         val binding =
             DataBindingUtil.setContentView<ActivityAddMealBinding>(this, R.layout.activity_add_meal)
-
         binding.lifecycleOwner = this  // use Fragment.viewLifecycleOwner for fragments
-
         binding.viewmodel = viewModel
+
         val params = intent.extras
         val list = params?.get("list")
         uid = params?.get("userID") as String? ?: auth.currentUser!!.uid
@@ -52,12 +53,7 @@ class NutritionAddMealActivity : AppCompatActivity() {
             }
             viewModel.docId = params.getString("docId")
         }
-        db = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
-
         navController = Navigation.findNavController(findViewById(R.id.add_meal_fragment_navigation))
-
-
     }
 
 

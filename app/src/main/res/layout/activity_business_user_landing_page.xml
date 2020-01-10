@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".UserLandingPageActivity">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/user_toolbar"
         android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,7 +31,7 @@
         android:layout_marginLeft="124dp"
         android:layout_marginTop="68dp"
         android:contentDescription="@string/user_avatar"
-        app:layout_constraintStart_toStartOf="@+id/user_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
         app:srcCompat="@drawable/user_avatar" />
 

@@ -4,11 +4,11 @@ package com.technion.fitracker.models
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.technion.fitracker.adapters.BusinessNotificationsFireStoreAdapter
+import com.technion.fitracker.adapters.UpcomingTrainingsFireStoreAdapter
 
 
 class BusinessUserViewModel : ViewModel() {
 
-    //bar dvash fields:
     var user_type: String? = null
     var user_name: String? = null
     var user_photo_url: String? = null
@@ -19,5 +19,8 @@ class BusinessUserViewModel : ViewModel() {
     //Home fields
     var notificaations_rec_view: RecyclerView? = null
     var notifications_adapter: BusinessNotificationsFireStoreAdapter? = null
+
+    var trainingsRV: RecyclerView? = null
+    var trainingsAdapter: UpcomingTrainingsFireStoreAdapter? = null
 
 }
