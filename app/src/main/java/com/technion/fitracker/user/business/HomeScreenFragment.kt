@@ -24,8 +24,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.BusinessNotificationsFireStoreAdapter
+import com.technion.fitracker.adapters.UpcomingTrainingsFireStoreAdapter
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.models.NotificationsModel
+import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 import org.w3c.dom.Text
 
@@ -40,6 +42,8 @@ class HomeScreenFragment : Fragment() {
     private lateinit var firebaseAuth: FirebaseAuth
     lateinit var notifications_container: LinearLayout
     lateinit var notifications_content_view: MaterialCardView
+    lateinit var trainings_container: LinearLayout
+    lateinit var trainings_content_view: MaterialCardView
     private var shortAnimationDuration: Int = 0
     private lateinit var placeholder: TextView
 
@@ -77,6 +81,8 @@ class HomeScreenFragment : Fragment() {
         placeholder = view.findViewById(R.id.business_home_placeholder)
         notifications_container = view.findViewById(R.id.business_user_notifications_container)
         notifications_content_view = view.findViewById(R.id.business_user_notifications_card)
+        trainings_container = view.findViewById(R.id.business_upcoming_training_container)
+        trainings_content_view = view.findViewById(R.id.business_upcoming_training_card)
 
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
 
@@ -92,13 +98,38 @@ class HomeScreenFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.notifications_adapter
         }
-        notifications_content_view.visibility = View.GONE
+
+        val trainings_query = firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments").orderBy("appointment_date", Query.Direction.ASCENDING).limit(5)
+
+        val trainings_options = FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java).build()
+
+        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, this )
+        viewModel.trainingsRV = view.findViewById<RecyclerView>(R.id.business_upcoming_recycler).apply {
+            addItemDecoration(
+                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+            )
+            layoutManager = LinearLayoutManager(context)
+            adapter = viewModel.trainingsAdapter
+        }
         crossfade()
     }
 
 
     private fun crossfade() {
         notifications_container.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        trainings_container.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
             // (but fully transparent) during the animation.
             alpha = 0f
@@ -121,10 +152,11 @@ class HomeScreenFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         viewModel.notifications_adapter?.startListening()
+        viewModel.trainingsAdapter?.startListening()
     }
 
     fun setPlaceholder() {
-        if(notifications_content_view.isVisible ){
+        if(notifications_content_view.isVisible || trainings_container.isVisible){
             placeholder.visibility = View.GONE
         }else{
             placeholder.visibility = View.VISIBLE
