@@ -105,7 +105,7 @@
     <string name="time_elapsed">Time elapsed:</string>
     <string name="how_did_you_feel">How did you feel?</string>
     <string name="name">Name</string>
-    <string name="count"><Quantity></Quantity></string>
+    <string name="count">Quantity</string>
     <string name="dot">•</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -117,12 +117,20 @@
     <string name="empty_pending_requests_list_hint">There are no pending requests.</string>
     <string name="channel_name">Notifications</string>
     <string name="channel_description">channel description - edit on @strings</string>
-    <string name="remove_trainee">remove trainee</string>
+    <string name="remove_trainee">Remove trainee</string>
     <string name="remove">Remove</string>
-    <string name="cancel">Cancle</string>
+    <string name="cancel">Cancel</string>
     <string name="dialog_remove_trainee_message">Do you want to remove this trainee?</string>
     <string name="dialog_remove_trainee_title">Remove trainee</string>
     <string name="business_home_placeholder">No upcoming meetings or notifications</string>
     <string name="upcoming_trainings">Upcoming Trainings:</string>
     <string name="notifications">Notifications:</string>
+    <string name="information">Information</string>
+    <string name="already_has_trainer">The user already has a trainer</string>
+    <string name="you_already_have_trainer">You already have a trainer</string>
+    <string name="already_your_trainee">Already your trainee</string>
+    <string name="already_your_trainer">It\'s your trainer</string>
+    <string name="add_as_trainer">Add as trainer</string>
+    <string name="add_as_trainee">Add as trainee</string>
+    <string name="cancel_request">Cancel request</string>
 </resources>

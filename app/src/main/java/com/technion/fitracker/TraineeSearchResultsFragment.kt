@@ -23,7 +23,6 @@ class TraineeSearchResultsFragment : Fragment() {
     lateinit var adapter: FirestoreRecyclerAdapter<SearchFireStoreModel, SearchFireStoreAdapter.ViewHolder>
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,10 +45,25 @@ class TraineeSearchResultsFragment : Fragment() {
     fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { current_search_query ->
-                SearchRecentSuggestions(activity, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(current_search_query, null)
-                val query = FirebaseFirestore.getInstance().collection("regular_users").orderBy("search_field", Query.Direction.ASCENDING).startAt(current_search_query.toLowerCase()).endAt(current_search_query.toLowerCase() + "\uf8ff")
+                SearchRecentSuggestions(activity, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(
+                        current_search_query,
+                        null
+                )
+                val query =
+                    FirebaseFirestore.getInstance().collection("regular_users").orderBy("search_field", Query.Direction.ASCENDING)
+                            .startAt(current_search_query.toLowerCase()).endAt(current_search_query.toLowerCase() + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
-                adapter = SearchFireStoreAdapter(options, context!!, (activity as SearchableActivity).current_user_type, (activity as SearchableActivity).current_user_name,(activity as SearchableActivity).current_user_photo_url,(activity as SearchableActivity).current_user_phone_number)
+                (activity as SearchableActivity).let {
+                    adapter =
+                        SearchFireStoreAdapter(
+                                options, context!!,
+                                it.current_user_type,
+                                it.current_user_name,
+                                it.current_user_photo_url,
+                                it.current_user_phone_number,
+                                it.current_user_personal_trainer_uid
+                        )
+                }
                 recyclerView.adapter = adapter
                 adapter.startListening()
             }

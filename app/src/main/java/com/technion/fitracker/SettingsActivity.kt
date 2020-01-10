@@ -11,8 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-
-
 private const val TITLE_TAG = "settingsActivityTitle"
 
 class SettingsActivity : AppCompatActivity(),
@@ -38,12 +36,7 @@ class SettingsActivity : AppCompatActivity(),
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
-
     }
-
-
-
-
 
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -75,8 +68,8 @@ class SettingsActivity : AppCompatActivity(),
         // Instantiate the new Fragment
         val args = pref.extras
         val fragment = supportFragmentManager.fragmentFactory.instantiate(
-            classLoader,
-            pref.fragment
+                classLoader,
+                pref.fragment
         ).apply {
             arguments = args
             setTargetFragment(caller, 0)
@@ -91,7 +84,7 @@ class SettingsActivity : AppCompatActivity(),
         return true
     }
 
-    class HeaderFragment : PreferenceFragmentCompat() , SharedPreferences.OnSharedPreferenceChangeListener{
+    class HeaderFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey)
 
@@ -109,10 +102,30 @@ class SettingsActivity : AppCompatActivity(),
         }
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-            if (key == "phone_number") {
-                var pref = findPreference<EditTextPreference>("phone_number")
-                FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
-                        .update("phone_number","972" + pref?.text)
+            when (key) {
+                "phone_number" -> {
+                    var pref = findPreference<EditTextPreference>("phone_number")
+                    FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+                            .update("phone_number", "972" + pref?.text).addOnFailureListener { e ->
+                                run {
+                                    FirebaseFirestore.getInstance().collection("business_users")
+                                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                            .update("phone_number", "972" + pref?.text)
+                                }
+                            }
+                }
+                "edit_landing_page" -> {
+                    var pref = findPreference<EditTextPreference>("edit_landing_page")
+                    FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+                            .update("landing_info", pref?.text).addOnFailureListener { e ->
+                                run {
+                                    FirebaseFirestore.getInstance().collection("business_users")
+                                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                            .update("landing_info", pref?.text)
+
+                                }
+                            }
+                }
             }
         }
     }
@@ -122,6 +135,7 @@ class SettingsActivity : AppCompatActivity(),
             setPreferencesFromResource(R.xml.about_preferences, rootKey)
         }
     }
+
     class AccountFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.account_preferences, rootKey)

@@ -11,12 +11,10 @@ import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -57,8 +55,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         val userAvatar = findViewById<ImageView>(R.id.user_avatar)
         val userName = findViewById<TextView>(R.id.user_name)
-        userAvatar.animation = AnimationUtils.loadAnimation(this,R.anim.user_avatar_anim)
-        userName.animation = AnimationUtils.loadAnimation(this,R.anim.fab_transition)
+        userAvatar.animation = AnimationUtils.loadAnimation(this, R.anim.user_avatar_anim)
+        userName.animation = AnimationUtils.loadAnimation(this, R.anim.fab_transition)
 
         firestore = FirebaseFirestore.getInstance()
         if (auth.currentUser != null) {
@@ -94,53 +92,45 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
 
 
-
         //listenToSettingsChanges()
-
 
 
         createNotificationChannel()
         //subscribe to unique topic:
-        val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
+        val topic1_name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
-        val topic2_name = "workout_update"+auth.currentUser!!.uid
+        val topic2_name = "workout_update" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
-        val topic3_name = "nutrition_menu_update"+auth.currentUser!!.uid
+        val topic3_name = "nutrition_menu_update" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic3_name)
 
 
     }
 
 
-
-
-
-
-
-
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         val dest = navController.currentDestination?.label
         when (menuItem.itemId) {
             R.id.action_home -> {
-                if(dest == "HomeScreen"){
+                if (dest == "HomeScreen") {
                     return true
                 }
                 startFragmentAndPop(R.id.homeScreenFragment)
             }
             R.id.action_workouts -> {
-                if(dest == "fragment_workouts"){
+                if (dest == "fragment_workouts") {
                     return true
                 }
                 startFragmentAndPop(R.id.workoutsFragment)
             }
             R.id.action_nutrition -> {
-                if(dest == "fragment_nutrition"){
+                if (dest == "fragment_nutrition") {
                     return true
                 }
                 startFragmentAndPop(R.id.nutritionFragment)
             }
             R.id.action_measurements -> {
-                if(dest == "fragment_measurements"){
+                if (dest == "fragment_measurements") {
                     return true
                 }
                 startFragmentAndPop(R.id.measurementsFragment, true)
@@ -158,16 +148,17 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return true
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
             R.id.user_menu_logout_ac -> {
 
                 //unsubscribe from topics
-                val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
+                val topic1_name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
-                val topic2_name = "workout_update"+auth.currentUser!!.uid
+                val topic2_name = "workout_update" + auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
-                val topic3_name = "nutrition_menu_update"+auth.currentUser!!.uid
+                val topic3_name = "nutrition_menu_update" + auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic3_name)
 
                 FirebaseAuth.getInstance().signOut()
@@ -195,7 +186,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
 
                 userHome.putExtra("user_name", viewModel.user_name)
-                userHome.putExtra("user_photo_url",  viewModel.user_photo_url)
+                userHome.putExtra("user_photo_url", viewModel.user_photo_url)
 
                 startActivity(userHome)
                 true
@@ -288,10 +279,11 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onSearchRequested(): Boolean {
         val appData = Bundle().apply {
-            putString("user_type","regular")
-            putString("user_name", viewModel.user_name )
+            putString("user_type", "regular")
+            putString("user_name", viewModel.user_name)
             putString("user_photo_url", viewModel.user_photo_url)
             putString("user_phone_number", viewModel.user_phone_number)
+            putString("user_personal_trainer_uid", viewModel.personalTrainerUID)
         }
         startSearch(null, false, appData, false)
         return true

@@ -29,15 +29,12 @@
             app:useSimpleSummaryProvider="true"/>
 
 
-        <Preference
-            app:key="replace_photo"
-            app:title="Replace user photo">
-        </Preference>
-
-        <Preference
+        <EditTextPreference
             app:key="edit_landing_page"
-            app:title="Edit landing page">
-        </Preference>
+            app:title="Change landing page Info"
+            android:inputType="textMultiLine"
+            app:useSimpleSummaryProvider="true">
+        </EditTextPreference>
 
 
 
@@ -57,9 +54,6 @@
                 android:data="https://fitracker.flycricket.io/privacy.html" />
         </Preference>
 
-        <Preference
-            app:key="reset password"
-            app:title="Reset password" />
 
 
     </PreferenceCategory>

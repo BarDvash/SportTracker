@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#C20E0E"
-        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,11 +24,11 @@
         android:id="@+id/search_result_landing_page_user_avatar"
         android:layout_width="163dp"
         android:layout_height="162dp"
-        android:layout_marginStart="124dp"
-        android:layout_marginLeft="124dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="64dp"
         android:contentDescription="@string/user_avatar"
-        app:layout_constraintStart_toStartOf="@+id/user_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
         app:srcCompat="@drawable/user_avatar" />
 
@@ -38,29 +37,83 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:paddingTop="20dp"
+        android:layout_marginTop="8dp"
         android:text="@string/username_default"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/search_result_landing_page_user_avatar"
         app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/search_result_landing_page_user_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/search_result_landing_page_user_avatar" />
+
+
+    <LinearLayout
+        android:id="@+id/info_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/add_as_button"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_result_landing_page_user_avatar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneContainer">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/information"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <Button
+        <TextView
+            android:id="@+id/info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="48dp"
+            android:layout_marginBottom="8dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/phoneContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/search_result_landing_page_user_name"
+        app:layout_constraintStart_toStartOf="@+id/search_result_landing_page_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/search_result_landing_page_user_name">
+
+        <ImageView
+            android:id="@+id/phone"
+            android:layout_width="50dp"
+            android:layout_height="42dp"
+            app:srcCompat="@drawable/ic_telephone" />
+
+        <ImageView
+            android:id="@+id/whatsapp"
+            android:layout_width="50dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="8dp"
+            app:srcCompat="@drawable/ic_whatsapp_with_colors" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/add_as_button"
-        android:layout_width="117dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="278dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:onClick="addAs"
-        android:textSize="10dp"
+        android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_toolbar"
-        app:layout_constraintVertical_bias="0.834"
         tools:visibility="visible" />
 
 

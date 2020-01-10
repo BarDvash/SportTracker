@@ -3,22 +3,11 @@ package com.technion.fitracker
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
-import android.provider.SearchRecentSuggestions
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.tabs.TabLayout
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.technion.fitracker.adapters.SearchFireStoreAdapter
 import com.technion.fitracker.adapters.viewPages.TabsFragmentPagerAdapter
-import com.technion.fitracker.models.SearchFireStoreModel
 import kotlinx.android.synthetic.main.search_activity.*
 
 
@@ -32,6 +21,7 @@ class SearchableActivity : AppCompatActivity() {
     var current_user_name: String? = null
     var current_user_photo_url: String? = null
     var current_user_phone_number: String? = null
+    var current_user_personal_trainer_uid: String? = null
 
     lateinit var trainees_results_fragment: TraineeSearchResultsFragment
     lateinit var trainers_results_fragment: TrainerSearchResultsFragment
@@ -52,6 +42,7 @@ class SearchableActivity : AppCompatActivity() {
         current_user_name = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_name")
         current_user_photo_url = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_photo_url")
         current_user_phone_number = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_phone_number")
+        current_user_personal_trainer_uid = intent.getBundleExtra(SearchManager.APP_DATA)?.getString("user_personal_trainer_uid")
 
         view_pager = findViewById(R.id.search_results_Content)
         tabs_adapter = TabsFragmentPagerAdapter(supportFragmentManager).apply {
@@ -104,10 +95,6 @@ class SearchableActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
@@ -118,6 +105,7 @@ class SearchableActivity : AppCompatActivity() {
             putString("user_type", current_user_type)
             putString("user_name", current_user_name)
             putString("user_photo_url", current_user_photo_url)
+            putString("user_personal_trainer_uid", current_user_personal_trainer_uid)
             putString("user_phone_number_url", current_user_phone_number)
         }
 

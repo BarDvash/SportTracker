@@ -1,15 +1,13 @@
 package com.technion.fitracker
 
 import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -44,17 +42,29 @@ class TrainerSearchResultsFragment : Fragment() {
     }
 
 
-
-
-
-
     fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also { current_search_query ->
-                SearchRecentSuggestions(activity, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(current_search_query, null)
-                val query = FirebaseFirestore.getInstance().collection("business_users").orderBy("search_field", Query.Direction.ASCENDING).startAt(current_search_query.toLowerCase()).endAt(current_search_query.toLowerCase() + "\uf8ff")
+                SearchRecentSuggestions(activity, MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE).saveRecentQuery(
+                        current_search_query,
+                        null
+                )
+                val query =
+                    FirebaseFirestore.getInstance().collection("business_users").orderBy("search_field", Query.Direction.ASCENDING)
+                            .startAt(current_search_query.toLowerCase()).endAt(current_search_query.toLowerCase() + "\uf8ff")
                 val options = FirestoreRecyclerOptions.Builder<SearchFireStoreModel>().setQuery(query, SearchFireStoreModel::class.java).build()
-                adapter = SearchFireStoreAdapter(options, context!!, (activity as SearchableActivity).current_user_type,(activity as SearchableActivity).current_user_name,(activity as SearchableActivity).current_user_photo_url,(activity as SearchableActivity).current_user_phone_number)
+                (activity as SearchableActivity).let {
+                    adapter =
+                        SearchFireStoreAdapter(
+                                options,
+                                context!!,
+                                it.current_user_type,
+                                it.current_user_name,
+                                it.current_user_photo_url,
+                                it.current_user_phone_number,
+                                it.current_user_personal_trainer_uid
+                        )
+                }
                 recyclerView.adapter = adapter
                 adapter.startListening()
             }
