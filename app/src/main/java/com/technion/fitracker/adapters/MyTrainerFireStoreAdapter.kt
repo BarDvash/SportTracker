@@ -1,10 +1,13 @@
 package com.technion.fitracker.adapters
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -25,8 +28,9 @@ class MyTrainerFireStoreAdapter(
             RecyclerView.ViewHolder(view) {
 
         var trainerName: TextView = view.findViewById(R.id.home_screen_personal_trainer_name)
-        var trainerPhoto: ImageView = view.findViewById(R.id.hone_screen_personal_trainer_image_view)
-
+        var trainerPhoto: ImageView = view.findViewById(R.id.home_screen_personal_trainer_image_view)
+        var whatsapp_image: ImageView = view.findViewById(R.id.home_screen_personal_trainer_whatsapp)
+        var phone_image: ImageView = view.findViewById(R.id.home_screen_personal_trainer_phone)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,8 +48,8 @@ class MyTrainerFireStoreAdapter(
         homeScreenFragment.setPlaceholder()
     }
 
-    override fun onBindViewHolder(p0: ViewHolder, p1: Int, p2: PersonalTrainer) {
-        p0.trainerName.text = p2.name
+    override fun onBindViewHolder(holder: ViewHolder, p1: Int, p2: PersonalTrainer) {
+        holder.trainerName.text = p2.name
         Glide.with(homeScreenFragment.activity!!) //1
                 .load(p2.photoURL)
                 .placeholder(R.drawable.user_avatar)
@@ -53,6 +57,28 @@ class MyTrainerFireStoreAdapter(
                 .skipMemoryCache(false) //2
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
                 .transform(CircleCrop()) //4
-                .into(p0.trainerPhoto)
+                .into(holder.trainerPhoto)
+
+        if (p2.phone_number != null) {
+            holder.whatsapp_image.setOnClickListener {
+                try {
+                    val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + p2.phone_number + "&text=")
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    holder.itemView.context.startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(homeScreenFragment.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            holder.phone_image.setOnClickListener {
+                val uri = "tel:" + p2.phone_number
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse(uri)
+                holder.itemView.context.startActivity(intent)
+            }
+        } else {
+            holder.whatsapp_image.visibility = View.GONE
+            holder.phone_image.visibility = View.GONE
+        }
     }
 }

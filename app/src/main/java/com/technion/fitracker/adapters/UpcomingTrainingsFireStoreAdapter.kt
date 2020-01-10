@@ -97,7 +97,6 @@ class UpcomingTrainingsFireStoreAdapter(
                         holder.itemView.context.startActivity(intent)
                     }
                 } else {
-                    Log.d("KeKUS","IM HERE MOTHAFAKA")
                     holder.whatsapp_image.visibility = View.GONE
                     holder.phone_image.visibility = View.GONE
                 }
