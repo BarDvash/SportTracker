@@ -11,10 +11,12 @@ import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -91,6 +93,12 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(applicationContext, gso)
 
+
+
+        //listenToSettingsChanges()
+
+
+
         createNotificationChannel()
         //subscribe to unique topic:
         val topic1_name = "trainer_accepted_trainee_request"+auth.currentUser!!.uid
@@ -99,7 +107,13 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
         val topic3_name = "nutrition_menu_update"+auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic3_name)
+
+
     }
+
+
+
+
 
 
 
@@ -277,7 +291,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             putString("user_type","regular")
             putString("user_name", viewModel.user_name )
             putString("user_photo_url", viewModel.user_photo_url)
-            putString("user_phone_number_url", viewModel.user_phone_number)
+            putString("user_phone_number", viewModel.user_phone_number)
         }
         startSearch(null, false, appData, false)
         return true

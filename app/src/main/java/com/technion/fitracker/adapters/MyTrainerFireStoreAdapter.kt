@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.technion.fitracker.R
+import com.technion.fitracker.UserLandingPageActivity
 import com.technion.fitracker.models.PersonalTrainer
 import com.technion.fitracker.user.personal.HomeScreenFragment
 
@@ -80,5 +81,20 @@ class MyTrainerFireStoreAdapter(
             holder.whatsapp_image.visibility = View.GONE
             holder.phone_image.visibility = View.GONE
         }
+
+        holder.itemView.setOnClickListener {
+
+            val trainer_landing_page = Intent(holder.itemView.context, UserLandingPageActivity::class.java)
+            trainer_landing_page.putExtra("user_type", "business")
+            //sending next value to make the activity not show button :
+            trainer_landing_page.putExtra("current_user_type", "business")
+            //
+            trainer_landing_page.putExtra("user_name", p2.name)
+            trainer_landing_page.putExtra("user_photo_url", p2.photoURL)
+            holder.itemView.context.startActivity(trainer_landing_page)
+
+        }
+
+
     }
 }
