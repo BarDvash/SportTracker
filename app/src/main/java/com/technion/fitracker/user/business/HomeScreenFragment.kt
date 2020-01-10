@@ -99,7 +99,7 @@ class HomeScreenFragment : Fragment() {
             adapter = viewModel.notifications_adapter
         }
 
-        val trainings_query = firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments").orderBy("appointment_date", Query.Direction.ASCENDING).limit(5)
+        val trainings_query = firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments").orderBy("appointment_date", Query.Direction.ASCENDING).orderBy("appointment_time", Query.Direction.ASCENDING).limit(5)
 
         val trainings_options = FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java).build()
 

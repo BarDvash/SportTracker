@@ -22,7 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.technion.fitracker.R
 import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.user.business.HomeScreenFragment
+import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
+import java.util.*
 
 class UpcomingTrainingsFireStoreAdapter(
     options: FirestoreRecyclerOptions<UpcomingTrainingFireStoreModel>,
@@ -69,6 +71,7 @@ class UpcomingTrainingsFireStoreAdapter(
         firestore.collection("regular_users").document(model.customer_id!!).get().addOnSuccessListener {
             if (it.exists()) {
                 val phone: String? = it.get("phone") as String?
+                Log.d("UPCOMIONG", phone.toString())
                 val picture_url: String? = it.get("photoURL") as String?
                 holder.name.text = it.get("name") as String?
                 Glide.with(fragment) //1
@@ -109,10 +112,14 @@ class UpcomingTrainingsFireStoreAdapter(
 
 
         model.notes?.let {
-            holder.notes_container.visibility = View.VISIBLE
-            holder.notes.text = it
+            if(it.isNotEmpty()) {
+                holder.notes_container.visibility = View.VISIBLE
+                holder.notes.text = it
+            }
         }
-        holder.date.text = SimpleDateFormat("dd MMMM yyyy 'at' hh:mm").format(model.appointment_date)
+        val split_date = model.appointment_date!!.split(" ")
+        val month =  DateFormatSymbols().getMonths()[split_date[1].toInt()-1]
+        holder.date.text = split_date[0] + " " + month + " " + split_date[1] + " at " + model.appointment_time!!.replace(" ", ":")
 
 
     }
