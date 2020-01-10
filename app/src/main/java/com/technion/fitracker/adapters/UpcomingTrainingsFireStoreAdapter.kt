@@ -70,7 +70,7 @@ class UpcomingTrainingsFireStoreAdapter(
         val firestore = FirebaseFirestore.getInstance()
         firestore.collection("regular_users").document(model.customer_id!!).get().addOnSuccessListener {
             if (it.exists()) {
-                val phone: String? = it.get("phone") as String?
+                val phone: String? = it.get("phone_number") as String?
                 Log.d("UPCOMIONG", phone.toString())
                 val picture_url: String? = it.get("photoURL") as String?
                 holder.name.text = it.get("name") as String?
@@ -82,26 +82,26 @@ class UpcomingTrainingsFireStoreAdapter(
                         .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                         .transform(CircleCrop()) //4
                         .into(holder.image)
-                if (phone != null) {
-                    holder.whatsapp_image.setOnClickListener {
-                        try {
-                            val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + phone + "&text=")
-                            val intent = Intent(Intent.ACTION_VIEW, uri)
+                phone?.let{
+                    if(phone.length > 1) {
+                        holder.whatsapp_image.visibility = View.VISIBLE
+                        holder.whatsapp_image.setOnClickListener {
+                            try {
+                                val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + phone + "&text=")
+                                val intent = Intent(Intent.ACTION_VIEW, uri)
+                                holder.itemView.context.startActivity(intent)
+                            } catch (e: Exception) {
+                                Toast.makeText(fragment.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                        holder.phone_image.visibility = View.VISIBLE
+                        holder.phone_image.setOnClickListener {
+                            val uri = "tel:" + phone
+                            val intent = Intent(Intent.ACTION_DIAL)
+                            intent.data = Uri.parse(uri)
                             holder.itemView.context.startActivity(intent)
-                        } catch (e: Exception) {
-                            Toast.makeText(fragment.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
                         }
                     }
-
-                    holder.phone_image.setOnClickListener {
-                        val uri = "tel:" + phone
-                        val intent = Intent(Intent.ACTION_DIAL)
-                        intent.data = Uri.parse(uri)
-                        holder.itemView.context.startActivity(intent)
-                    }
-                } else {
-                    holder.whatsapp_image.visibility = View.GONE
-                    holder.phone_image.visibility = View.GONE
                 }
             }
         }
@@ -119,7 +119,7 @@ class UpcomingTrainingsFireStoreAdapter(
         }
         val split_date = model.appointment_date!!.split(" ")
         val month =  DateFormatSymbols().getMonths()[split_date[1].toInt()-1]
-        holder.date.text = split_date[0] + " " + month + " " + split_date[1] + " at " + model.appointment_time!!.replace(" ", ":")
+        holder.date.text = month + " " + split_date[1] + " at " + model.appointment_time!!.replace(" ", ":")
 
 
     }

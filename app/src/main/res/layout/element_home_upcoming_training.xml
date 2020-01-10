@@ -9,17 +9,6 @@
     android:layout_marginTop="8dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/element_schedule_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:text="24 10 19" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -45,18 +34,32 @@
             app:srcCompat="@drawable/user_avatar" />
 
         <TextView
+            android:id="@+id/element_schedule_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/element_schedule_name"
+            app:layout_constraintStart_toEndOf="@+id/element_schedule_imageView"
+            app:layout_constraintTop_toTopOf="@+id/element_schedule_imageView"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="24 10 19" />
+
+        <TextView
             android:id="@+id/element_schedule_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/element_schedule_imageView"
             app:layout_constraintStart_toEndOf="@+id/element_schedule_imageView"
-            app:layout_constraintTop_toTopOf="@+id/element_schedule_imageView"
-            app:layout_constraintVertical_bias="0.629"
             tools:text="Customer Name" />
 
         <ImageView
@@ -65,6 +68,8 @@
             android:layout_height="31dp"
             android:layout_marginEnd="52dp"
             android:layout_marginRight="52dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/element_schedule_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/element_schedule_name"
@@ -74,6 +79,8 @@
             android:id="@+id/element_schedule_phone"
             android:layout_width="30dp"
             android:layout_height="29dp"
+            android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/element_schedule_whatsapp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/element_schedule_whatsapp"
@@ -94,13 +101,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notes_"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
