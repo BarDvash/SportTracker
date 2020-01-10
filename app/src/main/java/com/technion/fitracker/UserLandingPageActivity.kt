@@ -40,7 +40,13 @@ class UserLandingPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_landing_page)
-        setSupportActionBar(findViewById(R.id.search_results_toolbar))
+
+
+
+        setSupportActionBar(findViewById(R.id.user_toolbar))
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         //initialize instance variables:
         firestore = FirebaseFirestore.getInstance()
@@ -97,29 +103,7 @@ class UserLandingPageActivity : AppCompatActivity() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.search_menu, menu)
-        return true
 
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
-
-            R.id.search_from_searchActivity -> {
-                onSearchRequested()
-                true
-            }
-
-            else -> {
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                super.onOptionsItemSelected(item)
-            }
-        }
-    }
 
     //TODO show a toast if customer already in  the list
     fun addAs(view: View) {
@@ -158,6 +142,11 @@ class UserLandingPageActivity : AppCompatActivity() {
 
             add_button.text = "cancel request"
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
 

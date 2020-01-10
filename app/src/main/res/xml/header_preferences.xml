@@ -21,10 +21,13 @@
         app:key="account_category"
         app:title="Account">
 
-        <Preference
-            app:key="replace_phone_number"
-            app:title="Update phone number">
-        </Preference>
+
+        <EditTextPreference
+            app:key="phone_number"
+            app:title="Phone number"
+            android:inputType="number"
+            app:useSimpleSummaryProvider="true"/>
+
 
         <Preference
             app:key="replace_photo"

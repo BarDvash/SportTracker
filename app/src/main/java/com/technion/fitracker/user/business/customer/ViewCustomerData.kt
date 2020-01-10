@@ -19,6 +19,7 @@ class ViewCustomerData : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_customer_data)
+
         viewModel = ViewModelProviders.of(this)[CustomerDataViewModel::class.java]
         viewModel.customerID =  intent.getStringExtra("customerID")
         viewModel.customerName =  intent.getStringExtra("customerName")

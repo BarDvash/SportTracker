@@ -197,7 +197,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
             putString("user_type","business")
             putString("user_name", viewModel.user_name )
             putString("user_photo_url", viewModel.user_photo_url)
-            putString("user_phone_number_url", viewModel.user_phone_number)
+            putString("user_phone_number", viewModel.user_phone_number)
         }
         startSearch(null, false, appData, false)
         return true

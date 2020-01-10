@@ -1,13 +1,15 @@
 package com.technion.fitracker
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 
 
@@ -38,6 +40,11 @@ class SettingsActivity : AppCompatActivity(),
 
 
     }
+
+
+
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -80,12 +87,33 @@ class SettingsActivity : AppCompatActivity(),
                 .addToBackStack(null)
                 .commit()
         title = pref.title
+
         return true
     }
 
-    class HeaderFragment : PreferenceFragmentCompat() {
+    class HeaderFragment : PreferenceFragmentCompat() , SharedPreferences.OnSharedPreferenceChangeListener{
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.header_preferences, rootKey)
+
+        }
+
+        override fun onResume() {
+            super.onResume()
+            preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
+        }
+
+        override fun onPause() {
+            preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+            super.onPause()
+        }
+
+        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+            if (key == "phone_number") {
+                var pref = findPreference<EditTextPreference>("phone_number")
+                FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+                        .update("phone_number","972" + pref?.text)
+            }
         }
     }
 

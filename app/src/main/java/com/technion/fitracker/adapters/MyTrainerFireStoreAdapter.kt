@@ -1,5 +1,6 @@
 package com.technion.fitracker.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.technion.fitracker.R
+import com.technion.fitracker.UserLandingPageActivity
 import com.technion.fitracker.models.PersonalTrainer
 import com.technion.fitracker.user.personal.HomeScreenFragment
 
@@ -53,5 +55,21 @@ class MyTrainerFireStoreAdapter(
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
                 .transform(CircleCrop()) //4
                 .into(p0.trainerPhoto)
+
+
+
+
+        p0.itemView.setOnClickListener {
+
+                val trainer_landing_page = Intent(p0.itemView.context, UserLandingPageActivity::class.java)
+                    trainer_landing_page.putExtra("user_type", "business")
+                    //sending next value to make the activity not show button :
+                    trainer_landing_page.putExtra("current_user_type", "business")
+                    //
+                    trainer_landing_page.putExtra("user_name", p2.name)
+                    trainer_landing_page.putExtra("user_photo_url", p2.photoURL)
+            p0.itemView.context.startActivity(trainer_landing_page)
+
+        }
     }
 }

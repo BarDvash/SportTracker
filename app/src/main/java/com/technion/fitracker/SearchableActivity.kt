@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -77,30 +78,32 @@ class SearchableActivity : AppCompatActivity() {
     }
 
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-    super.onCreateOptionsMenu(menu)
-    menuInflater.inflate(R.menu.search_menu, menu)
-    return true
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.search_menu, menu)
+
+        return true
 
     }
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
+        return when (item.itemId) { //check on which item the user pressed and perform the appropriate action
 
-    R.id.search_from_searchActivity -> {
-    onSearchRequested()
-    true
+            R.id.search_from_searchActivity -> {
+                onSearchRequested()
+                true
+            }
+
+            else -> {
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
-    else -> {
-    // If we got here, the user's action was not recognized.
-    // Invoke the superclass to handle it.
-    super.onOptionsItemSelected(item)
-    }
-    }
-    }
+
 
 
 
@@ -112,8 +115,8 @@ class SearchableActivity : AppCompatActivity() {
 
     override fun onSearchRequested(): Boolean {
         val appData = Bundle().apply {
-            putString("user_type",current_user_type)
-            putString("user_name", current_user_name )
+            putString("user_type", current_user_type)
+            putString("user_name", current_user_name)
             putString("user_photo_url", current_user_photo_url)
             putString("user_phone_number_url", current_user_phone_number)
         }

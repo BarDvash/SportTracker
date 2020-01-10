@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".PendingRequestsActivity">
 
+
+
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/pending_requests_toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="#C20E0E"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:subtitleTextColor="@android:color/white"
@@ -22,6 +25,9 @@
         app:layout_constraintVertical_bias="1.0" />
 
 
+
+
+
     <TextView
         android:id="@+id/pending_requests_title"
         style="@style/user_fragment_title"
@@ -30,6 +36,9 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pending_requests_toolbar" />
+
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pending_requests_rec_view"
@@ -56,6 +65,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 

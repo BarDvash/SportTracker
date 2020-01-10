@@ -31,6 +31,12 @@ class PendingRequestsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pending_requests)
 
+
+        setSupportActionBar(findViewById(R.id.pending_requests_toolbar))
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+        }
+
         mAuth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
@@ -67,7 +73,10 @@ class PendingRequestsActivity : AppCompatActivity() {
         super.onStop()
         adapter.stopListening()
     }
-
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 
 
 }
