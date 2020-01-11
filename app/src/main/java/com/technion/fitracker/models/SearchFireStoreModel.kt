@@ -5,6 +5,7 @@ data class SearchFireStoreModel(
     var name: String? = null,
     var photoURL: String? = null,
     var phone_number: String? = null,
+    var show_phone: Boolean? = null,
     var uid: String? = null,
     var type: String? = null,
     var landing_info: String? = null,

@@ -76,7 +76,9 @@ class SearchFireStoreAdapter(
             user_landing_page.putExtra("uid", item?.uid)
             user_landing_page.putExtra("type", item?.type)
             user_landing_page.putExtra("landing_info", item?.landing_info)
-            user_landing_page.putExtra("phone_number", item?.phone_number)
+            if(item.show_phone != null && item?.show_phone == true){
+                user_landing_page.putExtra("phone_number", item?.phone_number)
+            }
             user_landing_page.putExtra("personal_trainer_uid", item?.personal_trainer_uid)
             user_landing_page.putExtra("current_user_type", current_user_type)
             user_landing_page.putExtra("current_user_name", current_user_name)

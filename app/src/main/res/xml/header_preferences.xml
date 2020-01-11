@@ -21,6 +21,10 @@
         app:key="account_category"
         app:title="Account">
 
+        <SwitchPreferenceCompat
+            app:key="show_phone"
+            android:defaultValue="true"
+            app:title="Expose phone number to other users" />
 
         <EditTextPreference
             app:key="phone_number"

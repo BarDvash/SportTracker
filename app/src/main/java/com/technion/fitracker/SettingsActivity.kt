@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -122,6 +123,18 @@ class SettingsActivity : AppCompatActivity(),
                                     FirebaseFirestore.getInstance().collection("business_users")
                                             .document(FirebaseAuth.getInstance().currentUser!!.uid)
                                             .update("landing_info", pref?.text)
+
+                                }
+                            }
+                }
+                "show_phone" -> {
+                    var pref = findPreference<SwitchPreferenceCompat>("show_phone")
+                    FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+                            .update("show_phone", pref?.isChecked).addOnFailureListener { e ->
+                                run {
+                                    FirebaseFirestore.getInstance().collection("business_users")
+                                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                            .update("show_phone", pref?.isChecked)
 
                                 }
                             }

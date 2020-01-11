@@ -16,6 +16,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        if(navController.currentDestination?.label == "fragment_sign_in"){
+            super.onBackPressed()
+        }
         navController.popBackStack()
         navController.navigate(R.id.signInFragment)
     }
