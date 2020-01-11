@@ -2,10 +2,6 @@ package com.technion.fitracker.login
 
 import android.content.Intent
 import android.os.Bundle
-import com.technion.fitracker.R
-import com.technion.fitracker.user.User
-import com.technion.fitracker.user.business.BusinessUserActivity
-import com.technion.fitracker.user.personal.UserActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +21,10 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-
+import com.technion.fitracker.R
+import com.technion.fitracker.user.User
+import com.technion.fitracker.user.business.BusinessUserActivity
+import com.technion.fitracker.user.personal.UserActivity
 
 
 class SignInFragment : Fragment(), View.OnClickListener {
@@ -75,7 +74,6 @@ class SignInFragment : Fragment(), View.OnClickListener {
     }
 
 
-
     private fun signIn() {
         signInGoogleButton.isEnabled = false
         val signInIntent = mGoogleSignInClient.signInIntent
@@ -100,11 +98,14 @@ class SignInFragment : Fragment(), View.OnClickListener {
                 firebaseAuthWithEmail()
 
             }
-            R.id.login_fragment_sign_up_button -> navController.navigate(
-                R.id.action_signInFragment_to_signUpFragment
-            )
 
+            R.id.login_fragment_sign_up_button -> {
+                navController.navigate(
+                        R.id.action_signInFragment_to_signUpFragment
+                )
+            }
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -139,7 +140,13 @@ class SignInFragment : Fragment(), View.OnClickListener {
                         val uid = FirebaseAuth.getInstance().currentUser?.uid
                         val photoUrl = FirebaseAuth.getInstance().currentUser?.photoUrl
                         val user =
-                            User(name = auth.currentUser?.displayName, photoURL = photoUrl.toString(), uid = uid, type = "regular", search_field = auth.currentUser?.displayName!!.toLowerCase())
+                            User(
+                                    name = auth.currentUser?.displayName,
+                                    photoURL = photoUrl.toString(),
+                                    uid = uid,
+                                    type = "regular",
+                                    search_field = auth.currentUser?.displayName!!.toLowerCase()
+                            )
                         firestore.collection("regular_users").document(uid!!).get().addOnCompleteListener {
                             val doc = it.result
                             if (doc?.exists()!!) {
@@ -155,9 +162,9 @@ class SignInFragment : Fragment(), View.OnClickListener {
                     } else {
                         signInGoogleButton.isEnabled = true
                         Toast.makeText(
-                            context,
-                            getString(R.string.authentication_failed_internet),
-                            Toast.LENGTH_SHORT
+                                context,
+                                getString(R.string.authentication_failed_internet),
+                                Toast.LENGTH_SHORT
                         ).show()
                     }
                 }
@@ -207,10 +214,10 @@ class SignInFragment : Fragment(), View.OnClickListener {
                             val business_users_doc_ref = firestore.collection("business_users").document(auth.currentUser!!.uid)
 
                             regular_users_doc_ref.get().addOnSuccessListener {
-                                if(it.exists()){
+                                if (it.exists()) {
                                     enableButtonAndSetText()
                                     startUserActivity()
-                                }else{
+                                } else {
                                     business_users_doc_ref.get().addOnSuccessListener {
                                         enableButtonAndSetText()
                                         startBusinessUserActivity()

@@ -85,9 +85,12 @@ class SignUpFragment : Fragment(), View.OnClickListener {
                 signUpButton.isEnabled = false
                 handleEmailSignUp()
             }
-            R.id.sign_up_fragment_trainer_sign_up_button -> navController.navigate(
-                R.id.action_signUpFragment_to_signUpBusinessFragment
-            )
+            R.id.sign_up_fragment_trainer_sign_up_button -> {
+
+                navController.navigate(
+                        R.id.action_signUpFragment_to_signUpBusinessFragment
+                )
+            }
         }
     }
 
