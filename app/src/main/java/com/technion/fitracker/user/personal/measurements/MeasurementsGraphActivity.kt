@@ -62,11 +62,10 @@ class MeasurementsGraphActivity : AppCompatActivity() {
         Log.d(Context.VIBRATOR_SERVICE,(params.get("userID") as String?).toString())
 
         val chart = findViewById<BarChart>(R.id.chart)
-        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data",Query.Direction.DESCENDING).get().addOnSuccessListener {
+        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data",Query.Direction.DESCENDING).limit(maxResults.toLong()).get().addOnSuccessListener {
             val entries = ArrayList<BarEntry>()
             var i = 0
-            val docs = takeLastDocs(maxResults, it)
-            for (element in docs) {
+            for (element in it) {
                 if (element.getString(translationTable[name]!!).isNullOrEmpty()) {
                     continue
                 }
@@ -99,8 +98,6 @@ class MeasurementsGraphActivity : AppCompatActivity() {
             }
             chart.axisLeft.apply {
                 isEnabled = false
-//                granularity = 1f
-//                textSize = 12F
             }
             chart.legend.apply {
                 textSize = 12F
@@ -114,19 +111,6 @@ class MeasurementsGraphActivity : AppCompatActivity() {
             chart.invalidate()
         }
 
-    }
-
-    private fun takeLastDocs(num: Int, docs: QuerySnapshot): ArrayList<QueryDocumentSnapshot> {
-        val res = ArrayList<QueryDocumentSnapshot>()
-        var count = 0
-        for (element in docs) {
-            if (count == num) {
-                break
-            }
-            count++
-            res.add(0,element)
-        }
-        return res
     }
 
     override fun onSupportNavigateUp(): Boolean {

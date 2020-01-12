@@ -133,4 +133,6 @@
     <string name="add_as_trainer">Add as trainer</string>
     <string name="add_as_trainee">Add as trainee</string>
     <string name="cancel_request">Cancel request</string>
+    <string name="notes">Notes</string>
+    <string name="appointments">Appointments</string>
 </resources>
