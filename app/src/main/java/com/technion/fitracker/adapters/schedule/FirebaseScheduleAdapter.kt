@@ -1,10 +1,9 @@
 package com.technion.fitracker.adapters.schedule
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
-import android.os.Build
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,16 +14,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.github.florent37.singledateandtimepicker.SingleDateAndTimePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.technion.fitracker.R
-import com.technion.fitracker.adapters.AppointmentsSpinnerAdapter
 import com.technion.fitracker.models.AppointmentModel
 import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class FirebaseScheduleAdapter(
@@ -44,6 +40,8 @@ class FirebaseScheduleAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var customerName: TextView = view.findViewById(R.id.element_schedule_name)
+        var whatsappImage: ImageView = view.findViewById(R.id.element_schedule_whatsapp)
+        var phoneImage: ImageView = view.findViewById(R.id.element_schedule_phone)
         var date: TextView = view.findViewById(R.id.element_schedule_date)
         var customerImageView: ImageView = view.findViewById(R.id.element_schedule_imageView)
         var customerId: String? = null
@@ -74,23 +72,24 @@ class FirebaseScheduleAdapter(
         holder.notes = item.notes
         db.collection("regular_users").document(item.customer_id!!).get(Source.CACHE).addOnCompleteListener {
             if (it.result != null) {
-                initNameAndImage(holder, it.result!!)
+                initCustomerInfo(holder, it.result!!)
                 db.collection("regular_users").document(item.customer_id!!).get().addOnSuccessListener { innerIt ->
-                    initNameAndImage(holder, innerIt)
+                    initCustomerInfo(holder, innerIt)
                 }
             } else {
                 db.collection("regular_users").document(item.customer_id!!).get().addOnSuccessListener { innerIt ->
-                    initNameAndImage(holder, innerIt)
+                    initCustomerInfo(holder, innerIt)
                 }
             }
         }
     }
 
-    private fun initNameAndImage(
+    private fun initCustomerInfo(
         holder: ViewHolder,
         it: DocumentSnapshot
     ) {
         holder.customerName.text = it.getString("name")
+        var phone = it.getString("phone_number")
         Glide.with(context) //1
                 .load(it.getString("photoURL"))
                 .placeholder(R.drawable.user_avatar)
@@ -99,6 +98,27 @@ class FirebaseScheduleAdapter(
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
                 .transform(CircleCrop()) //4
                 .into(holder.customerImageView)
+        phone?.let{
+            if(phone.length > 1) {
+                holder.whatsappImage.visibility = View.VISIBLE
+                holder.whatsappImage.setOnClickListener {
+                    try {
+                        val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + phone + "&text=")
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        holder.itemView.context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(this.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
+                    }
+                }
+                holder.phoneImage.visibility = View.VISIBLE
+                holder.phoneImage.setOnClickListener {
+                    val uri = "tel:" + phone
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse(uri)
+                    holder.itemView.context.startActivity(intent)
+                }
+            }
+        }
 
     }
 

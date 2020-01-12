@@ -131,11 +131,11 @@ class UserLandingPageActivity : AppCompatActivity() {
             customer_doc.get().addOnSuccessListener {
                 if (it.exists()) {
                     add_button.visibility = View.VISIBLE
-                    add_button.isEnabled = false
                     if (current_user_personal_trainer_uid != viewed_user_id) {
+                        add_button.isEnabled = false
                         add_button.text = getString(R.string.you_already_have_trainer)
                     } else {
-                        add_button.text = getString(R.string.already_your_trainer)
+                        add_button.text = getString(R.string.delete_your_trainer)
                     }
                 } else {
                     add_button.visibility = View.VISIBLE
@@ -160,8 +160,7 @@ class UserLandingPageActivity : AppCompatActivity() {
             customer_doc.get().addOnSuccessListener {
                 if (it.exists()) {
                     add_button.visibility = View.VISIBLE
-                    add_button.isEnabled = false
-                    add_button.text = getString(R.string.already_your_trainee)
+                    add_button.text = getString(R.string.delete_trainee)
                 } else {
                     if (viewed_user_personal_trainer_uid.isNullOrEmpty()) {
                         add_button.visibility = View.VISIBLE
@@ -189,18 +188,27 @@ class UserLandingPageActivity : AppCompatActivity() {
     //TODO show a toast if customer already in  the list
     fun addAs(view: View) {
 
-        if (add_button.text == "cancel request") {
+        if (add_button.text == getString(R.string.cancel_request)) {
             if (current_user_type == "regular" && viewed_user_type == "business") { //when user send request to trainer to be his personal trainer
                 firestore.collection("business_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!).delete()
-                add_button.text = "Add as trainer"
+                add_button.text = getString(R.string.add_as_trainer)
             } else if (viewed_user_type == "regular" && current_user_type == "business") {//when trainer send request to user to be his personal trainer
                 firestore.collection("regular_users").document(viewed_user_id!!).collection("requests").document(current_user_id!!).delete()
-                add_button.text = "Add as trainee"
+                add_button.text = getString(R.string.add_as_trainer)
             }
             Toast.makeText(this, "canceled request", Toast.LENGTH_LONG).show()
 
 
-        } else {
+        } else if(add_button.text ==  getString(R.string.delete_your_trainer)){
+            //TODO: notification!
+            firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid",null)
+            firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).delete()
+        } else if(add_button.text ==  getString(R.string.delete_trainee)){
+            //TODO: notification!
+            firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid",null)
+            firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!).delete()
+        }else {
+
 
             val user = hashMapOf(
                     "user_name" to current_user_name,
@@ -221,7 +229,7 @@ class UserLandingPageActivity : AppCompatActivity() {
                 //TODO: change button here ! and make sure the button stays changed by defined it somewhere
             }
 
-            add_button.text = "cancel request"
+            add_button.text = getString(R.string.cancel_request)
         }
     }
 

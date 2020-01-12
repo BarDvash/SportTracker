@@ -80,6 +80,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 app:srcCompat="@drawable/ic_whatsapp_with_colors" />
 
             <ImageView
@@ -90,6 +92,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/element_schedule_whatsapp"
                 app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                tools:visibility="visible"
                 app:srcCompat="@drawable/ic_telephone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

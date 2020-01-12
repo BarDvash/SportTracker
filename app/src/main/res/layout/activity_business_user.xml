@@ -23,52 +23,49 @@ tools:context=".user.business.BusinessUserActivity">
     app:subtitleTextColor="@android:color/white"
     app:titleTextColor="@android:color/white" />
 
-<ImageView
-    android:id="@+id/business_user_avatar"
-    android:layout_width="99dp"
-    android:layout_height="96dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginTop="16dp"
-    android:contentDescription="@string/user_avatar"
-    app:srcCompat="@drawable/user_avatar"
-    app:layout_constraintStart_toStartOf="@+id/business_user_toolbar"
-    app:layout_constraintTop_toBottomOf="@+id/business_user_toolbar" />
+    <ImageView
+        android:id="@+id/business_user_avatar"
+        android:layout_width="99dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/user_avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/business_user_toolbar"
+        app:srcCompat="@drawable/user_avatar" />
 
-<TextView
-    android:id="@+id/business_user_name"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginLeft="8dp"
-    android:paddingLeft="10dp"
-    android:paddingTop="20dp"
-    android:text="@string/username_default"
-    android:textSize="24sp"
-    app:layout_constraintBottom_toBottomOf="@+id/business_user_avatar"
-    app:layout_constraintEnd_toEndOf="@+id/business_user_toolbar"
-    app:layout_constraintHorizontal_bias="1.0"
-    app:layout_constraintStart_toEndOf="@+id/business_user_avatar"
-    app:layout_constraintTop_toTopOf="@+id/business_user_avatar" />
+    <TextView
+        android:id="@+id/business_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:paddingLeft="10dp"
+        android:text="@string/username_default"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/business_user_avatar"
+        app:layout_constraintStart_toEndOf="@+id/business_user_avatar"
+        app:layout_constraintTop_toTopOf="@+id/business_user_avatar" />
 
-<View
-    android:id="@+id/business_divider"
-    android:layout_width="0dp"
-    android:layout_height="1dp"
-    android:paddingBottom="20dp"
-    android:layout_marginTop="16dp"
-    android:background="?android:attr/listDivider"
-    app:layout_constraintEnd_toEndOf="@+id/business_user_name"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/business_user_name"
-    />
+    <View
+        android:id="@+id/business_divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/business_user_avatar" />
 
     <fragment
         android:id="@+id/business_fragment_host"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="1dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/business_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"

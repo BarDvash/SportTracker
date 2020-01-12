@@ -62,16 +62,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        app:icon="@drawable/ic_notifications_24dp"
-        app:key="notifications_category"
-        app:title="Notifications">
-
-        <SwitchPreferenceCompat
-            app:key="notifications"
-            app:title="Enable message notifications" />
-
-    </PreferenceCategory>
 
     <PreferenceCategory
         app:icon="@drawable/ic_help_24dp"

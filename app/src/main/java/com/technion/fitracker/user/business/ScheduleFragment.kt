@@ -5,9 +5,11 @@ import android.app.Dialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -41,6 +43,7 @@ class ScheduleFragment : Fragment() {
     lateinit var recView: RecyclerView
     lateinit var fab: FloatingActionButton
     lateinit var spinner: Spinner
+    lateinit var scrollView: ScrollView
 
     private lateinit var auth: FirebaseAuth
     lateinit var db: FirebaseFirestore
@@ -78,6 +81,22 @@ class ScheduleFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         initSpinnerData()
         calendarView = view.findViewById(R.id.schedule_calendarView)
+        scrollView = view.findViewById(R.id.scrollView2)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY - oldScrollY > 0) {
+                    if (fab.isShown) {
+                        fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_down))
+                        fab.visibility = View.GONE
+                    }
+                } else if (scrollY - oldScrollY < 0) {
+                    if (!fab.isShown) {
+                        fab.visibility = View.VISIBLE
+                        fab.startAnimation(AnimationUtils.loadAnimation(context, R.anim.fab_go_up))
+                    }
+                }
+            }
+        }
 
         fab = view.findViewById(R.id.add_meeting_btn)
         chosenDate = calendar.timeInMillis
@@ -113,10 +132,10 @@ class ScheduleFragment : Fragment() {
                     toProperFormat(time.currentHour) + " " + toProperFormat(time.currentMinute)
                 }
                 val appointment = AppointmentModel(
-                    traineesIds[selectedPos],
-                    dateCalendarFormat.format(chosenDate),
-                    timeString,
-                    notes.text.toString()
+                        traineesIds[selectedPos],
+                        dateCalendarFormat.format(chosenDate),
+                        timeString,
+                        notes.text.toString()
                 )
                 db.collection("business_users").document(auth.currentUser!!.uid).collection("appointments").add(appointment).addOnSuccessListener {
 
@@ -143,11 +162,10 @@ class ScheduleFragment : Fragment() {
 
     }
 
-    private fun toProperFormat(time:Int): String {
+    private fun toProperFormat(time: Int): String {
         if (time < 10) {
             return "0$time"
-        }
-        else {
+        } else {
             return "$time"
         }
     }
@@ -178,7 +196,7 @@ class ScheduleFragment : Fragment() {
             val notesField = dial.findViewById<EditText>(R.id.dialog_edit_notes)
             notesField.setText((it.tag as FirebaseScheduleAdapter.ViewHolder).notes)
 
-            datePicker.updateDate(dateToConvert[0].toInt(),dateToConvert[1].toInt() - 1,dateToConvert[2].toInt())
+            datePicker.updateDate(dateToConvert[0].toInt(), dateToConvert[1].toInt() - 1, dateToConvert[2].toInt())
             val spinner = dial.findViewById<Spinner>(R.id.dialog_edit_user_spinner)
             val spinnerAdapter = AppointmentsSpinnerAdapter(context!!, traineesNames, traineesIds, traineesPhotos)
             spinner.adapter = spinnerAdapter
@@ -213,10 +231,10 @@ class ScheduleFragment : Fragment() {
                     "${toProperFormat(time.currentHour)} ${toProperFormat(time.currentMinute)}"
                 }
                 val appointment = AppointmentModel(
-                    traineesIds[selectedPos],
-                    dateCalendarFormat.format(dateCalendarFormat.parse("${datePicker.year} ${(datePicker.month + 1)} ${datePicker.dayOfMonth}")!!),
-                    timeString,
-                    notesField.text.toString()
+                        traineesIds[selectedPos],
+                        dateCalendarFormat.format(dateCalendarFormat.parse("${datePicker.year} ${(datePicker.month + 1)} ${datePicker.dayOfMonth}")!!),
+                        timeString,
+                        notesField.text.toString()
                 )
                 db.collection("business_users").document(auth.currentUser!!.uid).collection("appointments")
                         .whereEqualTo("appointment_date", oldDate)
@@ -229,11 +247,10 @@ class ScheduleFragment : Fragment() {
                                             initEventDates()
                                             initRecyclerData()
                                             dial.hide()
-                                }.addOnFailureListener {
+                                        }.addOnFailureListener {
                                             dial.hide()
                                         }
-                            }
-                            else {
+                            } else {
                                 dial.hide()
                             }
                         }
@@ -255,15 +272,14 @@ class ScheduleFragment : Fragment() {
                                         }.addOnFailureListener {
                                             dial.hide()
                                         }
-                            }
-                            else {
+                            } else {
                                 dial.hide()
                             }
                         }
             }
             dial.show()
         }
-        adapter = FirebaseScheduleAdapter(options, traineesNames, traineesIds, traineesPhotos,onClickListener)
+        adapter = FirebaseScheduleAdapter(options, traineesNames, traineesIds, traineesPhotos, onClickListener)
         recView.adapter = adapter
         adapter?.startListening()
     }
@@ -271,8 +287,8 @@ class ScheduleFragment : Fragment() {
     private fun setCurrentDateSelected() {
         val res = dateCalendarFormat.format(chosenDate).split(" ")
         calendarView.selectRange(
-            CalendarDay.from(res[0].toInt(), res[1].toInt(), res[2].toInt()),
-            CalendarDay.from(res[0].toInt(), res[1].toInt(), res[2].toInt())
+                CalendarDay.from(res[0].toInt(), res[1].toInt(), res[2].toInt()),
+                CalendarDay.from(res[0].toInt(), res[1].toInt(), res[2].toInt())
         )
     }
 

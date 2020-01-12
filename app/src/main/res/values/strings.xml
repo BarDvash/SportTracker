@@ -128,8 +128,8 @@
     <string name="information">Information</string>
     <string name="already_has_trainer">The user already has a trainer</string>
     <string name="you_already_have_trainer">You already have a trainer</string>
-    <string name="already_your_trainee">Already your trainee</string>
-    <string name="already_your_trainer">It\'s your trainer</string>
+    <string name="delete_trainee">Delete trainee</string>
+    <string name="delete_your_trainer">Delete trainer</string>
     <string name="add_as_trainer">Add as trainer</string>
     <string name="add_as_trainee">Add as trainee</string>
     <string name="cancel_request">Cancel request</string>
