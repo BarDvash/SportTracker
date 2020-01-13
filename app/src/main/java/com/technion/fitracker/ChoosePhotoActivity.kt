@@ -6,10 +6,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.startActivityForResult
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -70,6 +72,21 @@ class ChoosePhotoActivity : AppCompatActivity() {
                 pickImageFromGallery();
             }
         }
+    }
+
+    private fun clearPreviousPhotos(){
+        var deletePathReference = "profile_photos/" + mAuth.currentUser?.uid
+        var delRef = mFirestorage.getReference(deletePathReference)
+        delRef.listAll()
+                .addOnSuccessListener { listResult ->
+                    listResult.items.forEach { item ->
+                        Log.d("DELETing", item.toString())
+                        item.delete()
+                    }
+                }
+                .addOnFailureListener {
+                    // Uh-oh, an error occurred!
+                }
     }
 
     private fun updatePhotoURL(photoURL: String) {
@@ -175,6 +192,7 @@ class ChoosePhotoActivity : AppCompatActivity() {
             if (file != null) {
                 pickImageButton.text = "Uploading ..."
                 pickImageButton.isEnabled = false
+                clearPreviousPhotos()
                 var uploadTask = strorageRef.putFile(file)
 
                 val urlTask = uploadTask.continueWithTask { task ->
