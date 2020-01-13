@@ -28,15 +28,16 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
+                android:hint="@string/exercise_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <AutoCompleteTextView
                     android:id="@+id/aerobic_name_input"
+                    android:inputType="textNoSuggestions|textVisiblePassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/name_hint"
                     android:text='@={myViewModel.aerobic_name}' />
 
             </com.google.android.material.textfield.TextInputLayout>

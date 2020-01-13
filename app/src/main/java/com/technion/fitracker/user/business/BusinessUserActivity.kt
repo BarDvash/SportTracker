@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.storage.FirebaseStorage
 import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
@@ -36,6 +37,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var mFirestorage: FirebaseStorage
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var viewModel: BusinessUserViewModel
 

@@ -25,6 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.storage.FirebaseStorage
 import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
@@ -37,10 +38,13 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var mFirestorage: FirebaseStorage
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var historyAction: MenuItem
     lateinit var addAction: MenuItem
     lateinit var viewModel: UserViewModel
+    lateinit var userName:TextView
+    lateinit var userAvatar:ImageView
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
@@ -53,8 +57,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
         auth = FirebaseAuth.getInstance()
 
-        val userAvatar = findViewById<ImageView>(R.id.user_avatar)
-        val userName = findViewById<TextView>(R.id.user_name)
+        userAvatar = findViewById(R.id.user_avatar)
+        userName = findViewById(R.id.user_name)
         userAvatar.animation = AnimationUtils.loadAnimation(this, R.anim.user_avatar_anim)
         userName.animation = AnimationUtils.loadAnimation(this, R.anim.fab_transition)
 
@@ -63,24 +67,14 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
-                findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
+                userName.text = user?.name ?: "Username"
 
                 viewModel.personalTrainerUID = user?.personal_trainer_uid
                 viewModel.user_name = user?.name
                 viewModel.user_photo_url = user?.photoURL
                 viewModel.user_phone_number = user?.phone_number
+                getUserPhoto()
 
-                if (!user?.photoURL.isNullOrEmpty()) {
-                    Glide.with(this) //1
-                            .load(user?.photoURL)
-                            .placeholder(R.drawable.user_avatar)
-                            .error(R.drawable.user_avatar)
-                            .skipMemoryCache(true) //2
-                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                            .transform(CircleCrop()) //4
-                            .into(userAvatar)
-
-                }
             }
         }
         findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
@@ -105,6 +99,20 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         FirebaseMessaging.getInstance().subscribeToTopic(topic3_name)
 
 
+    }
+
+    private fun getUserPhoto() {
+        if (!viewModel.user_photo_url.isNullOrEmpty()) {
+            Glide.with(this) //1
+                    .load(viewModel.user_photo_url)
+                    .placeholder(R.drawable.user_avatar)
+                    .error(R.drawable.user_avatar)
+                    .skipMemoryCache(true) //2
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                    .transform(CircleCrop()) //4
+                    .into(userAvatar)
+
+        }
     }
 
     override fun onResume() {

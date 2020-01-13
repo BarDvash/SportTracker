@@ -204,7 +204,7 @@ exports.pending_request_home_screen1 = functions.firestore.document('/business_u
     const trainer_id = context.params.trainer_id;
     const trainee_id = context.params.trainee_id;
 
-    return db.doc('/business_users/' + trainer_id + '/notifications/pending_requests').set({notification: 'you have new pending requests'});
+    return db.doc('/business_users/' + trainer_id + '/notifications/pending_requests').set({notification: 'You have new pending requests'});
 });
 
 
@@ -213,7 +213,7 @@ exports.pending_request_home_screen2 = functions.firestore.document('/regular_us
     const trainer_id = context.params.trainer_id;
     const trainee_id = context.params.trainee_id;
 
-    return db.doc('/regular_users/' + trainee_id + '/notifications/pending_requests').set({notification: 'you have new pending requests'});
+    return db.doc('/regular_users/' + trainee_id + '/notifications/pending_requests').set({notification: 'You have new pending requests'});
 });
 
 

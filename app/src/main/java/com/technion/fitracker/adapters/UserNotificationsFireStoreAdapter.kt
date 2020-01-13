@@ -42,10 +42,13 @@ class UserNotificationsFireStoreAdapter(options: FirestoreRecyclerOptions<Notifi
     ) {
         val notification = item.notification
         holder.notification.text = notification
+        if(holder.notification.text == "you have new pending requests"){
+            holder.notification.text = "You have new pending requests"
+        }
 
 
         holder.itemView.setOnClickListener {
-            if (notification == "you have new pending requests") {
+            if (notification == "you have new pending requests" || notification == "You have new pending requests") {
                 val user_pending_requests = Intent(holder.itemView.context, PendingRequestsActivity::class.java)
                 user_pending_requests.putExtra("user_type", "regular")
                 user_pending_requests.putExtra("user_name", fragment.viewModel.user_name)

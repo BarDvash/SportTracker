@@ -238,17 +238,3 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
         return true
     }
 }
-
-//val bundle = bundleOf("dishes" to viewModel.data[pos], "pos" to pos)
-//summary["workout_name"] = viewModel.workoutName.value
-//summary["time_elapsed"] = viewModel.timeElapsed.value
-//val exercisesLog: ArrayList<ExerciseLogModel> = arrayListOf()
-//viewModel.workoutExercises.value?.let {
-//    for (exercise in it) {
-//        exercisesLog.add(exercise.extractLogModel())
-//    }
-//}
-//summary["exercises"] = exercisesLog
-//summary["date_time"] = SimpleDateFormat("yyyy-MM-dd 'at' HH:mm").format(Calendar.getInstance().time)
-//summary["comment"] = viewModel.comment.value
-//summary["rating"] = viewModel.workoutRate
