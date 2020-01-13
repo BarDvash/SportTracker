@@ -14,32 +14,38 @@
   ~ limitations under the License.
   -->
 
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory
         app:icon="@drawable/ic_account_circle_black_24dp"
         app:key="account_category"
         app:title="Account">
 
+        <Preference android:title="Change Photo">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetClass="com.technion.fitracker.ChoosePhotoActivity"
+                android:targetPackage="com.technion.fitracker" />
+
+        </Preference>
+
         <SwitchPreferenceCompat
-            app:key="show_phone"
             android:defaultValue="true"
+            app:key="show_phone"
             app:title="Expose phone number to other users" />
 
         <EditTextPreference
+            android:inputType="number"
             app:key="phone_number"
             app:title="Phone number"
-            android:inputType="number"
-            app:useSimpleSummaryProvider="true"/>
+            app:useSimpleSummaryProvider="true" />
 
 
         <EditTextPreference
+            android:inputType="textMultiLine"
             app:key="edit_landing_page"
             app:title="Change landing page Info"
-            android:inputType="textMultiLine"
-            app:useSimpleSummaryProvider="true">
-        </EditTextPreference>
-
+            app:useSimpleSummaryProvider="true" />
 
 
     </PreferenceCategory>
@@ -57,7 +63,6 @@
                 android:action="android.intent.action.VIEW"
                 android:data="https://fitracker.flycricket.io/privacy.html" />
         </Preference>
-
 
 
     </PreferenceCategory>

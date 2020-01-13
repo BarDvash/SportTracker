@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -99,6 +100,29 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         viewModel.notifications_adapter?.stopListening()
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (auth.currentUser != null) {
+            val docRef = firestore.collection("business_users").document(auth.currentUser!!.uid)
+            docRef.get().addOnSuccessListener { document ->
+                val user = document.toObject(User::class.java)
+                if(user?.photoURL != viewModel.user_photo_url){
+                    val userAvatar = findViewById<ImageView>(R.id.business_user_avatar)
+                    if (!user?.photoURL.isNullOrEmpty()) {
+                        Glide.with(this) //1
+                                .load(user?.photoURL)
+                                .placeholder(R.drawable.user_avatar)
+                                .error(R.drawable.user_avatar)
+                                .skipMemoryCache(true) //2
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                .transform(CircleCrop()) //4
+                                .into(userAvatar)
+
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)

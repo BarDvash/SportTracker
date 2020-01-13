@@ -107,6 +107,29 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (auth.currentUser != null) {
+            val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
+            docRef.get().addOnSuccessListener { document ->
+                val user = document.toObject(User::class.java)
+                if(user?.photoURL != viewModel.user_photo_url){
+                    val userAvatar = findViewById<ImageView>(R.id.user_avatar)
+                    if (!user?.photoURL.isNullOrEmpty()) {
+                        Glide.with(this) //1
+                                .load(user?.photoURL)
+                                .placeholder(R.drawable.user_avatar)
+                                .error(R.drawable.user_avatar)
+                                .skipMemoryCache(true) //2
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                .transform(CircleCrop()) //4
+                                .into(userAvatar)
+
+                    }
+                }
+            }
+        }
+    }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         val dest = navController.currentDestination?.label
