@@ -45,7 +45,7 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         addExercise = view.findViewById(R.id.weight_done_fab)
         addExercise.setOnClickListener(this)
         nameEditText = view.findViewById(R.id.weight_name_input)
-        val adapter = ArrayAdapter<String>(context!!,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
         nameEditText.setAdapter(adapter)
         nameEditText.threshold = 1
     }

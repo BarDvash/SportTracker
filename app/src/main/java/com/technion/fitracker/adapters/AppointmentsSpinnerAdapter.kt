@@ -12,7 +12,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.technion.fitracker.R
 
-class AppointmentsSpinnerAdapter(val context: Context, val names: ArrayList<String>, val id: ArrayList<String>, val photos: ArrayList<String>) : BaseAdapter() {
+class AppointmentsSpinnerAdapter(val context: Context, val names: ArrayList<String>, val id: ArrayList<String>, val photos: ArrayList<String>) :
+        BaseAdapter() {
 
     val mInflater: LayoutInflater = LayoutInflater.from(context)
 

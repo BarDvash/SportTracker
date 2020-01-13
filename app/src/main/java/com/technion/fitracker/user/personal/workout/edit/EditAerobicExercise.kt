@@ -38,7 +38,7 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initDB()
         val nameEditText = findViewById<AutoCompleteTextView>(R.id.aerobic_edit_name_input)
-        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
         nameEditText.setAdapter(adapter)
         nameEditText.threshold = 1
         intent.apply {
@@ -68,11 +68,11 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
     private fun cacheViewModelValues() {
         if (cachedViewModel.isNullOrEmpty()) {
             cachedViewModel = mapOf(
-                "name" to viewModel.aerobic_name.value,
-                "duration" to viewModel.aerobic_duration.value,
-                "speed" to viewModel.aerobic_speed.value,
-                "intensity" to viewModel.aerobic_intensity.value,
-                "notes" to viewModel.aerobic_notes.value
+                    "name" to viewModel.aerobic_name.value,
+                    "duration" to viewModel.aerobic_duration.value,
+                    "speed" to viewModel.aerobic_speed.value,
+                    "intensity" to viewModel.aerobic_intensity.value,
+                    "notes" to viewModel.aerobic_notes.value
             )
         }
     }
@@ -108,7 +108,7 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
                         .setTitle("Warning")
                         .setMessage("Data will be lost, continue?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             if (viewModel.weight_name.value == "") {
                                 //TODO : refactor me to underline the field
@@ -120,7 +120,7 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
                             }
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
 
                         }.show()
@@ -139,7 +139,7 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
                     .setTitle("Warning")
                     .setMessage("You changes have not been saved")
                     .setPositiveButton(
-                        "Save"
+                            "Save"
                     ) { _, _ ->
                         val intent = createIntentWithData()
                         this.apply {
@@ -148,7 +148,7 @@ class EditAerobicExercise : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                     .setNegativeButton(
-                        "Discard"
+                            "Discard"
                     ) { _, _ ->
                         this.setResult(CreateNewWorkoutActivity.ResultCodes.RETURN.ordinal)
                         this.finish()

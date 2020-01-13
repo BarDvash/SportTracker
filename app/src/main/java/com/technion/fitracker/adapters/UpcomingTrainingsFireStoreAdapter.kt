@@ -23,8 +23,6 @@ import com.technion.fitracker.R
 import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.user.business.HomeScreenFragment
 import java.text.DateFormatSymbols
-import java.text.SimpleDateFormat
-import java.util.*
 
 class UpcomingTrainingsFireStoreAdapter(
     options: FirestoreRecyclerOptions<UpcomingTrainingFireStoreModel>,
@@ -82,8 +80,8 @@ class UpcomingTrainingsFireStoreAdapter(
                         .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                         .transform(CircleCrop()) //4
                         .into(holder.image)
-                phone?.let{
-                    if(phone.length > 1) {
+                phone?.let {
+                    if (phone.length > 1) {
                         holder.whatsapp_image.visibility = View.VISIBLE
                         holder.whatsapp_image.setOnClickListener {
                             try {
@@ -112,13 +110,13 @@ class UpcomingTrainingsFireStoreAdapter(
 
 
         model.notes?.let {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 holder.notes_container.visibility = View.VISIBLE
                 holder.notes.text = it
             }
         }
         val split_date = model.appointment_date!!.split(" ")
-        val month =  DateFormatSymbols().getMonths()[split_date[1].toInt()-1]
+        val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
         holder.date.text = month + " " + split_date[1] + " at " + model.appointment_time!!.replace(" ", ":")
 
 

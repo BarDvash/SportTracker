@@ -20,13 +20,12 @@ class UserNotificationsFireStoreAdapter(options: FirestoreRecyclerOptions<Notifi
     var mOnItemClickListener: View.OnClickListener? = null
 
 
-
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
+
         var notification: TextView = view.findViewById(R.id.notification_text)
     }
 

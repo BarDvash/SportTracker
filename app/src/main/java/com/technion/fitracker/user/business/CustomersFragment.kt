@@ -1,7 +1,6 @@
 package com.technion.fitracker.user.business
 
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,13 +23,9 @@ import com.technion.fitracker.adapters.CustomersFireStoreAdapter
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.models.CustomersFireStoreModel
 import com.technion.fitracker.user.business.customer.ViewCustomerData
-import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
 
 
-
-
-
-class CustomersFragment : Fragment() , View.OnClickListener{
+class CustomersFragment : Fragment(), View.OnClickListener {
 
     private lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
@@ -82,7 +76,7 @@ class CustomersFragment : Fragment() , View.OnClickListener{
         placeholder = view.findViewById(R.id.no_customers_placeholder)
         val query = firestore.collection("business_users").document(uid!!).collection("customers").orderBy("customer_name", Query.Direction.ASCENDING)
         val options = FirestoreRecyclerOptions.Builder<CustomersFireStoreModel>().setQuery(query, CustomersFireStoreModel::class.java).build()
-        adapter = CustomersFireStoreAdapter(options, this).apply{
+        adapter = CustomersFireStoreAdapter(options, this).apply {
             mOnItemClickListener = View.OnClickListener { v ->
                 val rvh = v.tag as CustomersFireStoreAdapter.ViewHolder
                 val customerID: String? = adapter.snapshots.getSnapshot(rvh.adapterPosition).get("customer_id") as String?

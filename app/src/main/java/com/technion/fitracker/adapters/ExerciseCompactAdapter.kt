@@ -15,7 +15,10 @@ import com.technion.fitracker.models.exercise.AerobicExerciseModel
 import com.technion.fitracker.models.exercise.ExerciseBaseModel
 
 
-class ExerciseCompactAdapter(private val myDataset: ArrayList<ExerciseBaseModel>,val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExerciseCompactAdapter(
+    private val myDataset: ArrayList<ExerciseBaseModel>,
+    val mContext: Context
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class HolderPosition {
         AEROBIC, WEIGHT
@@ -103,7 +106,7 @@ class ExerciseCompactAdapter(private val myDataset: ArrayList<ExerciseBaseModel>
                     aerobicHolder.aerobicBodyLayout.visibility = View.VISIBLE
                 }
             }
-            aerobicHolder.container.animation  = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
+            aerobicHolder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         } else {
             val weightElement = myDataset[position].downcastToWeight()
             val weightHolder = (holder as WeightViewHolder)

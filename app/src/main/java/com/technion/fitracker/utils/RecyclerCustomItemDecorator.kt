@@ -28,7 +28,7 @@ class RecyclerCustomItemDecorator
  * @param context Current context, it will be used to access resources.
  * @param orientation Divider orientation. Should be [.HORIZONTAL] or [.VERTICAL].
  */
-    (context: Context?, orientation: Int) : RecyclerView.ItemDecoration() {
+(context: Context?, orientation: Int) : RecyclerView.ItemDecoration() {
 
     private var mDivider: Drawable? = null
 
@@ -43,7 +43,10 @@ class RecyclerCustomItemDecorator
         val a = context?.obtainStyledAttributes(ATTRS)
         mDivider = a?.getDrawable(0)
         if (mDivider == null) {
-            Log.w(TAG, "@android:attr/listDivider was not set in the theme used for this " + "DividerItemDecorationNoLast. Please set that attribute all call setDrawable()")
+            Log.w(
+                    TAG,
+                    "@android:attr/listDivider was not set in the theme used for this " + "DividerItemDecorationNoLast. Please set that attribute all call setDrawable()"
+            )
         }
         a?.recycle()
         setOrientation(orientation)
@@ -58,7 +61,7 @@ class RecyclerCustomItemDecorator
     fun setOrientation(orientation: Int) {
         if (orientation != HORIZONTAL && orientation != VERTICAL) {
             throw IllegalArgumentException(
-                "Invalid orientation. It should be either HORIZONTAL or VERTICAL"
+                    "Invalid orientation. It should be either HORIZONTAL or VERTICAL"
             )
         }
         mOrientation = orientation
@@ -96,8 +99,8 @@ class RecyclerCustomItemDecorator
             left = parent.paddingLeft
             right = parent.width - parent.paddingRight
             canvas.clipRect(
-                left, parent.paddingTop, right,
-                parent.height - parent.paddingBottom
+                    left, parent.paddingTop, right,
+                    parent.height - parent.paddingBottom
             )
         } else {
             left = 0
@@ -125,8 +128,8 @@ class RecyclerCustomItemDecorator
             top = parent.paddingTop
             bottom = parent.height - parent.paddingBottom
             canvas.clipRect(
-                parent.paddingLeft, top,
-                parent.width - parent.paddingRight, bottom
+                    parent.paddingLeft, top,
+                    parent.width - parent.paddingRight, bottom
             )
         } else {
             top = 0

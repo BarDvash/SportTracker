@@ -63,8 +63,8 @@ class MeasurementsAddFragment : Fragment() {
             val s = SimpleDateFormat("yyyyMMddHHmmss")
             val timeStamp: String = s.format(Date())
             val data = MeasurementsHistoryModel(
-                viewModel.editTextBiceps.value, viewModel.editTextChest.value, timeStamp, viewModel.editTextBodyFat.value
-                , viewModel.editTextHips.value, viewModel.editTextWaist.value, viewModel.editTextWeight.value
+                    viewModel.editTextBiceps.value, viewModel.editTextChest.value, timeStamp, viewModel.editTextBodyFat.value
+                    , viewModel.editTextHips.value, viewModel.editTextWaist.value, viewModel.editTextWeight.value
             )
             db.collection("regular_users").document(auth.currentUser!!.uid).collection("measurements").add(data)
                     .addOnSuccessListener {

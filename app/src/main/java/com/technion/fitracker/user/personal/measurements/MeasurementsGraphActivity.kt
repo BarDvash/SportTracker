@@ -6,19 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.model.Document
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
@@ -34,12 +32,12 @@ class MeasurementsGraphActivity : AppCompatActivity() {
     var uid: String? = null
     val translationTable =
         hashMapOf(
-            "Biceps" to "biceps",
-            "Body fat" to "body_fat",
-            "Chest" to "chest",
-            "Hips" to "hips",
-            "Waist" to "waist",
-            "Weight" to "weight"
+                "Biceps" to "biceps",
+                "Body fat" to "body_fat",
+                "Chest" to "chest",
+                "Hips" to "hips",
+                "Waist" to "waist",
+                "Weight" to "weight"
         )
 
     private val maxResults = 5
@@ -59,10 +57,11 @@ class MeasurementsGraphActivity : AppCompatActivity() {
         uid = params.get("userID") as String? ?: auth.currentUser!!.uid
         val units = params.getString("units")
         val dates = ArrayList<String>()
-        Log.d(Context.VIBRATOR_SERVICE,(params.get("userID") as String?).toString())
+        Log.d(Context.VIBRATOR_SERVICE, (params.get("userID") as String?).toString())
 
         val chart = findViewById<BarChart>(R.id.chart)
-        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data",Query.Direction.DESCENDING).limit(maxResults.toLong()).get().addOnSuccessListener {
+        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data", Query.Direction.DESCENDING)
+                .limit(maxResults.toLong()).get().addOnSuccessListener {
             val entries = ArrayList<BarEntry>()
             var i = 0
             for (element in it) {
@@ -130,7 +129,7 @@ class MeasurementsGraphActivity : AppCompatActivity() {
 
     private fun getDate(date: String): String {
         val index = date.indexOfLast { x -> x == '-' }
-        return date.substring(0, index).replace("-"," ")
+        return date.substring(0, index).replace("-", " ")
     }
 
 }

@@ -12,16 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.technion.fitracker.R
 import com.technion.fitracker.user.personal.measurements.MeasurementsGraphActivity
 
-class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, private val values: ArrayList<String>,val userID: String? = null) :
+class MeasurementsRecyclerViewAdapter(private val names: ArrayList<String>, private val values: ArrayList<String>, val userID: String? = null) :
         RecyclerView.Adapter<MeasurementsRecyclerViewAdapter.ViewHolder>() {
 
     private val nameToUnits: HashMap<String, String> = hashMapOf(
-        "Biceps" to "(cm)",
-        "Body fat" to "(%)",
-        "Chest" to "(cm)",
-        "Hips" to "(cm)",
-        "Waist" to "(cm)",
-        "Weight" to "(kg)"
+            "Biceps" to "(cm)",
+            "Body fat" to "(%)",
+            "Chest" to "(cm)",
+            "Hips" to "(cm)",
+            "Waist" to "(cm)",
+            "Weight" to "(kg)"
     )
 
     override fun onCreateViewHolder(

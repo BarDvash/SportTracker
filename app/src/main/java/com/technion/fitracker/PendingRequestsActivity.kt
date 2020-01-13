@@ -1,9 +1,8 @@
 package com.technion.fitracker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -49,17 +48,16 @@ class PendingRequestsActivity : AppCompatActivity() {
         placeholder = findViewById(R.id.no_pending_request_placeholder)
 
 
-
         var bundle: Bundle? = intent.extras
-        user_type =  bundle!!.getString("user_type")
-        user_name =  bundle!!.getString("user_name")
-        user_photo_url =  bundle!!.getString("user_photo_url")
+        user_type = bundle!!.getString("user_type")
+        user_name = bundle.getString("user_name")
+        user_photo_url = bundle.getString("user_photo_url")
 
-        val query = firestore.collection(user_type+"_users").document(uid!!).collection("requests").orderBy("user_name", Query.Direction.ASCENDING)
+        val query = firestore.collection(user_type + "_users").document(uid!!).collection("requests").orderBy("user_name", Query.Direction.ASCENDING)
 
 
-
-        val options = FirestoreRecyclerOptions.Builder<PendingRequestFireStoreModel>().setQuery(query, PendingRequestFireStoreModel::class.java).build()
+        val options =
+            FirestoreRecyclerOptions.Builder<PendingRequestFireStoreModel>().setQuery(query, PendingRequestFireStoreModel::class.java).build()
         adapter = PendingRequestFireStoreAdapter(options, this)
         recyclerView.adapter = adapter
     }
@@ -73,6 +71,7 @@ class PendingRequestsActivity : AppCompatActivity() {
         super.onStop()
         adapter.stopListening()
     }
+
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true

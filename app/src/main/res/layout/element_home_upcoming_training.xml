@@ -24,7 +24,7 @@
             android:layout_height="51dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:contentDescription="@string/user_avatar"
             android:padding="2dp"
             app:layout_constraintBottom_toBottomOf="parent"

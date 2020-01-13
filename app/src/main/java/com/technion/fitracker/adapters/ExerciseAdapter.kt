@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,7 @@ import com.technion.fitracker.models.exercise.AerobicExerciseModel
 import com.technion.fitracker.models.exercise.ExerciseBaseModel
 
 
-class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>,val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>, val mContext: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class HolderPosition {
         AEROBIC, WEIGHT

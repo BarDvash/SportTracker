@@ -7,7 +7,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -21,7 +23,6 @@ import com.google.firebase.firestore.Source
 import com.technion.fitracker.R
 import com.technion.fitracker.models.AppointmentModel
 import java.text.SimpleDateFormat
-import kotlin.collections.ArrayList
 
 class FirebaseScheduleAdapter(
     options: FirestoreRecyclerOptions<AppointmentModel>,
@@ -46,6 +47,7 @@ class FirebaseScheduleAdapter(
         var customerImageView: ImageView = view.findViewById(R.id.element_schedule_imageView)
         var customerId: String? = null
         var notes: String? = null
+
         init {
             view.tag = this
         }
@@ -98,8 +100,8 @@ class FirebaseScheduleAdapter(
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
                 .transform(CircleCrop()) //4
                 .into(holder.customerImageView)
-        phone?.let{
-            if(phone.length > 1) {
+        phone?.let {
+            if (phone.length > 1) {
                 holder.whatsappImage.visibility = View.VISIBLE
                 holder.whatsappImage.setOnClickListener {
                     try {

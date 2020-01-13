@@ -109,19 +109,25 @@ class WorkoutSummaryScreen : Fragment(), View.OnClickListener {
                                 Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot added with ID: " + documentReference.id)
                                 activity?.finish()
                             }
-                            .addOnFailureListener { e -> Log.w(FragmentActivity.VIBRATOR_SERVICE, "Error adding document to workout_history collection", e) }
+                            .addOnFailureListener { e ->
+                                Log.w(
+                                        FragmentActivity.VIBRATOR_SERVICE,
+                                        "Error adding document to workout_history collection",
+                                        e
+                                )
+                            }
                 }
             }
             R.id.workout_summary_discard -> {
                 MaterialAlertDialogBuilder(activity).setTitle("Warning").setMessage("Discard workout result?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             activity?.finish()
 
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
             }

@@ -43,7 +43,7 @@ class SearchFireStoreAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
-            view.setTag(this)
+            view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
 
@@ -59,9 +59,9 @@ class SearchFireStoreAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: SearchFireStoreModel) {
         holder.name.text = item.name
-        if (!item?.photoURL.isNullOrEmpty()) {
+        if (!item.photoURL.isNullOrEmpty()) {
             Glide.with(activity) //1
-                    .load(item?.photoURL)
+                    .load(item.photoURL)
                     .placeholder(R.drawable.user_avatar)
                     .error(R.drawable.user_avatar)
                     .skipMemoryCache(true) //2
@@ -72,14 +72,14 @@ class SearchFireStoreAdapter(
         holder.itemView.setOnClickListener {
             val user_landing_page = Intent(holder.itemView.context, UserLandingPageActivity::class.java)
             user_landing_page.putExtra("user_name", item.name)
-            user_landing_page.putExtra("photo_url", item?.photoURL)
-            user_landing_page.putExtra("uid", item?.uid)
-            user_landing_page.putExtra("type", item?.type)
-            user_landing_page.putExtra("landing_info", item?.landing_info)
-            if(item.show_phone != null && item?.show_phone == true){
-                user_landing_page.putExtra("phone_number", item?.phone_number)
+            user_landing_page.putExtra("photo_url", item.photoURL)
+            user_landing_page.putExtra("uid", item.uid)
+            user_landing_page.putExtra("type", item.type)
+            user_landing_page.putExtra("landing_info", item.landing_info)
+            if (item.show_phone != null && item.show_phone == true) {
+                user_landing_page.putExtra("phone_number", item.phone_number)
             }
-            user_landing_page.putExtra("personal_trainer_uid", item?.personal_trainer_uid)
+            user_landing_page.putExtra("personal_trainer_uid", item.personal_trainer_uid)
             user_landing_page.putExtra("current_user_type", current_user_type)
             user_landing_page.putExtra("current_user_name", current_user_name)
             user_landing_page.putExtra("current_user_photo_url", current_user_photo_url)

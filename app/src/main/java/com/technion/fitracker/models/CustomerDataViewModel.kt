@@ -12,7 +12,7 @@ import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdap
 import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
 import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
 
-class CustomerDataViewModel: ViewModel() {
+class CustomerDataViewModel : ViewModel() {
     //Nutrition fields
     var nutritionRV: RecyclerView? = null
     var nutritionAdapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>? = null

@@ -1,14 +1,14 @@
 package com.technion.fitracker.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.technion.fitracker.R
 import com.technion.fitracker.user.business.BusinessUserActivity
 import com.technion.fitracker.user.personal.UserActivity
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class FlashSignInActivity : AppCompatActivity() {
@@ -34,8 +34,7 @@ class FlashSignInActivity : AppCompatActivity() {
                     businessUsersDoc.get().addOnSuccessListener {
                         if (it.exists()) {
                             startBusinessUserActivity()
-                        }
-                        else {
+                        } else {
                             startLoginActivity()
                         }
                     }

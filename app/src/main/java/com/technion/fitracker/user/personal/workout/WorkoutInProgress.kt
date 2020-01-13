@@ -1,8 +1,6 @@
 package com.technion.fitracker.user.personal.workout
 
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -71,12 +69,12 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                     if (it.type == "Weight") {
                         (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.VISIBLE
                         viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
-                        viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!,R.anim.hide) //
+                        viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide) //
                         viewHolder.weightBodyLayout.visibility = View.GONE
                     } else {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.VISIBLE
                         viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
-                        viewHolder.aerobicBodyLayout.animation = AnimationUtils.loadAnimation(context!!,R.anim.hide)
+                        viewHolder.aerobicBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
                         viewHolder.aerobicBodyLayout.visibility = View.GONE
                     }
                     model.time_done = chrono.text.toString()
@@ -105,7 +103,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
-            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false;
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         }!!
         activity?.let {
@@ -181,7 +179,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                             .setTitle("Warning")
                             .setMessage("You haven't finished all exercises, finish the workout anyway?")
                             .setPositiveButton(
-                                "Yes"
+                                    "Yes"
                             ) { _, _ ->
                                 viewModel.started = false
                                 stopChrono()
@@ -189,7 +187,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                                 startFragmentAndPop(R.id.workoutSummaryScreen)
                             }
                             .setNegativeButton(
-                                "No"
+                                    "No"
                             ) { _, _ ->
                             }.show()
                 }

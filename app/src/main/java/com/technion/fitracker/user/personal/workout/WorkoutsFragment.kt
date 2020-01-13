@@ -7,17 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.core.view.ViewCompat.animate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
@@ -26,7 +22,6 @@ import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import com.technion.fitracker.databinding.FragmentUserWorkoutsBinding
-import com.technion.fitracker.databinding.FragmentWorkoutInProgressBinding
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.models.WorkoutFireStoreModel
 import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
@@ -72,7 +67,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this,context!!).apply {
+        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this, context!!).apply {
             mOnItemClickListener = View.OnClickListener { v ->
                 val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
                 val snapshot: DocumentSnapshot = viewModel.workoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)!!
@@ -82,7 +77,7 @@ class WorkoutsFragment : Fragment(), View.OnClickListener {
                 startActivity(workoutStart)
             }
         }
-        viewModel.workoutsRecyclerView = view.findViewById<RecyclerView>(R.id.workouts_rec_view).apply{
+        viewModel.workoutsRecyclerView = view.findViewById<RecyclerView>(R.id.workouts_rec_view).apply {
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

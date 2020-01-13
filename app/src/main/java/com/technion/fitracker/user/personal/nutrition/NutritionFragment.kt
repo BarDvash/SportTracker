@@ -59,7 +59,7 @@ class NutritionFragment : Fragment(), View.OnClickListener {
         firestore = FirebaseFirestore.getInstance()
         fab = view.findViewById(R.id.nutrition_fab)
         fab.setOnClickListener(this)
-        fab.animation = AnimationUtils.loadAnimation(context!!,R.anim.scale_in_card)
+        fab.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
         val uid = mAuth.currentUser?.uid
         val query =
             firestore.collection("regular_users").document(uid!!).collection("meals")
@@ -84,8 +84,8 @@ class NutritionFragment : Fragment(), View.OnClickListener {
                     }
 
         }
-        viewModel.nutritionAdapter = NutritionFireStoreAdapter(options, onClickListener, this,context!!)
-        viewModel.nutritionRV = view.findViewById<RecyclerView>(R.id.nutrition_rec_view).apply{
+        viewModel.nutritionAdapter = NutritionFireStoreAdapter(options, onClickListener, this, context!!)
+        viewModel.nutritionRV = view.findViewById<RecyclerView>(R.id.nutrition_rec_view).apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             addOnScrollListener(object : RecyclerView.OnScrollListener() {

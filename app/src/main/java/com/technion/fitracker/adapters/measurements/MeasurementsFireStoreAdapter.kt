@@ -12,7 +12,9 @@ import com.technion.fitracker.adapters.measurements.MeasurementsFireStoreAdapter
 import com.technion.fitracker.models.measurements.MeasurementsHistoryModel
 import java.text.SimpleDateFormat
 
-class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<MeasurementsHistoryModel>) : FirestoreRecyclerAdapter<MeasurementsHistoryModel, ViewHolder>(options) {
+class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<MeasurementsHistoryModel>) : FirestoreRecyclerAdapter<MeasurementsHistoryModel, ViewHolder>(
+        options
+) {
 
     val dateFormat = SimpleDateFormat("yyyyMMddHHmmss")
     val newDateFormat = SimpleDateFormat("dd-MMMM-yyyy HH:mm")
@@ -77,12 +79,12 @@ class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<Measurement
 
         var date: TextView = view.findViewById(R.id.measurements_date)
         var list: HashMap<TextView, TextView> = hashMapOf(
-            name_1 to data_1,
-            name_2 to data_2,
-            name_3 to data_3,
-            name_4 to data_4,
-            name_5 to data_5,
-            name_6 to data_6
+                name_1 to data_1,
+                name_2 to data_2,
+                name_3 to data_3,
+                name_4 to data_4,
+                name_5 to data_5,
+                name_6 to data_6
         )
     }
 }

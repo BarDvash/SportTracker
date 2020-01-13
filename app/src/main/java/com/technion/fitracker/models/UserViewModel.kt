@@ -13,7 +13,6 @@ import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import com.technion.fitracker.adapters.measurements.MeasurementsRecyclerViewAdapter
 import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
 import com.technion.fitracker.models.nutrition.NutritionFireStoreModel
-import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 
 class UserViewModel : ViewModel() {
 
@@ -40,15 +39,12 @@ class UserViewModel : ViewModel() {
     var nutritionAdapter: FirestoreRecyclerAdapter<NutritionFireStoreModel, NutritionFireStoreAdapter.ViewHolder>? = null
 
     //WorkoutFragment fields
-     var workoutsRecyclerView: RecyclerView? = null
-     var workoutsAdapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>? = null
+    var workoutsRecyclerView: RecyclerView? = null
+    var workoutsAdapter: FirestoreRecyclerAdapter<WorkoutFireStoreModel, WorkoutsFireStoreAdapter.ViewHolder>? = null
 
     //MeasurementsFragment fields
     var measurementRV: RecyclerView? = null
     var measurementsRVAdapter: MeasurementsRecyclerViewAdapter? = null
-
-
-
 
 
     @Bindable
@@ -71,7 +67,6 @@ class UserViewModel : ViewModel() {
 
     @Bindable
     val textViewDate = ObservableField("")
-
 
 
 }

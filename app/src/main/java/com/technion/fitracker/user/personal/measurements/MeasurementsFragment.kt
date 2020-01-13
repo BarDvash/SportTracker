@@ -90,15 +90,15 @@ class MeasurementsFragment : Fragment() {
         }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.last_measure_container)
         measurementsContainer.visibility = View.GONE
-        viewModel.measurementRV  = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
+        viewModel.measurementRV = view.findViewById<RecyclerView>(R.id.measurements_rec_view)
         viewModel.measurementRV?.layoutManager = LinearLayoutManager(context)
         viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values)
         viewModel.measurementRV?.adapter = viewModel.measurementsRVAdapter
         viewModel.measurementRV?.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
+                DividerItemDecoration(
+                        context,
+                        DividerItemDecoration.VERTICAL
+                )
         )
 
 
@@ -185,7 +185,7 @@ class MeasurementsFragment : Fragment() {
             measurementsContainer.visibility = View.GONE
         } else {
             placeHolder.visibility = View.GONE
-            if(measurementsContainer.visibility == View.GONE){
+            if (measurementsContainer.visibility == View.GONE) {
                 crossfade()
             }
         }

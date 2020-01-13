@@ -92,12 +92,12 @@ class NutritionAddMealActivity : AppCompatActivity() {
                 .setTitle(getString(R.string.warning))
                 .setMessage(getString(R.string.usaved_data_will_be_lost))
                 .setPositiveButton(
-                    getString(R.string.yes)
+                        getString(R.string.yes)
                 ) { _, _ ->
                     goBack()
                 }
                 .setNegativeButton(
-                    getString(R.string.no)
+                        getString(R.string.no)
                 ) { _, _ ->
 
                 }.show()
@@ -120,9 +120,10 @@ class NutritionAddMealActivity : AppCompatActivity() {
                     }
         }
         //for cloud function
-        if(isTrainer){//if the user who updated the workout is business
+        if (isTrainer) {//if the user who updated the workout is business
             //create this document to make the cloud function to operate and notify trainee
-            firestore.collection("regular_users").document(uid!!).collection("updates").document("nutrition_menu_update").set(hashMapOf("trainer_id" to FirebaseAuth.getInstance().currentUser?.uid))
+            firestore.collection("regular_users").document(uid!!).collection("updates").document("nutrition_menu_update")
+                    .set(hashMapOf("trainer_id" to FirebaseAuth.getInstance().currentUser?.uid))
         }
         //until here
     }

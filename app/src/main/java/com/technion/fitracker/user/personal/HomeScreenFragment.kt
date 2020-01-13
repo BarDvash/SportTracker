@@ -97,7 +97,7 @@ class HomeScreenFragment : Fragment() {
         viewModel.notifications_adapter = UserNotificationsFireStoreAdapter(notifications_options, this)
         viewModel.notificaations_rec_view = view.findViewById<RecyclerView>(R.id.user_notifications_recycler).apply {
             addItemDecoration(
-                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
             )
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.notifications_adapter
@@ -128,14 +128,22 @@ class HomeScreenFragment : Fragment() {
                 val workout_name: String? = snapshot?.get("workout_name") as String?
                 val customerView = Intent(context!!, WorkoutHistoryElementDetails::class.java)
                 val bundle =
-                    bundleOf("id" to snapshot?.id, "comment" to comment, "date_time" to date_time, "exercises" to exercisesHashMap, "rating" to rating, "time_elapsed" to time_elapsed, "workout_name" to workout_name)
+                    bundleOf(
+                            "id" to snapshot?.id,
+                            "comment" to comment,
+                            "date_time" to date_time,
+                            "exercises" to exercisesHashMap,
+                            "rating" to rating,
+                            "time_elapsed" to time_elapsed,
+                            "workout_name" to workout_name
+                    )
                 customerView.putExtras(bundle)
                 startActivity(customerView)
             }
         }
         viewModel.homeRecentWorkoutRV = view.findViewById<RecyclerView>(R.id.last_workouts_recycler).apply {
             addItemDecoration(
-                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
             )
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.homeRecentWorkoutsAdapter
@@ -195,7 +203,7 @@ class HomeScreenFragment : Fragment() {
                     val trainer_UID = it.get("personal_trainer_uid") as String?
                     if (viewModel.personalTrainerUID != trainer_UID) {
                         viewModel.personalTrainerUID = trainer_UID
-                        if(viewModel.personalTrainerUID != null && viewModel.personalTrainerUID != "") {
+                        if (viewModel.personalTrainerUID != null && viewModel.personalTrainerUID != "") {
                             val queryPersonalTrainer = firebaseFirestore
                                     .collection("business_users")
                                     .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
@@ -223,10 +231,10 @@ class HomeScreenFragment : Fragment() {
         viewModel.notifications_adapter?.startListening()
     }
 
-    fun setPlaceholder(){
-        if(notifications_content_view.isVisible || personalTrainerContentView.isVisible || workoutsContentView.isVisible){
+    fun setPlaceholder() {
+        if (notifications_content_view.isVisible || personalTrainerContentView.isVisible || workoutsContentView.isVisible) {
             placeholder.visibility = View.GONE
-        }else{
+        } else {
             placeholder.visibility = View.VISIBLE
         }
     }

@@ -1,7 +1,5 @@
 package com.technion.fitracker.adapters
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +20,12 @@ class BusinessNotificationsFireStoreAdapter(options: FirestoreRecyclerOptions<No
     var mOnItemClickListener: View.OnClickListener? = null
 
 
-
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.tag = this
             view.setOnClickListener(mOnItemClickListener)
         }
+
         var notification: TextView = view.findViewById(R.id.notification_text)
     }
 

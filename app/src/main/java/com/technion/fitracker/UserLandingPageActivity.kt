@@ -3,7 +3,6 @@ package com.technion.fitracker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -17,7 +16,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_user_landing_page.*
 
 class UserLandingPageActivity : AppCompatActivity() {
 
@@ -199,13 +197,13 @@ class UserLandingPageActivity : AppCompatActivity() {
             Toast.makeText(this, "canceled request", Toast.LENGTH_LONG).show()
 
 
-        } else if(add_button.text ==  getString(R.string.delete_your_trainer)){
+        } else if (add_button.text == getString(R.string.delete_your_trainer)) {
             //TODO: notification!
             MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Really remove your trainer?")
                     .setPositiveButton(
                             "Yes"
                     ) { _, _ ->
-                        firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid",null)
+                        firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid", null)
                         firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).delete()
                         add_button.text = getString(R.string.add_as_trainer)
                     }
@@ -213,13 +211,13 @@ class UserLandingPageActivity : AppCompatActivity() {
                             "No"
                     ) { _, _ ->
                     }.show()
-        } else if(add_button.text ==  getString(R.string.delete_trainee)){
+        } else if (add_button.text == getString(R.string.delete_trainee)) {
             //TODO: notification!
             MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Really remove " + viewed_user_name + "from your customers?")
                     .setPositiveButton(
                             "Yes"
                     ) { _, _ ->
-                        firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid",null)
+                        firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid", null)
                         firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!).delete()
                         add_button.text = getString(R.string.add_as_trainee)
                     }
@@ -228,7 +226,7 @@ class UserLandingPageActivity : AppCompatActivity() {
                     ) { _, _ ->
                     }.show()
 
-        }else {
+        } else {
 
 
             val user = hashMapOf(

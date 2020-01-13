@@ -1,7 +1,6 @@
 package com.technion.fitracker.adapters
 
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,6 @@ class WorkoutHistoryLogAdapter(private val myDataset: ArrayList<ExerciseLogModel
         var workout_name: TextView = view.findViewById(R.id.workout_name)
         var exercise_time_done: TextView = view.findViewById(R.id.exercise_time_done)
     }
-
 
 
     override fun getItemCount() = myDataset.size

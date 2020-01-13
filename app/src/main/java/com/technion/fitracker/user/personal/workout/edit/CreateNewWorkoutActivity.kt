@@ -137,7 +137,6 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val deleteAction = 1
         when (item.itemId) {
@@ -145,9 +144,10 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                 saveWorkoutToFirestore()
 
                 //for cloud functions:
-                if(traineeUid != null){//if the user who updated the workout is business
+                if (traineeUid != null) {//if the user who updated the workout is business
                     //create this document to make the cloud function to operate and notify trainee
-                    firestore.collection("regular_users").document(traineeUid!!).collection("updates").document("workout_update").set(hashMapOf("trainer_id" to mAuth.currentUser?.uid))
+                    firestore.collection("regular_users").document(traineeUid!!).collection("updates").document("workout_update")
+                            .set(hashMapOf("trainer_id" to mAuth.currentUser?.uid))
                 }
                 //until here
 
@@ -155,14 +155,14 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
             deleteAction -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             deleteWorkoutFromDB()
                             finish()
 
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
             }
@@ -206,8 +206,8 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                 val index = data?.getIntExtra("index", -1)
                 if (index != null && index != -1) {
                     viewModel.workout_exercises.value?.set(
-                        index,
-                        aerobicModel
+                            index,
+                            aerobicModel
                     )
                 }
 
@@ -217,7 +217,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                 if (index != null && index != -1) {
                     val weightModel: ExerciseBaseModel = getExerciseBaseModelFromWeightData(data)
                     viewModel.workout_exercises.value?.set(
-                        index, weightModel
+                            index, weightModel
 
                     )
                 }
@@ -239,22 +239,22 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun getExerciseBaseModelFromWeightData(data: Intent?): ExerciseBaseModel {
         return WeightExerciseModel(
-            data?.getStringExtra("name"),
-            data?.getStringExtra("weight"),
-            data?.getStringExtra("sets"),
-            data?.getStringExtra("repetitions"),
-            data?.getStringExtra("rest"),
-            data?.getStringExtra("notes")
+                data?.getStringExtra("name"),
+                data?.getStringExtra("weight"),
+                data?.getStringExtra("sets"),
+                data?.getStringExtra("repetitions"),
+                data?.getStringExtra("rest"),
+                data?.getStringExtra("notes")
         )
     }
 
     private fun getExerciseBaseModelFromAerobicData(data: Intent?): ExerciseBaseModel {
         return AerobicExerciseModel(
-            data?.getStringExtra("name"),
-            data?.getStringExtra("duration"),
-            data?.getStringExtra("speed"),
-            data?.getStringExtra("intensity"),
-            data?.getStringExtra("notes")
+                data?.getStringExtra("name"),
+                data?.getStringExtra("duration"),
+                data?.getStringExtra("speed"),
+                data?.getStringExtra("intensity"),
+                data?.getStringExtra("notes")
         )
     }
 
@@ -262,7 +262,7 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.add_new_workout_menu, menu)
 
-        if(traineeUid != null){
+        if (traineeUid != null) {
             menu?.add(0, 1, Menu.NONE, "Delete")?.setShowAsAction(SHOW_AS_ACTION_NEVER)
         }
 
@@ -283,26 +283,26 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
         if (inEditMode()) {
             MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Unsaved data will be lost, continue?")
                     .setPositiveButton(
-                        "Yes"
+                            "Yes"
                     ) { _, _ ->
                         this.finish()
 
                     }
                     .setNegativeButton(
-                        "No"
+                            "No"
                     ) { _, _ ->
                     }.show()
         } else {
             if (dataExist()) {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Data will be lost, continue?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             this.finish()
 
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
             } else {
@@ -382,25 +382,25 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                                     when (exercise["type"]) {
                                         "Aerobic" -> {
                                             viewModel.workout_exercises.value?.add(
-                                                AerobicExerciseModel(
-                                                    exercise["name"],
-                                                    exercise["duration"],
-                                                    exercise["speed"],
-                                                    exercise["intensity"],
-                                                    exercise["notes"]
-                                                ) as ExerciseBaseModel
+                                                    AerobicExerciseModel(
+                                                            exercise["name"],
+                                                            exercise["duration"],
+                                                            exercise["speed"],
+                                                            exercise["intensity"],
+                                                            exercise["notes"]
+                                                    ) as ExerciseBaseModel
                                             )
                                         }
                                         "Weight" -> {
                                             viewModel.workout_exercises.value?.add(
-                                                WeightExerciseModel(
-                                                    exercise["name"],
-                                                    exercise["weight"],
-                                                    exercise["sets"],
-                                                    exercise["repetitions"],
-                                                    exercise["rest"],
-                                                    exercise["notes"]
-                                                ) as ExerciseBaseModel
+                                                    WeightExerciseModel(
+                                                            exercise["name"],
+                                                            exercise["weight"],
+                                                            exercise["sets"],
+                                                            exercise["repetitions"],
+                                                            exercise["rest"],
+                                                            exercise["notes"]
+                                                    ) as ExerciseBaseModel
                                             )
                                         }
                                     }

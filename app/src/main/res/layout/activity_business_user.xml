@@ -72,15 +72,14 @@ tools:context=".user.business.BusinessUserActivity">
         app:layout_constraintTop_toBottomOf="@+id/business_divider"
         app:navGraph="@navigation/business_navigation_graph" />
 
-<View
-    android:id="@+id/divider"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="?android:attr/listDivider"
-    app:layout_constraintBottom_toTopOf="@+id/business_bottom_navigation"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/business_bottom_navigation" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/business_bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/business_bottom_navigation"

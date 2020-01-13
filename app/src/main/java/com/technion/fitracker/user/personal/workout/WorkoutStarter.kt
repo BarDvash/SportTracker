@@ -65,24 +65,24 @@ class WorkoutStarter : AppCompatActivity() {
             "WorkoutInProgress" -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Stop the workout?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             startFragmentAndPop(R.id.workoutStartScreen)
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
             }
             "fragment_workout_summary_screen" -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Discard workout result?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             this.finish()
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
             }

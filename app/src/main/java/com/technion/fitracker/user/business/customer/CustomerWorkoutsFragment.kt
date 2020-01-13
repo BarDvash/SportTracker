@@ -3,12 +3,12 @@ package com.technion.fitracker.user.business.customer
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,13 +18,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.WorkoutsFireStoreAdapter
 import com.technion.fitracker.models.CustomerDataViewModel
 import com.technion.fitracker.models.WorkoutFireStoreModel
 import com.technion.fitracker.user.personal.workout.edit.CreateNewWorkoutActivity
-import java.lang.Exception
 
 /**
  * A simple [Fragment] subclass.
@@ -66,7 +64,7 @@ class CustomerWorkoutsFragment : Fragment(), View.OnClickListener {
         val options = FirestoreRecyclerOptions.Builder<WorkoutFireStoreModel>()
                 .setQuery(query, WorkoutFireStoreModel::class.java)
                 .build()
-        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this,context!!).apply {
+        viewModel.workoutsAdapter = WorkoutsFireStoreAdapter(options, this, context!!).apply {
             mOnItemClickListener = View.OnClickListener { v ->
                 val rvh = v.tag as WorkoutsFireStoreAdapter.ViewHolder
                 val snapshot: DocumentSnapshot = viewModel.workoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)!!
@@ -77,7 +75,7 @@ class CustomerWorkoutsFragment : Fragment(), View.OnClickListener {
                 startActivity(workoutEdit)
             }
         }
-        viewModel.workoutsRecyclerView = view.findViewById<RecyclerView>(R.id.customer_workouts_rec_view).apply{
+        viewModel.workoutsRecyclerView = view.findViewById<RecyclerView>(R.id.customer_workouts_rec_view).apply {
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -104,6 +102,7 @@ class CustomerWorkoutsFragment : Fragment(), View.OnClickListener {
         super.onStart()
         viewModel.workoutsAdapter?.startListening()
     }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.customer_workouts_fab -> {

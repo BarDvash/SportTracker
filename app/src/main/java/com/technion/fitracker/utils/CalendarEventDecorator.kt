@@ -12,6 +12,6 @@ class CalendarEventDecorator(private val dates: HashSet<CalendarDay>, private va
     }
 
     override fun decorate(view: DayViewFacade) {
-        view.addSpan(DotSpan(5F,color))
+        view.addSpan(DotSpan(5F, color))
     }
 }

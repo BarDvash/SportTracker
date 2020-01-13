@@ -38,7 +38,7 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initDB()
         val nameEditText = findViewById<AutoCompleteTextView>(R.id.weight_edit_name_input)
-        val adapter = ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
         nameEditText.setAdapter(adapter)
         intent.apply {
             viewModel.weight_name.value = getStringExtra("name")
@@ -75,12 +75,12 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
     private fun cacheViewModelValues() {
         if (cachedViewModel.isNullOrEmpty()) {
             cachedViewModel = mapOf(
-                "name" to viewModel.weight_name.value,
-                "weight" to viewModel.weight_weight.value,
-                "sets" to viewModel.weight_sets.value,
-                "repetitions" to viewModel.weight_repetitions.value,
-                "rest" to viewModel.weight_rest.value,
-                "notes" to viewModel.weight_notes.value
+                    "name" to viewModel.weight_name.value,
+                    "weight" to viewModel.weight_weight.value,
+                    "sets" to viewModel.weight_sets.value,
+                    "repetitions" to viewModel.weight_repetitions.value,
+                    "rest" to viewModel.weight_rest.value,
+                    "notes" to viewModel.weight_notes.value
             )
         }
     }
@@ -101,7 +101,7 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
                     .setTitle("Warning")
                     .setMessage("You changes have not been saved")
                     .setPositiveButton(
-                        "Save"
+                            "Save"
                     ) { _, _ ->
                         if (viewModel.weight_name.value == "") {
                             //TODO : refactor me to underline the field
@@ -114,7 +114,7 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
 
                     }
                     .setNegativeButton(
-                        "Discard"
+                            "Discard"
                     ) { _, _ ->
                         this.setResult(CreateNewWorkoutActivity.ResultCodes.RETURN.ordinal)
                         this.finish()
@@ -141,7 +141,7 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
                         .setTitle("Warning")
                         .setMessage("Data will be lost, continue?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             val intent = Intent().apply { putExtra("index", index) }
                             this.apply {
@@ -150,7 +150,7 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
                             }
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
 
                         }.show()

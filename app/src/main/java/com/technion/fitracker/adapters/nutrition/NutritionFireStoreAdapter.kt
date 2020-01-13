@@ -41,7 +41,7 @@ class NutritionFireStoreAdapter(
         super.onDataChanged()
         when (fragment) {
             is NutritionFragment -> {
-                (fragment as NutritionFragment).apply {
+                fragment.apply {
                     if (itemCount <= 0) {
                         placeholder.visibility = View.VISIBLE
                     } else {
@@ -50,7 +50,7 @@ class NutritionFireStoreAdapter(
                 }
             }
             is CustomerNutritionFragment -> {
-                (fragment as CustomerNutritionFragment).apply {
+                fragment.apply {
                     if (itemCount <= 0) {
                         placeholder.visibility = View.VISIBLE
                     } else {
@@ -118,7 +118,7 @@ class NutritionFireStoreAdapter(
             layoutManager = LinearLayoutManager(holder.recView.context)
             adapter = NutritionNestedAdapter(names, counts)
             addItemDecoration(
-                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
             )
         }
     }

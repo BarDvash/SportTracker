@@ -3,11 +3,9 @@ package com.technion.fitracker.user.business.customer
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -90,15 +88,15 @@ class CustomerMeasurementFragment : Fragment() {
                 }
         measurementsContainer = view.findViewById<MaterialCardView>(R.id.customer_last_measure_container)
         measurementsContainer.visibility = View.GONE
-        viewModel.measurementRV  = view.findViewById<RecyclerView>(R.id.customer_measurements_rec_view)
+        viewModel.measurementRV = view.findViewById<RecyclerView>(R.id.customer_measurements_rec_view)
         viewModel.measurementRV?.layoutManager = LinearLayoutManager(context)
-        viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values,viewModel.customerID)
+        viewModel.measurementsRVAdapter = MeasurementsRecyclerViewAdapter(names, values, viewModel.customerID)
         viewModel.measurementRV?.adapter = viewModel.measurementsRVAdapter
         viewModel.measurementRV?.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
+                DividerItemDecoration(
+                        context,
+                        DividerItemDecoration.VERTICAL
+                )
         )
         placeHolder = view.findViewById(R.id.customer_measurements_placeholder)
 
@@ -118,19 +116,29 @@ class CustomerMeasurementFragment : Fragment() {
                 val snapshot = viewModel.homeRecentWorkoutsAdapter?.snapshots?.getSnapshot(rvh.adapterPosition)
                 val comment: String? = snapshot?.get("comment") as String?
                 val date_time: String? = snapshot?.get("date_time") as String?
-                val exercisesHashMap: ArrayList<HashMap<String, String?>>? = snapshot?.get("exercises") as ArrayList<HashMap<String,String?>>?
+                val exercisesHashMap: ArrayList<HashMap<String, String?>>? = snapshot?.get("exercises") as ArrayList<HashMap<String, String?>>?
                 val rating: Long? = snapshot?.get("rating") as Long?
                 val time_elapsed: String? = snapshot?.get("time_elapsed") as String?
                 val workout_name: String? = snapshot?.get("workout_name") as String?
                 val customerView = Intent(context!!, WorkoutHistoryElementDetails::class.java)
-                val bundle = bundleOf("userID" to viewModel.customerID, "id" to snapshot?.id,"comment" to comment, "date_time" to date_time, "exercises" to exercisesHashMap, "rating" to rating, "time_elapsed" to time_elapsed, "workout_name" to workout_name)
+                val bundle =
+                    bundleOf(
+                            "userID" to viewModel.customerID,
+                            "id" to snapshot?.id,
+                            "comment" to comment,
+                            "date_time" to date_time,
+                            "exercises" to exercisesHashMap,
+                            "rating" to rating,
+                            "time_elapsed" to time_elapsed,
+                            "workout_name" to workout_name
+                    )
                 customerView.putExtras(bundle)
                 startActivity(customerView)
             }
         }
         viewModel.homeRecentWorkoutRV = view.findViewById<RecyclerView>(R.id.last_workouts_recycler).apply {
             addItemDecoration(
-                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
             )
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.homeRecentWorkoutsAdapter
@@ -240,7 +248,7 @@ class CustomerMeasurementFragment : Fragment() {
             measurementsContainer.visibility = View.GONE
         } else {
             placeHolder.visibility = View.GONE
-            if(measurementsContainer.visibility == View.GONE){
+            if (measurementsContainer.visibility == View.GONE) {
                 crossfade()
             }
         }

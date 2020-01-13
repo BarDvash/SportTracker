@@ -21,6 +21,7 @@ class WorkoutHistoryModel : ViewModel() {
     var workoutID: String? = null
 
     val workoutExercises = MutableLiveData<ArrayList<ExerciseLogModel>>()
+
     init {
         workoutExercises.value = arrayListOf()
     }

@@ -1,8 +1,6 @@
 package com.technion.fitracker.user.business
 
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +27,6 @@ import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
-import org.w3c.dom.Text
 
 
 class HomeScreenFragment : Fragment() {
@@ -68,8 +65,6 @@ class HomeScreenFragment : Fragment() {
     }
 
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
@@ -86,27 +81,33 @@ class HomeScreenFragment : Fragment() {
 
         shortAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
 
-        val query = firebaseFirestore.collection("business_users").document(current_user_id!!).collection("notifications").orderBy("notification", Query.Direction.DESCENDING).limit(5)
+        val query =
+            firebaseFirestore.collection("business_users").document(current_user_id!!).collection("notifications")
+                    .orderBy("notification", Query.Direction.DESCENDING).limit(5)
 
         val options = FirestoreRecyclerOptions.Builder<NotificationsModel>().setQuery(query, NotificationsModel::class.java).build()
 
-        viewModel.notifications_adapter = BusinessNotificationsFireStoreAdapter(options,this )
+        viewModel.notifications_adapter = BusinessNotificationsFireStoreAdapter(options, this)
         viewModel.notificaations_rec_view = view.findViewById<RecyclerView>(R.id.business_user_notifications_recycler).apply {
             addItemDecoration(
-                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
             )
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.notifications_adapter
         }
 
-        val trainings_query = firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments").orderBy("appointment_date", Query.Direction.ASCENDING).orderBy("appointment_time", Query.Direction.ASCENDING).limit(5)
+        val trainings_query =
+            firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments")
+                    .orderBy("appointment_date", Query.Direction.ASCENDING).orderBy("appointment_time", Query.Direction.ASCENDING).limit(5)
 
-        val trainings_options = FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java).build()
+        val trainings_options =
+            FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java)
+                    .build()
 
-        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, this )
+        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, this)
         viewModel.trainingsRV = view.findViewById<RecyclerView>(R.id.business_upcoming_recycler).apply {
             addItemDecoration(
-                RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
             )
             layoutManager = LinearLayoutManager(context)
             adapter = viewModel.trainingsAdapter
@@ -145,10 +146,6 @@ class HomeScreenFragment : Fragment() {
     }
 
 
-
-
-
-
     override fun onStart() {
         super.onStart()
         viewModel.notifications_adapter?.startListening()
@@ -156,9 +153,9 @@ class HomeScreenFragment : Fragment() {
     }
 
     fun setPlaceholder() {
-        if(notifications_content_view.isVisible || trainings_container.isVisible){
+        if (notifications_content_view.isVisible || trainings_container.isVisible) {
             placeholder.visibility = View.GONE
-        }else{
+        } else {
             placeholder.visibility = View.VISIBLE
         }
     }

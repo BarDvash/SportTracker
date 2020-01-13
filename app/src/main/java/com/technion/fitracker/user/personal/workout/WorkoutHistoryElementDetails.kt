@@ -4,9 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -33,8 +31,6 @@ import com.technion.fitracker.models.workouts.WorkoutHistoryModel
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
-import java.util.jar.Manifest
-import kotlin.collections.HashMap
 
 class WorkoutHistoryElementDetails : AppCompatActivity() {
     lateinit var mAuth: FirebaseAuth
@@ -66,7 +62,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
         mFirestore = FirebaseFirestore.getInstance()
         ratingImage = findViewById(R.id.workout_rating)
         commentHolder = findViewById(R.id.workout_comment_container)
-        if(params?.get("userID") as String? != null){
+        if (params?.get("userID") as String? != null) {
             isTrainer = true
         }
         uid = params?.get("userID") as String? ?: mAuth.currentUser!!.uid
@@ -76,13 +72,13 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
         viewModel.workoutComment.value = params?.get("comment") as String?
         viewModel.workoutDate.value = params?.get("date_time") as String?
         viewModel.workoutRating.value = params?.get("rating") as Long?
-        if(viewModel.workoutComment.value == null || viewModel.workoutComment.value?.length == 0){
+        if (viewModel.workoutComment.value == null || viewModel.workoutComment.value?.length == 0) {
             commentHolder.visibility = View.GONE
         }
-        val exercisesHashMap = (params?.get("exercises") as ArrayList<HashMap<String,String?>>?)
+        val exercisesHashMap = (params?.get("exercises") as ArrayList<HashMap<String, String?>>?)
         if (exercisesHashMap != null) {
-            for (exercise in exercisesHashMap){
-                viewModel.workoutExercises.value?.add(ExerciseLogModel(exercise["name"],exercise["time_done"]))
+            for (exercise in exercisesHashMap) {
+                viewModel.workoutExercises.value?.add(ExerciseLogModel(exercise["name"], exercise["time_done"]))
             }
         }
         when (viewModel.workoutRating.value?.toInt()) {
@@ -117,7 +113,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
         menuInflater.inflate(R.menu.workout_history_menu, menu)
-        if(isTrainer == false){
+        if (isTrainer == false) {
             menu?.add(0, 1, Menu.NONE, "Delete")?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
             menu?.add(0, 2, Menu.NONE, "Share")?.apply {
                 setIcon(R.drawable.ic_share)
@@ -141,7 +137,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
             val bitmap = Bitmap.createBitmap(v1.drawingCache)
             v1.isDrawingCacheEnabled = false
             val imagePath = File(this.filesDir, "/")
-            val imageFile =  File(imagePath, now.toString() + ".jpg")
+            val imageFile = File(imagePath, now.toString() + ".jpg")
 
             val outputStream = FileOutputStream(imageFile)
             val quality = 100
@@ -165,11 +161,12 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val STORAGE_REQUEST = 1
-        when(requestCode){
+        when (requestCode) {
             STORAGE_REQUEST -> {
-                granted = (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
-                if(granted){
-                    takeScreenshot()?.let{
+                granted =
+                    (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                if (granted) {
+                    takeScreenshot()?.let {
                         share(it)
                     }
                 }
@@ -179,7 +176,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
     }
 
     private fun share(sharePath: File) {
-        var contentUri = getUriForFile(this, "com.technion.fitracker.fileprovider", sharePath);
+        var contentUri = getUriForFile(this, "com.technion.fitracker.fileprovider", sharePath)
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_STREAM, contentUri)
@@ -193,21 +190,35 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
         val share_action = 2
         when (item.itemId) {
             share_action -> {
-                if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),STORAGE_REQUEST)
-                }else{
-                    takeScreenshot()?.let{
+                if (ContextCompat.checkSelfPermission(
+                            this,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                            this,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(
+                                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                            ),
+                            STORAGE_REQUEST
+                    )
+                } else {
+                    takeScreenshot()?.let {
                         share(it)
                     }
                 }
-
             }
             delete_action -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Delete workout activity?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
-                            mFirestore.collection("regular_users").document(uid!!).collection("workouts_history").document(viewModel.workoutID!!).delete()
+                            mFirestore.collection("regular_users").document(uid!!).collection("workouts_history").document(viewModel.workoutID!!)
+                                    .delete()
                                     .addOnSuccessListener {
                                         Log.d(FragmentActivity.VIBRATOR_SERVICE, "DocumentSnapshot deleted with ID: " + viewModel.workoutID)
                                     }
@@ -215,7 +226,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
                             finish()
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
 

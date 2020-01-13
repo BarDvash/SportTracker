@@ -25,6 +25,7 @@ class RecentWorkoutsFireStoreAdapter(
             RecyclerView.ViewHolder(view) {
         var workoutName: TextView = view.findViewById(R.id.recent_workout_name)
         var dateTime: TextView = view.findViewById(R.id.recent_workout_date_time)
+
         init {
             view.tag = this
             view.setOnClickListener(mOnItemClickListener)
@@ -39,7 +40,7 @@ class RecentWorkoutsFireStoreAdapter(
 
     override fun onDataChanged() {
         super.onDataChanged()
-        when(fragment){
+        when (fragment) {
             is HomeScreenFragment -> {
                 if (itemCount == 0) {
                     fragment.recentWorkoutsContainer.visibility = View.GONE

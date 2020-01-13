@@ -29,8 +29,8 @@ class ViewCustomerData : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
         viewModel = ViewModelProviders.of(this)[CustomerDataViewModel::class.java]
-        viewModel.customerID =  intent.getStringExtra("customerID")
-        viewModel.customerName =  intent.getStringExtra("customerName")
+        viewModel.customerID = intent.getStringExtra("customerID")
+        viewModel.customerName = intent.getStringExtra("customerName")
         viewPager = findViewById(R.id.usersCategoryContent)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.apply {
@@ -68,8 +68,9 @@ class ViewCustomerData : AppCompatActivity() {
                         .setPositiveButton(
                                 "Yes"
                         ) { _, _ ->
-                            firebaseFirestore.collection("regular_users").document(viewModel.customerID!!).update("personal_trainer_uid",null)
-                            firebaseFirestore.collection("business_users").document(firebaseAuth.currentUser?.uid!!).collection("customers").document(viewModel.customerID!!).delete()
+                            firebaseFirestore.collection("regular_users").document(viewModel.customerID!!).update("personal_trainer_uid", null)
+                            firebaseFirestore.collection("business_users").document(firebaseAuth.currentUser?.uid!!).collection("customers")
+                                    .document(viewModel.customerID!!).delete()
                             this.finish()
 
                         }

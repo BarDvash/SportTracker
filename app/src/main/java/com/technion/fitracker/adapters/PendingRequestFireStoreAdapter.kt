@@ -1,8 +1,6 @@
 package com.technion.fitracker.adapters
 
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,7 +62,7 @@ class PendingRequestFireStoreAdapter(
         val user_id = item.user_id
 
         holder.user_name.text = user_name_value
-        if (!item?.user_photo_url.isNullOrEmpty()) {
+        if (!item.user_photo_url.isNullOrEmpty()) {
             Glide.with(pending_request_activity) //1
                     .load(user_photo_url)
                     .placeholder(R.drawable.user_avatar)
@@ -82,17 +80,18 @@ class PendingRequestFireStoreAdapter(
             if (pending_request_activity.user_type == "business") {
                 //add viewed user to customers
                 val cutomer = hashMapOf(
-                    "customer_name" to user_name_value,
-                    "customer_photo_url" to user_photo_url,
-                    "customer_id" to user_id,
-                    "customer_phone_number" to user_phone_number
+                        "customer_name" to user_name_value,
+                        "customer_photo_url" to user_photo_url,
+                        "customer_id" to user_id,
+                        "customer_phone_number" to user_phone_number
                 )
 
                 //for cloud functions:
-                firestore.collection("regular_users").document(user_id!!).collection("approved_requests").document(current_user_id!!).set(hashMapOf("id" to current_user_id))
+                firestore.collection("regular_users").document(user_id!!).collection("approved_requests").document(current_user_id!!)
+                        .set(hashMapOf("id" to current_user_id))
                 //until here
 
-                firestore.collection("business_users").document(current_user_id!!).collection("customers").document(user_id!!).set(cutomer)
+                firestore.collection("business_users").document(current_user_id!!).collection("customers").document(user_id).set(cutomer)
 
                 //delete it from pending request
                 firestore.collection("business_users").document(current_user_id!!).collection("requests").document(user_id).delete()
@@ -103,18 +102,19 @@ class PendingRequestFireStoreAdapter(
             } else {//if it's regular user
 
                 val cutomer = hashMapOf(
-                    "customer_name" to pending_request_activity.user_name,
-                    "customer_photo_url" to pending_request_activity.user_photo_url,
-                    "customer_id" to current_user_id
+                        "customer_name" to pending_request_activity.user_name,
+                        "customer_photo_url" to pending_request_activity.user_photo_url,
+                        "customer_id" to current_user_id
                 )
 
 
                 //for cloud functions:
-                firestore.collection("business_users").document(user_id!!).collection("approved_requests").document(current_user_id!!).set(hashMapOf("id" to current_user_id))
+                firestore.collection("business_users").document(user_id!!).collection("approved_requests").document(current_user_id!!)
+                        .set(hashMapOf("id" to current_user_id))
                 //until here
 
 
-                firestore.collection("business_users").document(user_id!!).collection("customers").document(current_user_id!!).set(cutomer)
+                firestore.collection("business_users").document(user_id).collection("customers").document(current_user_id!!).set(cutomer)
 
                 //delete it from pending request
                 firestore.collection("regular_users").document(current_user_id!!).collection("requests").document(user_id).delete()

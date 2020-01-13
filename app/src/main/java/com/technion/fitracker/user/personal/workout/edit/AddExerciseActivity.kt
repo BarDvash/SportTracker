@@ -7,16 +7,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.technion.fitracker.R
 import com.google.gson.Gson
-import com.technion.fitracker.models.nutrition.jsonDBModel
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import com.technion.fitracker.R
 import com.technion.fitracker.adapters.viewPages.TabsFragmentPagerAdapter
 import com.technion.fitracker.databinding.ActivityAddExerciseBinding
+import com.technion.fitracker.models.nutrition.jsonDBModel
 import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import kotlinx.android.synthetic.main.activity_add_exercise.*
+import java.util.*
 
 class AddExerciseActivity : AppCompatActivity() {
     lateinit var viewModel: CreateNewExerciseViewModel
@@ -66,13 +64,13 @@ class AddExerciseActivity : AppCompatActivity() {
                     .setTitle("Warning")
                     .setMessage("Data will be lost, continue?")
                     .setPositiveButton(
-                        "Yes"
+                            "Yes"
                     ) { _, _ ->
                         this.setResult(CreateNewWorkoutActivity.ResultCodes.RETURN.ordinal)
                         this.finish()
                     }
                     .setNegativeButton(
-                        "No"
+                            "No"
                     ) { _, _ ->
 
                     }.show()

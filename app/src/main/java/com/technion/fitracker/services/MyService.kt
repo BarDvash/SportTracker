@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.technion.fitracker.R
@@ -12,7 +11,7 @@ import com.technion.fitracker.login.FlashSignInActivity
 
 
 class MyService : FirebaseMessagingService() {
-    private val CHANNEL_ID: String =  "M_CH_ID"
+    private val CHANNEL_ID: String = "M_CH_ID"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
@@ -23,7 +22,7 @@ class MyService : FirebaseMessagingService() {
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         //
-        val notification_title : String?
+        val notification_title: String?
         val notification_body: String?
         //
 
@@ -31,8 +30,7 @@ class MyService : FirebaseMessagingService() {
 //            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody())
             notification_title = remoteMessage.notification!!.title
             notification_body = remoteMessage.notification!!.body
-        }
-        else {
+        } else {
             return
         }
 
@@ -54,10 +52,6 @@ class MyService : FirebaseMessagingService() {
         }
 
     }
-
-
-
-
 
 
 }

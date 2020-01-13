@@ -113,25 +113,25 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
                                     when (exercise["type"]) {
                                         "Aerobic" -> {
                                             viewModel.workoutExercises.value?.add(
-                                                AerobicExerciseModel(
-                                                    exercise["name"],
-                                                    exercise["duration"],
-                                                    exercise["speed"],
-                                                    exercise["intensity"],
-                                                    exercise["notes"]
-                                                ) as ExerciseBaseModel
+                                                    AerobicExerciseModel(
+                                                            exercise["name"],
+                                                            exercise["duration"],
+                                                            exercise["speed"],
+                                                            exercise["intensity"],
+                                                            exercise["notes"]
+                                                    ) as ExerciseBaseModel
                                             )
                                         }
                                         "Weight" -> {
                                             viewModel.workoutExercises.value?.add(
-                                                WeightExerciseModel(
-                                                    exercise["name"],
-                                                    exercise["weight"],
-                                                    exercise["sets"],
-                                                    exercise["repetitions"],
-                                                    exercise["rest"],
-                                                    exercise["notes"]
-                                                ) as ExerciseBaseModel
+                                                    WeightExerciseModel(
+                                                            exercise["name"],
+                                                            exercise["weight"],
+                                                            exercise["sets"],
+                                                            exercise["repetitions"],
+                                                            exercise["rest"],
+                                                            exercise["notes"]
+                                                    ) as ExerciseBaseModel
                                             )
                                         }
                                     }
@@ -161,14 +161,14 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
             R.id.start_workout_delete_item -> {
                 MaterialAlertDialogBuilder(activity).setTitle("Warning").setMessage("Data will be lost, continue?")
                         .setPositiveButton(
-                            "Yes"
+                                "Yes"
                         ) { _, _ ->
                             deleteWorkoutFromDB()
                             activity?.finish()
 
                         }
                         .setNegativeButton(
-                            "No"
+                                "No"
                         ) { _, _ ->
                         }.show()
             }

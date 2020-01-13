@@ -3,13 +3,13 @@ package com.technion.fitracker.user.business.customer
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +18,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.nutrition.NutritionFireStoreAdapter
 import com.technion.fitracker.models.CustomerDataViewModel
@@ -28,7 +27,7 @@ import com.technion.fitracker.user.personal.nutrition.NutritionAddMealActivity
 /**
  * A simple [Fragment] subclass.
  */
-class CustomerNutritionFragment : Fragment(), View.OnClickListener{
+class CustomerNutritionFragment : Fragment(), View.OnClickListener {
     private lateinit var mAuth: FirebaseAuth
     lateinit var firestore: FirebaseFirestore
     lateinit var fab: ExtendedFloatingActionButton
@@ -37,7 +36,7 @@ class CustomerNutritionFragment : Fragment(), View.OnClickListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run{
+        viewModel = activity?.run {
             ViewModelProviders.of(this)[CustomerDataViewModel::class.java]
         } ?: throw Exception("Invalid Fragment, Customer Nutrition Menu")
     }
@@ -80,8 +79,8 @@ class CustomerNutritionFragment : Fragment(), View.OnClickListener{
                     }
 
         }
-        viewModel.nutritionAdapter = NutritionFireStoreAdapter(options, onClickListener, this,context!!,viewModel.customerID)
-        viewModel.nutritionRV = view.findViewById<RecyclerView>(R.id.customer_nutrition_rec_view).apply{
+        viewModel.nutritionAdapter = NutritionFireStoreAdapter(options, onClickListener, this, context!!, viewModel.customerID)
+        viewModel.nutritionRV = view.findViewById<RecyclerView>(R.id.customer_nutrition_rec_view).apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             addOnScrollListener(object : RecyclerView.OnScrollListener() {

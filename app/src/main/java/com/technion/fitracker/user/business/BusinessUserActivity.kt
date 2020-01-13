@@ -8,8 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
@@ -88,12 +86,11 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
         createNotificationChannel()
         //subscribe to topics
-        val topic1_name = "trainee_sent_request"+auth.currentUser!!.uid
+        val topic1_name = "trainee_sent_request" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
-        val topic2_name = "trainee_accepted_trainer_request"+auth.currentUser!!.uid
+        val topic2_name = "trainee_accepted_trainer_request" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
     }
-
 
 
     override fun onStop() {
@@ -127,9 +124,9 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
 
                 //unsubscribe from topics
-                val topic1_name = "trainee_sent_request"+auth.currentUser!!.uid
+                val topic1_name = "trainee_sent_request" + auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
-                val topic2_name = "trainee_accepted_trainer_request"+auth.currentUser!!.uid
+                val topic2_name = "trainee_accepted_trainer_request" + auth.currentUser!!.uid
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
 
                 FirebaseAuth.getInstance().signOut()
@@ -155,7 +152,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 userHome.putExtra("user_type", "business")
 
                 userHome.putExtra("user_name", viewModel.user_name)
-                userHome.putExtra("user_photo_url",  viewModel.user_photo_url)
+                userHome.putExtra("user_photo_url", viewModel.user_photo_url)
 
                 startActivity(userHome)
                 true
@@ -197,8 +194,8 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
     override fun onSearchRequested(): Boolean {
         val appData = Bundle().apply {
-            putString("user_type","business")
-            putString("user_name", viewModel.user_name )
+            putString("user_type", "business")
+            putString("user_name", viewModel.user_name)
             putString("user_photo_url", viewModel.user_photo_url)
             putString("user_phone_number", viewModel.user_phone_number)
         }
