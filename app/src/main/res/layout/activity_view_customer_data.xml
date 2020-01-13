@@ -10,6 +10,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:menu="@menu/customer_info_menu"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:layout_constraintBottom_toTopOf="@+id/usersCategoryContent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,7 +23,9 @@
             android:layout_height="?attr/actionBarSize"
             android:background="#C20E0E"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+            app:menu="@menu/customer_info_menu"
+            android:theme="@style/ToolbarTheme"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:subtitleTextColor="@android:color/white"
             app:titleTextColor="@android:color/white" />
 

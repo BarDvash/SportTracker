@@ -85,12 +85,18 @@ class MyTrainerFireStoreAdapter(
         holder.itemView.setOnClickListener {
 
             val trainer_landing_page = Intent(holder.itemView.context, UserLandingPageActivity::class.java)
-            trainer_landing_page.putExtra("user_type", "business")
             //sending next value to make the activity not show button :
-            trainer_landing_page.putExtra("current_user_type", "business")
-            //
+            trainer_landing_page.putExtra("phone_number", p2.phone_number)
+            trainer_landing_page.putExtra("landing_info", p2.landing_info)
             trainer_landing_page.putExtra("user_name", p2.name)
-            trainer_landing_page.putExtra("user_photo_url", p2.photoURL)
+            trainer_landing_page.putExtra("photo_url", p2.photoURL)
+            trainer_landing_page.putExtra("uid", p2.uid)
+
+
+            trainer_landing_page.putExtra("current_user_type", "regular")
+            //Sending trainers uid because we know its already our trainer
+            trainer_landing_page.putExtra("current_user_personal_trainer_uid", p2.uid)
+            trainer_landing_page.putExtra("type", "business")
             holder.itemView.context.startActivity(trainer_landing_page)
 
         }

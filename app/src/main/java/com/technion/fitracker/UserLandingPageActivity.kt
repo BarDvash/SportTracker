@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_user_landing_page.*
@@ -65,7 +66,6 @@ class UserLandingPageActivity : AppCompatActivity() {
         viewed_user_id = bundle.getString("uid")
         viewed_user_type = bundle.getString("type")
         viewed_user_landing_info = bundle.getString("landing_info")
-        viewed_user_personal_trainer_uid = bundle.getString("personal_trainer_uid")
         viewed_user_personal_trainer_uid = bundle.getString("personal_trainer_uid")
         viewed_user_phone_number = bundle.getString("phone_number")
         if (viewed_user_landing_info.isNullOrEmpty()) {
@@ -201,12 +201,33 @@ class UserLandingPageActivity : AppCompatActivity() {
 
         } else if(add_button.text ==  getString(R.string.delete_your_trainer)){
             //TODO: notification!
-            firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid",null)
-            firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).delete()
+            MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Really remove your trainer?")
+                    .setPositiveButton(
+                            "Yes"
+                    ) { _, _ ->
+                        firestore.collection("regular_users").document(current_user_id!!).update("personal_trainer_uid",null)
+                        firestore.collection("business_users").document(viewed_user_id!!).collection("customers").document(current_user_id!!).delete()
+                        add_button.text = getString(R.string.add_as_trainer)
+                    }
+                    .setNegativeButton(
+                            "No"
+                    ) { _, _ ->
+                    }.show()
         } else if(add_button.text ==  getString(R.string.delete_trainee)){
             //TODO: notification!
-            firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid",null)
-            firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!).delete()
+            MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Really remove " + viewed_user_name + "from your customers?")
+                    .setPositiveButton(
+                            "Yes"
+                    ) { _, _ ->
+                        firestore.collection("regular_users").document(viewed_user_id!!).update("personal_trainer_uid",null)
+                        firestore.collection("business_users").document(current_user_id!!).collection("customers").document(viewed_user_id!!).delete()
+                        add_button.text = getString(R.string.add_as_trainee)
+                    }
+                    .setNegativeButton(
+                            "No"
+                    ) { _, _ ->
+                    }.show()
+
         }else {
 
 
