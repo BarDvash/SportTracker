@@ -34,6 +34,7 @@ class PendingRequestsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.pending_requests_toolbar))
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
+            title = "Pending Requests"
         }
 
         mAuth = FirebaseAuth.getInstance()

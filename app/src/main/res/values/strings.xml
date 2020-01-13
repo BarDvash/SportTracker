@@ -137,4 +137,7 @@
     <string name="appointments">Appointments</string>
     <string name="pick_photo">Pick photo</string>
     <string name="current_photo">Current Photo</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="exercise_name">Exercise name</string>
 </resources>
