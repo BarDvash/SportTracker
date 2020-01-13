@@ -1,6 +1,12 @@
 package com.technion.fitracker.user.personal.workout
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -8,6 +14,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
@@ -21,8 +30,10 @@ import com.technion.fitracker.adapters.WorkoutHistoryLogAdapter
 import com.technion.fitracker.databinding.ActivityWorkoutHistoryElementDetailsBinding
 import com.technion.fitracker.models.exercise.ExerciseLogModel
 import com.technion.fitracker.models.workouts.WorkoutHistoryModel
-import kotlinx.android.synthetic.main.activity_workout_history_element_details.*
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
+import java.util.jar.Manifest
 import kotlin.collections.HashMap
 
 class WorkoutHistoryElementDetails : AppCompatActivity() {
@@ -36,6 +47,8 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
     lateinit var commentHolder: LinearLayout
     var uid: String? = null
     var isTrainer: Boolean = false
+    var screenshotPath: String? = null
+    var granted = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,12 +128,79 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
 
     }
 
+    private fun takeScreenshot(): File? {
+        val now = Date()
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now)
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+
+            // create bitmap screen capture
+            val v1 = window.decorView.rootView
+            v1.isDrawingCacheEnabled = true
+            val bitmap = Bitmap.createBitmap(v1.drawingCache)
+            v1.isDrawingCacheEnabled = false
+            val imagePath = File(this.filesDir, "/")
+            val imageFile =  File(imagePath, now.toString() + ".jpg")
+
+            val outputStream = FileOutputStream(imageFile)
+            val quality = 100
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+            outputStream.flush()
+            outputStream.close()
+
+            //setting screenshot in imageview
+            val filePath = imageFile.path
+            val ssbitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
+            screenshotPath = filePath
+            return imageFile
+
+        } catch (e: Throwable) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace()
+            return null
+        }
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        val STORAGE_REQUEST = 1
+        when(requestCode){
+            STORAGE_REQUEST -> {
+                granted = (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                if(granted){
+                    takeScreenshot()?.let{
+                        share(it)
+                    }
+                }
+                return
+            }
+        }
+    }
+
+    private fun share(sharePath: File) {
+        var contentUri = getUriForFile(this, "com.technion.fitracker.fileprovider", sharePath);
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_STREAM, contentUri)
+        startActivity(intent)
+
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val STORAGE_REQUEST = 1
         val delete_action = 1
         val share_action = 2
         when (item.itemId) {
             share_action -> {
-                //TODO:
+                if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this,arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE),STORAGE_REQUEST)
+                }else{
+                    takeScreenshot()?.let{
+                        share(it)
+                    }
+                }
+
             }
             delete_action -> {
                 MaterialAlertDialogBuilder(this).setTitle("Warning").setMessage("Delete workout activity?")
