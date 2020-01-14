@@ -3,20 +3,34 @@ package com.technion.fitracker.user.business
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.media.Image
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -24,18 +38,24 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.storage.FirebaseStorage
 import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.user.User
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var mFirestorage: FirebaseStorage
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var viewModel: BusinessUserViewModel
 
@@ -63,17 +83,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                 viewModel.user_photo_url = user?.photoURL
                 viewModel.user_phone_number = user?.phone_number
 
-
-                if (!user?.photoURL.isNullOrEmpty()) {
-                    Glide.with(this) //1
-                            .load(user?.photoURL)
-                            .placeholder(R.drawable.user_avatar)
-                            .error(R.drawable.user_avatar)
-                            .skipMemoryCache(true) //2
-                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                            .transform(CircleCrop()) //4
-                            .into(findViewById(R.id.business_user_avatar))
-                }
+                getUserPhoto()
             }
         }
         findViewById<BottomNavigationView>(R.id.business_bottom_navigation).setOnNavigationItemSelectedListener(this)
@@ -98,6 +108,89 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         super.onStop()
         //TODO: questionable, might be hurting performance ?
         viewModel.notifications_adapter?.stopListening()
+    }
+
+    private fun getUserPhoto() {
+        val imagePath = File(this.filesDir, "/")
+        val imageUserPath = File(imagePath, auth.currentUser?.uid!!)
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
+        }
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+        if (imageFile.exists()) {
+            Glide.with(this).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                    .error(R.drawable.user_avatar)
+                    .skipMemoryCache(true) //2
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                    .transform(CircleCrop()) //4
+                    .into(findViewById(R.id.business_user_avatar))
+        } else {
+            if (!viewModel.user_photo_url.isNullOrEmpty()) {
+                Glide.with(this) //1
+                        .load(viewModel.user_photo_url)
+                        .placeholder(R.drawable.user_avatar)
+                        .error(R.drawable.user_avatar)
+                        .skipMemoryCache(true) //2
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                        .transform(CircleCrop()) //4
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                Log.d("GLIDE-ERROR", "Failed to load image")
+                                return true
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                Log.d("GLIDE-LOAD", "Loaded profile picture!")
+                                saveProfilePicture(R.id.business_user_avatar)
+                                return true
+                            }
+
+                        })
+                        .into(findViewById(R.id.business_user_avatar))
+            }
+        }
+
+    }
+
+    private fun saveProfilePicture(drawableId:Int) {
+        // Get the image from drawable resource as drawable object
+
+        val bitmap = findViewById<ImageView>(drawableId).drawToBitmap()
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        val imagePath = File(this.filesDir, "/")
+        val imageUserPath = File(imagePath, auth.currentUser?.uid!!)
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
+        }
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(imageFile)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+
     }
 
     override fun onResume() {

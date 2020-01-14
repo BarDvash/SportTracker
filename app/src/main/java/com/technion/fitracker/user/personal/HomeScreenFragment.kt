@@ -41,7 +41,7 @@ import com.technion.fitracker.utils.RecyclerCustomItemDecorator
 class HomeScreenFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var firebaseFirestore: FirebaseFirestore
-    private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var firebaseAuth: FirebaseAuth
     lateinit var viewModel: UserViewModel
     lateinit var recentWorkoutsContainer: LinearLayout
     private lateinit var workoutsContentView: MaterialCardView

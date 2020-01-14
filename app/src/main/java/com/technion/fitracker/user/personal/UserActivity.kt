@@ -3,21 +3,33 @@ package com.technion.fitracker.user.personal
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -25,22 +37,30 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.storage.FirebaseStorage
 import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.user.User
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 
 class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController: NavController
     private val auth: FirebaseAuth =  FirebaseAuth.getInstance()
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var mFirestorage: FirebaseStorage
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var historyAction: MenuItem
     lateinit var addAction: MenuItem
     lateinit var viewModel: UserViewModel
+    lateinit var userName: TextView
+    lateinit var userAvatar: ImageView
     val topic1_name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
     val topic2_name = "workout_update" + auth.currentUser!!.uid
     val topic3_name = "nutrition_menu_update" + auth.currentUser!!.uid
@@ -56,8 +76,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setSupportActionBar(findViewById(R.id.user_toolbar))
         navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
 
-        val userAvatar = findViewById<ImageView>(R.id.user_avatar)
-        val userName = findViewById<TextView>(R.id.user_name)
+        userAvatar = findViewById(R.id.user_avatar)
+        userName = findViewById(R.id.user_name)
         userAvatar.animation = AnimationUtils.loadAnimation(this, R.anim.user_avatar_anim)
         userName.animation = AnimationUtils.loadAnimation(this, R.anim.fab_transition)
 
@@ -66,24 +86,13 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
-                findViewById<TextView>(R.id.user_name).text = user?.name ?: "Username"
+                userName.text = user?.name ?: "Username"
 
                 viewModel.personalTrainerUID = user?.personal_trainer_uid
                 viewModel.user_name = user?.name
                 viewModel.user_photo_url = user?.photoURL
                 viewModel.user_phone_number = user?.phone_number
-
-                if (!user?.photoURL.isNullOrEmpty()) {
-                    Glide.with(this) //1
-                            .load(user?.photoURL)
-                            .placeholder(R.drawable.user_avatar)
-                            .error(R.drawable.user_avatar)
-                            .skipMemoryCache(true) //2
-                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                            .transform(CircleCrop()) //4
-                            .into(userAvatar)
-
-                }
+                getUserPhoto()
             }
         }
         findViewById<BottomNavigationView>(R.id.user_bottom_navigation).setOnNavigationItemSelectedListener(this)
@@ -109,13 +118,97 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     }
 
+    private fun getUserPhoto() {
+        val imagePath = File(this.filesDir, "/")
+        val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
+        if(!imagePath.exists()){
+            imagePath.mkdir()
+        }
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+        if (imageFile.exists()) {
+            Glide.with(this).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                    .error(R.drawable.user_avatar)
+                    .skipMemoryCache(true) //2
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                    .transform(CircleCrop()) //4
+                    .into(userAvatar)
+        } else {
+            if (!viewModel.user_photo_url.isNullOrEmpty()) {
+                Glide.with(this) //1
+                        .load(viewModel.user_photo_url)
+                        .placeholder(R.drawable.user_avatar)
+                        .error(R.drawable.user_avatar)
+                        .skipMemoryCache(true) //2
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                        .transform(CircleCrop()) //4
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                Log.d("GLIDE-ERROR", "Failed to load image")
+                                return true
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                Log.d("GLIDE-LOAD", "Loaded profile picture!")
+                                saveProfilePicture(R.id.user_avatar)
+                                return true
+                            }
+
+                        })
+                        .into(userAvatar)
+            }
+        }
+
+    }
+
+    private fun saveProfilePicture(drawableId:Int) {
+        // Get the image from drawable resource as drawable object
+        val bitmap = findViewById<ImageView>(drawableId).drawToBitmap()
+
+        // Get the bitmap from drawable object
+
+        // Get the context wrapper instance
+        val wrapper = ContextWrapper(applicationContext)
+
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        val imagePath = File(this.filesDir, "/")
+        val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
+        if(!imagePath.exists()){
+            imagePath.mkdir()
+        }
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(imageFile)
+
+            // Compress bitmap
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+
+            // Flush the stream
+            stream.flush()
+
+            // Close stream
+            stream.close()
+        } catch (e: IOException){ // Catch the exception
+            e.printStackTrace()
+        }
+
+    }
+
     override fun onResume() {
         super.onResume()
         if (auth.currentUser != null) {
             val docRef = firestore.collection("regular_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
-                if(user?.photoURL != viewModel.user_photo_url){
+                if (user?.photoURL != viewModel.user_photo_url) {
                     val userAvatar = findViewById<ImageView>(R.id.user_avatar)
                     if (!user?.photoURL.isNullOrEmpty()) {
                         Glide.with(this) //1
