@@ -20,7 +20,7 @@ exports.trainee_sent_request = functions.firestore.document('/business_users/{tr
         // Create a notification
         const payload = {
             notification: {
-                title: 'new pending request',
+                title: 'New pending request',
                 body: trainee_name + ' want you to be his personal trainer!',
                 sound: "default"
             },
@@ -56,7 +56,7 @@ exports.trainer_accepted_trainee_request = functions.firestore.document('/regula
         // Create a notification
         const payload = {
             notification: {
-                title: 'request accepted',
+                title: 'Request accepted',
                 body: trainer_name + ' is your new personal trainer!',
                 sound: "default"
             },
@@ -92,7 +92,7 @@ exports.trainee_accepted_trainer_request = functions.firestore.document('/busine
         // Create a notification
         const payload = {
             notification: {
-                title: 'request accepted',
+                title: 'Request accepted',
                 body: trainee_name + ' is your new trainee!',
                 sound: "default"
             },
@@ -130,7 +130,7 @@ exports.workout_update = functions.firestore.document('/regular_users/{trainee_i
         // Create a notification
         const payload = {
             notification: {
-                title: 'workout plan update',
+                title: 'Workout plan update',
                 body: trainer_name + ' updated your workout plan!',
                 sound: "default"
             },
@@ -172,7 +172,7 @@ exports.nutrition_menu_update = functions.firestore.document('/regular_users/{tr
         // Create a notification
         const payload = {
             notification: {
-                title: 'nutrition menu update',
+                title: 'Nutrition menu update',
                 body: trainer_name + ' updated your nutrition menu!',
                 sound: "default"
             },
@@ -191,6 +191,75 @@ exports.nutrition_menu_update = functions.firestore.document('/regular_users/{tr
     }).catch(error => {
 
         console.log(error.message);
+    });
+
+
+});
+
+exports.appoitmentUpdate = functions.firestore.document('/regular_users/{traineeId}/appointments_updates/{docId}').onCreate((snap, context) => {
+    const traineeId = context.params.traineeId;
+    const docId = context.params.docId;
+    const trainerId = snap.data().trainerId;
+    const oldDate = snap.data().oldDate;
+    const newDate = snap.data().newDate;
+
+    console.log('Push notification event triggered');
+    // console.log(traineeId + " " + docId + " " + trainerId + " " + oldDate + " " + newDate);
+
+
+   return db.collection('business_users').doc(trainerId).get().then((doc) => {
+        // if (!doc.exists) {
+        //     console.log("doc not found")
+        // }
+
+        const trainer_name = doc.data().name;
+        // console.log(trainer_name);
+
+        let payload = "";
+       // Create a notification
+       // console.log(newDate + " " + oldDate)
+        if (newDate !== "" && oldDate !== "") {
+            payload = {
+                notification: {
+                    title: 'Appointment reschedule',
+                    body: trainer_name + ' has rescheduled your appointment from ' + oldDate + ' to ' + newDate + '!',
+                    sound: "default"
+                },
+            };
+        }
+        else if (newDate !== "" && oldDate === "") {
+            payload = {
+                notification: {
+                    title: 'Appointment schedule',
+                    body: trainer_name + ' has scheduled your appointment on ' + newDate + '!',
+                    sound: "default"
+                },
+            };
+        }
+        else {
+            payload = {
+                notification: {
+                    title: 'Appointment cancelation',
+                    body: trainer_name + ' has canceled your appointment on ' + oldDate + '!',
+                    sound: "default"
+                },
+            };
+        }
+
+
+        //Create an options object that contains the time to live for the notification and the priority
+        const options = {
+            priority: "high",
+            timeToLive: 60 * 60 * 24
+        };
+
+        let deleteDoc = db.collection('regular_users').doc(traineeId).collection('appointments_updates').doc(docId).delete();
+        console.log(payload);
+        return admin.messaging().sendToTopic("trainee_reschedule" + traineeId, payload, options);
+
+    }).catch(error => {
+
+        console.log(error);
     });
 
 

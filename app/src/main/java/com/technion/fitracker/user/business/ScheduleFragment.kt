@@ -26,8 +26,9 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.AppointmentsSpinnerAdapter
 import com.technion.fitracker.adapters.schedule.FirebaseScheduleAdapter
-import com.technion.fitracker.models.AppointmentModel
+import com.technion.fitracker.models.schedule.AppointmentModel
 import com.technion.fitracker.models.BusinessUserViewModel
+import com.technion.fitracker.models.schedule.AppointmentRescheduleNotificationModel
 import com.technion.fitracker.utils.CalendarEventDecorator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,6 +50,7 @@ class ScheduleFragment : Fragment() {
     private val dateFormat = SimpleDateFormat("dd MMMM yyyy")
     private val dateCalendarFormat = SimpleDateFormat("yyyy MM dd")
     private val timeFormat = SimpleDateFormat("HH mm")
+    private val dateNotificationFormat = SimpleDateFormat("yyyy MM dd HH mm")
     private val dateAndTimeFormat = SimpleDateFormat("dd MMMM yyyy 'at' HH:mm")
     private var adapter: FirebaseScheduleAdapter? = null
     private val calendar = Calendar.getInstance()
@@ -130,15 +132,17 @@ class ScheduleFragment : Fragment() {
                 } else {
                     toProperFormat(time.currentHour) + " " + toProperFormat(time.currentMinute)
                 }
+                val date = dateCalendarFormat.format(chosenDate)
                 val appointment = AppointmentModel(
                         traineesIds[selectedPos],
-                        dateCalendarFormat.format(chosenDate),
+                        date,
                         timeString,
                         notes.text.toString()
                 )
                 db.collection("business_users").document(auth.currentUser!!.uid).collection("appointments").add(appointment).addOnSuccessListener {
 
                 }
+                prepareNotificationPackage(auth.currentUser!!.uid, traineesIds[selectedPos], "", "", date, timeString)
                 initEventDates()
                 initRecyclerData()
                 dial.hide()
@@ -221,18 +225,19 @@ class ScheduleFragment : Fragment() {
                 time.currentHour = hoursAndMinutes[0].toInt()
                 time.currentMinute = hoursAndMinutes[1].toInt()
             }
-            val notes = dial.findViewById<EditText>(R.id.dialog_edit_notes)
             val editButton = dial.findViewById<Button>(R.id.dialog_edit_button)
             editButton.setOnClickListener {
-                val timeString = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val newTime = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     "${toProperFormat(time.hour)} ${toProperFormat(time.minute)}"
                 } else {
                     "${toProperFormat(time.currentHour)} ${toProperFormat(time.currentMinute)}"
                 }
+                val newDate =
+                    dateCalendarFormat.format(dateCalendarFormat.parse("${datePicker.year} ${(datePicker.month + 1)} ${datePicker.dayOfMonth}")!!)
                 val appointment = AppointmentModel(
                         traineesIds[selectedPos],
-                        dateCalendarFormat.format(dateCalendarFormat.parse("${datePicker.year} ${(datePicker.month + 1)} ${datePicker.dayOfMonth}")!!),
-                        timeString,
+                        newDate,
+                        newTime,
                         notesField.text.toString()
                 )
                 db.collection("business_users").document(auth.currentUser!!.uid).collection("appointments")
@@ -243,6 +248,10 @@ class ScheduleFragment : Fragment() {
                                 val docId = it2.result!!.first().id
                                 db.collection("business_users").document(auth.currentUser!!.uid).collection("appointments").document(docId)
                                         .set(appointment).addOnSuccessListener {
+                                            if (oldDate != newDate || oldTime != newTime) {
+                                                prepareNotificationPackage(auth.currentUser!!.uid, traineesIds[selectedPos],
+                                                                           oldDate, oldTime, newDate, newTime)
+                                            }
                                             initEventDates()
                                             initRecyclerData()
                                             dial.hide()
@@ -265,6 +274,7 @@ class ScheduleFragment : Fragment() {
                                 val docId = it2.result!!.first().id
                                 db.collection("business_users").document(auth.currentUser!!.uid).collection("appointments").document(docId)
                                         .delete().addOnSuccessListener {
+                                            prepareNotificationPackage(auth.currentUser!!.uid, traineesIds[selectedPos], oldDate, oldTime, "", "")
                                             initEventDates()
                                             initRecyclerData()
                                             dial.hide()
@@ -278,7 +288,7 @@ class ScheduleFragment : Fragment() {
             }
             dial.show()
         }
-        adapter = FirebaseScheduleAdapter(options, traineesNames, traineesIds, traineesPhotos, onClickListener)
+        adapter = FirebaseScheduleAdapter(options, onClickListener)
         recView.adapter = adapter
         adapter?.startListening()
     }
@@ -302,6 +312,25 @@ class ScheduleFragment : Fragment() {
                         }
                     }
                 }
+    }
+
+    private fun prepareNotificationPackage(trainerId :String, traineeId: String, oldDate: String, oldTime: String,newDate: String, newTime: String){
+        val oldFormattedDate =  if (oldDate.isEmpty()) {
+            ""
+        }
+        else {
+            dateAndTimeFormat.format(dateNotificationFormat.parse("$oldDate $oldTime")!!)
+        }
+        val newFormattedDate = if (newDate.isEmpty()) {
+            ""
+        }
+        else{
+            dateAndTimeFormat.format(dateNotificationFormat.parse("$newDate $newTime")!!)
+        }
+        val notification = AppointmentRescheduleNotificationModel(trainerId, traineeId, oldFormattedDate, newFormattedDate)
+        db.collection("regular_users").document(traineeId).collection("appointments_updates").add(notification).addOnSuccessListener {
+        }.addOnFailureListener {
+        }
     }
 
     private fun initEventDates() {

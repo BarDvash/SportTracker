@@ -21,14 +21,11 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.technion.fitracker.R
-import com.technion.fitracker.models.AppointmentModel
+import com.technion.fitracker.models.schedule.AppointmentModel
 import java.text.SimpleDateFormat
 
 class FirebaseScheduleAdapter(
     options: FirestoreRecyclerOptions<AppointmentModel>,
-    private val traineesNames: ArrayList<String>,
-    private val traineesIds: ArrayList<String>,
-    private val traineesPhotos: ArrayList<String>,
     private val listener: View.OnClickListener
 ) :
         FirestoreRecyclerAdapter<AppointmentModel, FirebaseScheduleAdapter.ViewHolder>(options) {

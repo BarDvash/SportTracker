@@ -35,12 +35,16 @@ import com.technion.fitracker.user.User
 
 class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController: NavController
-    private lateinit var auth: FirebaseAuth
+    private val auth: FirebaseAuth =  FirebaseAuth.getInstance()
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var historyAction: MenuItem
     lateinit var addAction: MenuItem
     lateinit var viewModel: UserViewModel
+    val topic1_name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
+    val topic2_name = "workout_update" + auth.currentUser!!.uid
+    val topic3_name = "nutrition_menu_update" + auth.currentUser!!.uid
+    val topic4Name = "trainee_reschedule" + auth.currentUser!!.uid
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
@@ -51,7 +55,6 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setContentView(R.layout.activity_user)
         setSupportActionBar(findViewById(R.id.user_toolbar))
         navController = Navigation.findNavController(findViewById(R.id.user_navigation_host))
-        auth = FirebaseAuth.getInstance()
 
         val userAvatar = findViewById<ImageView>(R.id.user_avatar)
         val userName = findViewById<TextView>(R.id.user_name)
@@ -97,12 +100,11 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         createNotificationChannel()
         //subscribe to unique topic:
-        val topic1_name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
+
         FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
-        val topic2_name = "workout_update" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
-        val topic3_name = "nutrition_menu_update" + auth.currentUser!!.uid
         FirebaseMessaging.getInstance().subscribeToTopic(topic3_name)
+        FirebaseMessaging.getInstance().subscribeToTopic(topic4Name)
 
 
     }
@@ -177,12 +179,14 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.user_menu_logout_ac -> {
 
                 //unsubscribe from topics
-                val topic1_name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
-                val topic2_name = "workout_update" + auth.currentUser!!.uid
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
-                val topic3_name = "nutrition_menu_update" + auth.currentUser!!.uid
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic3_name)
+                val topic1Name = "trainer_accepted_trainee_request" + auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1Name)
+                val topic2Name = "workout_update" + auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2Name)
+                val topic3Name = "nutrition_menu_update" + auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic3Name)
+                val topic4Name = "trainee_reschedule" + auth.currentUser!!.uid
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic4Name)
 
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()

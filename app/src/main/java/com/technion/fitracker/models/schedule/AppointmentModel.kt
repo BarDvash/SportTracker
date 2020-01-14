@@ -1,4 +1,4 @@
-package com.technion.fitracker.models
+package com.technion.fitracker.models.schedule
 
 class AppointmentModel(
     var customer_id: String? = null,
