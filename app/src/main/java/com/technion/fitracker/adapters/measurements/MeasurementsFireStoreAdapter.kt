@@ -39,12 +39,12 @@ class MeasurementsFireStoreAdapter(options: FirestoreRecyclerOptions<Measurement
         holder.date.text = newDateFormat.format(date!!)
 
         //TODO make generic
-        holder.name_1.text = "Weight"
-        holder.name_2.text = "Body fat"
-        holder.name_3.text = "Chest"
-        holder.name_4.text = "Waist"
-        holder.name_5.text = "Hips"
-        holder.name_6.text = "Biceps"
+        holder.name_1.text = "Weight   (kg)"
+        holder.name_2.text = "Body fat (%)"
+        holder.name_3.text = "Chest    (cm)"
+        holder.name_4.text = "Waist    (cm)"
+        holder.name_5.text = "Hips     (cm)"
+        holder.name_6.text = "Biceps   (cm)"
 
         holder.data_1.text = item.weight
         holder.data_2.text = item.body_fat
