@@ -103,25 +103,35 @@ class SettingsActivity : AppCompatActivity(),
         }
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+            val uid = FirebaseAuth.getInstance().currentUser!!.uid
+            val auth = FirebaseFirestore.getInstance()
             when (key) {
                 "phone_number" -> {
                     var pref = findPreference<EditTextPreference>("phone_number")
-                    FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
-                            .update("phone_number", "972" + pref?.text).addOnFailureListener { e ->
+                    auth.collection("regular_users").document(uid)
+                            .update("phone_number", "972" + pref?.text).addOnSuccessListener {
+                                auth.collection("regular_users").document(uid).get().addOnSuccessListener { innerIt ->
+                                    val trainerUID = innerIt.getString("personal_trainer_uid")
+                                    if (trainerUID != null) {
+                                        auth.collection("business_users").document(trainerUID).collection("customers").document(uid)
+                                                .update("customer_phone_number", "972" + pref?.text)
+                                    }
+                                }
+                            }.addOnFailureListener { e ->
                                 run {
-                                    FirebaseFirestore.getInstance().collection("business_users")
-                                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                    auth.collection("business_users")
+                                            .document(uid)
                                             .update("phone_number", "972" + pref?.text)
                                 }
                             }
                 }
                 "edit_landing_page" -> {
                     var pref = findPreference<EditTextPreference>("edit_landing_page")
-                    FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+                    auth.collection("regular_users").document(uid)
                             .update("landing_info", pref?.text).addOnFailureListener { e ->
                                 run {
-                                    FirebaseFirestore.getInstance().collection("business_users")
-                                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                    auth.collection("business_users")
+                                            .document(uid)
                                             .update("landing_info", pref?.text)
 
                                 }
@@ -129,11 +139,11 @@ class SettingsActivity : AppCompatActivity(),
                 }
                 "show_phone" -> {
                     var pref = findPreference<SwitchPreferenceCompat>("show_phone")
-                    FirebaseFirestore.getInstance().collection("regular_users").document(FirebaseAuth.getInstance().currentUser!!.uid)
+                    auth.collection("regular_users").document(uid)
                             .update("show_phone", pref?.isChecked).addOnFailureListener { e ->
                                 run {
-                                    FirebaseFirestore.getInstance().collection("business_users")
-                                            .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                    auth.collection("business_users")
+                                            .document(uid)
                                             .update("show_phone", pref?.isChecked)
 
                                 }
