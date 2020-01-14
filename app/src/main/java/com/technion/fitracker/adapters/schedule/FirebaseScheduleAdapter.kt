@@ -3,17 +3,26 @@ package com.technion.fitracker.adapters.schedule
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.drawable.toBitmap
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -22,11 +31,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.technion.fitracker.R
 import com.technion.fitracker.models.schedule.AppointmentModel
+import java.io.*
 import java.text.SimpleDateFormat
 
 class FirebaseScheduleAdapter(
     options: FirestoreRecyclerOptions<AppointmentModel>,
-    private val listener: View.OnClickListener
+    private val listener: View.OnClickListener,
+    private val fragment: Fragment
 ) :
         FirestoreRecyclerAdapter<AppointmentModel, FirebaseScheduleAdapter.ViewHolder>(options) {
     private val auth = FirebaseAuth.getInstance()
@@ -71,13 +82,13 @@ class FirebaseScheduleAdapter(
         holder.notes = item.notes
         db.collection("regular_users").document(item.customer_id!!).get(Source.CACHE).addOnCompleteListener {
             if (it.result != null) {
-                initCustomerInfo(holder, it.result!!)
+                initCustomerInfo(holder, it.result!!,item.customer_id!!)
                 db.collection("regular_users").document(item.customer_id!!).get().addOnSuccessListener { innerIt ->
-                    initCustomerInfo(holder, innerIt)
+                    initCustomerInfo(holder, innerIt, item.customer_id!!)
                 }
             } else {
                 db.collection("regular_users").document(item.customer_id!!).get().addOnSuccessListener { innerIt ->
-                    initCustomerInfo(holder, innerIt)
+                    initCustomerInfo(holder, innerIt, item.customer_id!!)
                 }
             }
         }
@@ -85,18 +96,57 @@ class FirebaseScheduleAdapter(
 
     private fun initCustomerInfo(
         holder: ViewHolder,
-        it: DocumentSnapshot
+        it: DocumentSnapshot,
+        uid:String
     ) {
-        holder.customerName.text = it.getString("name")
+        var photoURL: String? = it.getString("photoURL")
         var phone = it.getString("phone_number")
-        Glide.with(context) //1
-                .load(it.getString("photoURL"))
-                .placeholder(R.drawable.user_avatar)
-                .error(R.drawable.user_avatar)
-                .skipMemoryCache(false) //2
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
-                .transform(CircleCrop()) //4
-                .into(holder.customerImageView)
+        if(photoURL != null){
+            holder.customerName.text = it.getString("name")
+            val imagePath = File(fragment.activity?.filesDir, "/")
+            val imageUserPath = File(imagePath, uid)
+            if(!imagePath.exists()){
+                imagePath.mkdir()
+            }
+            val imageFile = File(imageUserPath, "profile_picture.jpg")
+            if (imageFile.exists() && checkPictureURL(uid, photoURL)) {
+                Glide.with(fragment).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                        .error(R.drawable.user_avatar)
+                        .skipMemoryCache(true) //2
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                        .transform(CircleCrop()) //4
+                        .into(holder.customerImageView)
+            } else {
+                Glide.with(fragment) //1
+                        .load(photoURL)
+                        .placeholder(R.drawable.user_avatar)
+                        .error(R.drawable.user_avatar)
+                        .skipMemoryCache(false) //2
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
+                        .transform(CircleCrop()) //4\
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                Log.d("GLIDE-ERROR", "Failed to load image")
+                                return true
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                Log.d("GLIDE-LOAD", "Loaded profile picture!")
+                                saveProfilePicture(resource?.toBitmap()!!, uid, photoURL)
+                                holder.customerImageView.setImageDrawable(resource)
+                                return true
+                            }
+
+                        })
+                        .into(holder.customerImageView)
+            }
+        }
         phone?.let {
             if (phone.length > 1) {
                 holder.whatsappImage.visibility = View.VISIBLE
@@ -121,5 +171,43 @@ class FirebaseScheduleAdapter(
 
     }
 
+    private fun checkPictureURL(uid:String, photoURL: String):Boolean {
+        val imagePath = File(fragment.activity?.filesDir, "/")
+        val imageUserPath = File(imagePath, uid)!!
+        if(!imagePath.exists()){
+            imagePath.mkdir()
+        }
+        val urlName = File(imageUserPath, "picture_url.txt")
+        return try{
+            FileInputStream(urlName).readBytes().contentEquals(photoURL.toByteArray())
+        }catch (e: Throwable){
+            false
+        }
+    }
+
+    private fun saveProfilePicture(bitmap: Bitmap, uid: String, photoURL: String?) {
+        // Initializing a new file
+        // The bellow line return a directory in internal storage
+        val imagePath = File(fragment.activity?.filesDir, "/")
+        val imageUserPath = File(imagePath, uid)!!
+        if (!imagePath.exists()) {
+            imagePath.mkdir()
+        }
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+        val urlName = File(imageUserPath, "picture_url.txt")
+        try {
+            // Get the file output stream
+            val stream: OutputStream = FileOutputStream(imageFile)
+            val streamName: OutputStream = FileOutputStream(urlName)
+            streamName.write(photoURL?.toByteArray()!!)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            streamName.flush()
+            stream.flush()
+            streamName.close()
+            stream.close()
+        } catch (e: IOException) { // Catch the exception
+            e.printStackTrace()
+        }
+    }
 
 }

@@ -288,7 +288,7 @@ class ScheduleFragment : Fragment() {
             }
             dial.show()
         }
-        adapter = FirebaseScheduleAdapter(options, onClickListener)
+        adapter = FirebaseScheduleAdapter(options, onClickListener,this)
         recView.adapter = adapter
         adapter?.startListening()
     }

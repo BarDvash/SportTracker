@@ -156,6 +156,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             ): Boolean {
                                 Log.d("GLIDE-LOAD", "Loaded profile picture!")
                                 saveProfilePicture(R.id.user_avatar)
+                                userAvatar.setImageDrawable(resource)
                                 return true
                             }
 

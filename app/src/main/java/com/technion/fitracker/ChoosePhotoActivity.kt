@@ -103,6 +103,12 @@ class ChoosePhotoActivity : AppCompatActivity() {
                     initUserPhoto()
                     pickImageButton.text = getString(R.string.pick_photo)
                     pickImageButton.isEnabled = true
+                    mFirestore.collection("regular_users").document(currentUID).get().addOnSuccessListener { innerIt ->
+                        val trainerUID = innerIt.getString("personal_trainer_uid")
+                        if(trainerUID != null){
+                            mFirestore.collection("business_users").document(trainerUID).collection("customers").document(currentUID).update("customer_photo_url", photoURL)
+                        }
+                    }
                 } else {
                     mFirestore.collection("business_users").document(currentUID)
                             .get().addOnSuccessListener { document ->
