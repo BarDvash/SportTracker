@@ -60,7 +60,7 @@ class MeasurementsGraphActivity : AppCompatActivity() {
         Log.d(Context.VIBRATOR_SERVICE, (params.get("userID") as String?).toString())
 
         val chart = findViewById<BarChart>(R.id.chart)
-        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data", Query.Direction.DESCENDING)
+        db.collection("regular_users").document(uid!!).collection("measurements").orderBy("data", Query.Direction.ASCENDING)
                 .limit(maxResults.toLong()).get().addOnSuccessListener {
             val entries = ArrayList<BarEntry>()
             var i = 0
