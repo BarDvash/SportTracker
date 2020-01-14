@@ -70,7 +70,6 @@ class MyTrainerFireStoreAdapter(
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         if (imageFile.exists() && checkPictureURL(p2.uid!!, p2.photoURL!!)) {
-            val profile_Picture = BitmapFactory.decodeFile(imageFile.path)
             Glide.with(homeScreenFragment.activity!!).load(imageFile.path).placeholder(R.drawable.user_avatar)
                     .error(R.drawable.user_avatar)
                     .skipMemoryCache(true) //2

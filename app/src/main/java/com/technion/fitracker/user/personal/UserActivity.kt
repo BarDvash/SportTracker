@@ -124,7 +124,6 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         if (imageFile.exists()) {
-            val profile_Picture = BitmapFactory.decodeFile(imageFile.path)
             Glide.with(this).load(imageFile.path).placeholder(R.drawable.user_avatar)
                     .error(R.drawable.user_avatar)
                     .skipMemoryCache(true) //2
