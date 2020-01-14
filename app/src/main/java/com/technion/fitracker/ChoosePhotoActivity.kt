@@ -4,14 +4,17 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.lifecycle.Lifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -20,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.technion.fitracker.user.User
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -74,7 +78,7 @@ class ChoosePhotoActivity : AppCompatActivity() {
         }
     }
 
-    private fun clearPreviousPhotos(){
+    private fun clearPreviousPhotos() {
         var deletePathReference = "profile_photos/" + mAuth.currentUser?.uid
         var delRef = mFirestorage.getReference(deletePathReference)
         delRef.listAll()
@@ -116,40 +120,20 @@ class ChoosePhotoActivity : AppCompatActivity() {
     }
 
     private fun initUserPhoto() {
-        val currentUID = mAuth.currentUser?.uid
-        if (currentUID != null) {
-            val docRef = mFirestore.collection("regular_users").document(currentUID)
-            docRef.get().addOnSuccessListener { document ->
-                val user = document.toObject(User::class.java)
-                if (user != null) {
-                    if (!user.photoURL.isNullOrEmpty()) {
-                        Glide.with(this) //1
-                                .load(user?.photoURL)
-                                .placeholder(R.drawable.user_avatar)
-                                .error(R.drawable.user_avatar)
-                                .skipMemoryCache(true) //2
-                                .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                                .transform(CircleCrop()) //4
-                                .into(currentPhoto)
-
-                    }
-                } else {
-                    val docRef = mFirestore.collection("business_users").document(currentUID)
-                    docRef.get().addOnSuccessListener { document ->
-                        val user = document.toObject(User::class.java)
-                        if (!user?.photoURL.isNullOrEmpty()) {
-                            Glide.with(this) //1
-                                    .load(user?.photoURL)
-                                    .placeholder(R.drawable.user_avatar)
-                                    .error(R.drawable.user_avatar)
-                                    .skipMemoryCache(true) //2
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                                    .transform(CircleCrop()) //4
-                                    .into(currentPhoto)
-                        }
-                    }
-                }
-            }
+        val imagePath = File(this.filesDir, "/")
+        val imageUserPath = File(imagePath, mAuth.currentUser?.uid!!)
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
+        }
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+        if (imageFile.exists()) {
+            val profile_Picture = BitmapFactory.decodeFile(imageFile.path)
+            Glide.with(this).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                    .error(R.drawable.user_avatar)
+                    .skipMemoryCache(true) //2
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                    .transform(CircleCrop()) //4
+                    .into(currentPhoto)
         }
     }
 
@@ -190,6 +174,28 @@ class ChoosePhotoActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             var file = data?.data
             if (file != null) {
+                val path = Environment.getRootDirectory().absolutePath
+                val PathHolder: Uri? = data?.data
+                val fileInputStream: FileInputStream? = null
+                val text = StringBuilder()
+                try {
+                    val inputStream: InputStream? = contentResolver.openInputStream(PathHolder!!)
+                    val imagePath = File(this.filesDir, "/")
+                    val imageUserPath = File(imagePath, mAuth.currentUser?.uid!!)
+                    if(!imageUserPath.exists()){
+                        imageUserPath.mkdir()
+                    }
+                    val profile_picture = File(imageUserPath, "profile_picture.jpg")
+                    val outputStream: OutputStream = FileOutputStream(profile_picture)
+                    inputStream?.copyTo(outputStream)
+                    inputStream?.close()
+                    outputStream.close()
+                    val a = null
+                } catch (e: FileNotFoundException) {
+                    e.printStackTrace()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
                 pickImageButton.text = "Uploading ..."
                 pickImageButton.isEnabled = false
                 clearPreviousPhotos()
@@ -207,8 +213,9 @@ class ChoosePhotoActivity : AppCompatActivity() {
                 }.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val downloadUri = task.result
-                        if(downloadUri != null){
+                        if (downloadUri != null) {
                             updatePhotoURL(downloadUri.toString())
+
 
                         }
                     } else {

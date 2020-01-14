@@ -137,7 +137,7 @@ class WorkoutHistoryElementDetails : AppCompatActivity() {
             val bitmap = Bitmap.createBitmap(v1.drawingCache)
             v1.isDrawingCacheEnabled = false
             val imagePath = File(this.filesDir, "/")
-            val imageFile = File(imagePath, now.toString() + ".jpg")
+            val imageFile = File(imagePath, "$now.jpg")
 
             val outputStream = FileOutputStream(imageFile)
             val quality = 100
