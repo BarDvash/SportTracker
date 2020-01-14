@@ -119,7 +119,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private fun getUserPhoto() {
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
-        if(imagePath.exists()){
+        if(!imagePath.exists()){
             imagePath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
@@ -178,7 +178,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         // The bellow line return a directory in internal storage
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
-        if(imagePath.exists()){
+        if(!imagePath.exists()){
             imagePath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
