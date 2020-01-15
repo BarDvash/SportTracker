@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,9 +69,9 @@ class UpcomingTrainingsFireStoreAdapter(
             }
             is com.technion.fitracker.user.personal.HomeScreenFragment -> {
                 if (itemCount == 0) {
-                    fragment.upcoming_content_view.visibility = View.GONE
+                    fragment.upcoming_container.visibility = View.GONE
                 } else {
-                    fragment.upcoming_content_view.visibility = View.VISIBLE
+                    fragment.upcoming_container.visibility = View.VISIBLE
                 }
                 fragment.setPlaceholder()
             }
@@ -81,95 +82,114 @@ class UpcomingTrainingsFireStoreAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, p1: Int, fModel: UpcomingTrainingFireStoreModel) {
+        when(fragment){
+            is HomeScreenFragment -> {
+                val firestore = FirebaseFirestore.getInstance()
+                firestore.collection("regular_users").document(fModel.customer_id!!).get().addOnSuccessListener {
+                    if (it.exists()) {
+                        val phone: String? = it.get("phone_number") as String?
+                        val picture_url: String? = it.get("photoURL") as String?
 
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("regular_users").document(fModel.customer_id!!).get().addOnSuccessListener {
-            if (it.exists()) {
-                val phone: String? = it.get("phone_number") as String?
-                val picture_url: String? = it.get("photoURL") as String?
-
-                val imagePath = File(fragment.activity?.filesDir, "/")
-                val imageUserPath = File(imagePath, fModel.customer_id!!)
-                if(!imagePath.exists()){
-                    imagePath.mkdir()
-                }
-                val imageFile = File(imageUserPath, "profile_picture.jpg")
-                if (imageFile.exists() && checkPictureURL(fModel.customer_id!!, picture_url!!)) {
-                    Glide.with(fragment).load(imageFile.path).placeholder(R.drawable.user_avatar)
-                            .error(R.drawable.user_avatar)
-                            .skipMemoryCache(true) //2
-                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
-                            .transform(CircleCrop()) //4
-                            .into(holder.image)
-                } else {
-                    Glide.with(fragment) //1
-                            .load(picture_url)
-                            .placeholder(R.drawable.user_avatar)
-                            .error(R.drawable.user_avatar)
-                            .skipMemoryCache(false) //2
-                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
-                            .transform(CircleCrop()) //4\
-                            .listener(object : RequestListener<Drawable> {
-                                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                                    return true
-                                }
-
-                                override fun onResourceReady(
-                                    resource: Drawable?,
-                                    model: Any?,
-                                    target: Target<Drawable>?,
-                                    dataSource: DataSource?,
-                                    isFirstResource: Boolean
-                                ): Boolean {
-                                    saveProfilePicture(resource?.toBitmap()!!, fModel.customer_id!!, picture_url!!)
-                                    holder.image.setImageDrawable(resource)
-                                    return true
-                                }
-
-                            })
-                            .into(holder.image)
-                }
-
-                holder.name.text = it.get("name") as String?
-
-                phone?.let {
-                    if (phone.length > 1) {
-                        holder.whatsapp_image.visibility = View.VISIBLE
-                        holder.whatsapp_image.setOnClickListener {
-                            try {
-                                val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + phone + "&text=")
-                                val intent = Intent(Intent.ACTION_VIEW, uri)
-                                holder.itemView.context.startActivity(intent)
-                            } catch (e: Exception) {
-                                Toast.makeText(fragment.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
-                            }
+                        val imagePath = File(fragment.activity?.filesDir, "/")
+                        val imageUserPath = File(imagePath, fModel.customer_id!!)
+                        if(!imagePath.exists()){
+                            imagePath.mkdir()
                         }
-                        holder.phone_image.visibility = View.VISIBLE
-                        holder.phone_image.setOnClickListener {
-                            val uri = "tel:" + phone
-                            val intent = Intent(Intent.ACTION_DIAL)
-                            intent.data = Uri.parse(uri)
-                            holder.itemView.context.startActivity(intent)
+                        val imageFile = File(imageUserPath, "profile_picture.jpg")
+                        if (imageFile.exists() && checkPictureURL(fModel.customer_id!!, picture_url!!)) {
+                            Glide.with(fragment).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                                    .error(R.drawable.user_avatar)
+                                    .skipMemoryCache(true) //2
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                    .transform(CircleCrop()) //4
+                                    .into(holder.image)
+                        } else {
+                            Glide.with(fragment) //1
+                                    .load(picture_url)
+                                    .placeholder(R.drawable.user_avatar)
+                                    .error(R.drawable.user_avatar)
+                                    .skipMemoryCache(false) //2
+                                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
+                                    .transform(CircleCrop()) //4\
+                                    .listener(object : RequestListener<Drawable> {
+                                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                            return true
+                                        }
+
+                                        override fun onResourceReady(
+                                            resource: Drawable?,
+                                            model: Any?,
+                                            target: Target<Drawable>?,
+                                            dataSource: DataSource?,
+                                            isFirstResource: Boolean
+                                        ): Boolean {
+                                            saveProfilePicture(resource?.toBitmap()!!, fModel.customer_id!!, picture_url!!)
+                                            holder.image.setImageDrawable(resource)
+                                            return true
+                                        }
+
+                                    })
+                                    .into(holder.image)
+                        }
+
+                        holder.name.text = it.get("name") as String?
+
+                        phone?.let {
+                            if (phone.length > 1) {
+                                holder.whatsapp_image.visibility = View.VISIBLE
+                                holder.whatsapp_image.setOnClickListener {
+                                    try {
+                                        val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + phone + "&text=")
+                                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                                        holder.itemView.context.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        Toast.makeText(fragment.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                holder.phone_image.visibility = View.VISIBLE
+                                holder.phone_image.setOnClickListener {
+                                    val uri = "tel:" + phone
+                                    val intent = Intent(Intent.ACTION_DIAL)
+                                    intent.data = Uri.parse(uri)
+                                    holder.itemView.context.startActivity(intent)
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
-                .addOnFailureListener {
-                    Toast.makeText(fragment.context, "Lost internet connection", Toast.LENGTH_LONG)
-                            .show()
-                }//lost internet connection TODO:!
+                        .addOnFailureListener {
+                            Toast.makeText(fragment.context, "Lost internet connection", Toast.LENGTH_LONG)
+                                    .show()
+                        }//lost internet connection TODO:!
 
 
-        fModel.notes?.let {
-            if (it.isNotEmpty()) {
-                holder.notes_container.visibility = View.VISIBLE
-                holder.notes.text = it
+                fModel.notes?.let {
+                    if (it.isNotEmpty()) {
+                        holder.notes_container.visibility = View.VISIBLE
+                        holder.notes.text = it
+                    }
+                }
+                val split_date = fModel.appointment_date!!.split(" ")
+                val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
+                holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
+            }
+            is com.technion.fitracker.user.personal.HomeScreenFragment -> {
+                holder.phone_image.visibility = View.GONE
+                holder.whatsapp_image.visibility = View.GONE
+                holder.image.visibility = View.GONE
+                holder.name.visibility = View.GONE
+                fModel.notes?.let {
+                    if (it.isNotEmpty()) {
+                        holder.notes_container.visibility = View.VISIBLE
+                        holder.notes.text = it
+                    }
+                }
+                val split_date = fModel.appointment_date!!.split(" ")
+                val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
+                holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
             }
         }
-        val split_date = fModel.appointment_date!!.split(" ")
-        val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
-        holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
+
 
 
     }

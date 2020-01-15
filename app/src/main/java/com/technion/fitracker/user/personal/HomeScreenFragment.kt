@@ -45,8 +45,10 @@ class HomeScreenFragment : Fragment() {
     private lateinit var firebaseFirestore: FirebaseFirestore
     lateinit var firebaseAuth: FirebaseAuth
     lateinit var viewModel: UserViewModel
+
     lateinit var recentWorkoutsContainer: LinearLayout
     private lateinit var workoutsContentView: MaterialCardView
+
     private lateinit var personalTrainerContentView: MaterialCardView
     private var shortAnimationDuration: Int = 0
 
@@ -214,8 +216,8 @@ class HomeScreenFragment : Fragment() {
                     val trainer_UID = it.get("personal_trainer_uid") as String?
                     if (viewModel.personalTrainerUID != trainer_UID) {
                         viewModel.personalTrainerUID = trainer_UID
+                        initUpcomingWorkouts()
                         if (viewModel.personalTrainerUID != null && viewModel.personalTrainerUID != "") {
-                            initUpcomingWorkouts()
                             val queryPersonalTrainer = firebaseFirestore
                                     .collection("business_users")
                                     .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
