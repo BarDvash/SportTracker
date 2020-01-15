@@ -197,7 +197,7 @@ class UpcomingTrainingsFireStoreAdapter(
                     val alertDialog: AlertDialog? = fragment.let { itHome ->
                         val builder = AlertDialog.Builder(itHome.context)
                         builder.apply {
-                            setPositiveButton(R.string.cancel, DialogInterface.OnClickListener { dialog, id ->
+                            setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, id ->
                                 val personalTrainerUID =
                                     (fragment as com.technion.fitracker.user.personal.HomeScreenFragment).viewModel.personalTrainerUID!!
                                 FirebaseFirestore.getInstance().collection("business_users").document(personalTrainerUID)

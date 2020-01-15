@@ -6,11 +6,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.media.Image
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +15,6 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -38,7 +33,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.storage.FirebaseStorage
 import com.technion.fitracker.PendingRequestsActivity
 import com.technion.fitracker.R
 import com.technion.fitracker.SettingsActivity
@@ -53,10 +47,14 @@ import java.io.OutputStream
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var navController: NavController
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth =  FirebaseAuth.getInstance()
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var viewModel: BusinessUserViewModel
+
+    private val topic1Name = "trainee_sent_request" + auth.currentUser!!.uid
+    private val topic2Name = "trainee_accepted_trainer_request" + auth.currentUser!!.uid
+    private val topic3Name = "appointment_canceletaion" + auth.currentUser!!.uid
 
     //Google login token
     private val idToken = "227928727350-8scqikjnk6ta5lj5runh2o0dbd9p0nil.apps.googleusercontent.com"
@@ -69,7 +67,6 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         viewModel = ViewModelProviders.of(this)[BusinessUserViewModel::class.java]
         navController = Navigation.findNavController(findViewById(R.id.business_fragment_host))
         firestore = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
 
 
         if (auth.currentUser != null) {
@@ -96,10 +93,10 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
         createNotificationChannel()
         //subscribe to topics
-        val topic1_name = "trainee_sent_request" + auth.currentUser!!.uid
-        FirebaseMessaging.getInstance().subscribeToTopic(topic1_name)
-        val topic2_name = "trainee_accepted_trainer_request" + auth.currentUser!!.uid
-        FirebaseMessaging.getInstance().subscribeToTopic(topic2_name)
+
+        FirebaseMessaging.getInstance().subscribeToTopic(topic1Name)
+        FirebaseMessaging.getInstance().subscribeToTopic(topic2Name)
+        FirebaseMessaging.getInstance().subscribeToTopic(topic3Name)
     }
 
 
@@ -240,10 +237,9 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
 
                 //unsubscribe from topics
-                val topic1_name = "trainee_sent_request" + auth.currentUser!!.uid
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1_name)
-                val topic2_name = "trainee_accepted_trainer_request" + auth.currentUser!!.uid
-                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2_name)
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic1Name)
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic2Name)
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(topic3Name)
 
                 FirebaseAuth.getInstance().signOut()
                 mGoogleSignInClient.signOut()

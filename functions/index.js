@@ -5,6 +5,20 @@ admin.initializeApp(functions.config().firebase);
 const functionTriggers = functions.region('europe-west1').firestore; //TODO: check where out firestore located
 const db = admin.firestore();
 
+const months = {
+    '01': "January",
+    '02': "February",
+    '03': "March",
+    '04': "April",
+    '05': "May",
+    '06': "June",
+    '07': "July",
+    '08': "August",
+    '09': "September",
+    '10': "October",
+    '11': "November",
+    '12': "December"
+};
 
 exports.trainee_sent_request = functions.firestore.document('/business_users/{trainer_id}/requests/{trainee_id}').onCreate((snap, context) => {
     const trainer_id = context.params.trainer_id;
@@ -196,7 +210,44 @@ exports.nutrition_menu_update = functions.firestore.document('/regular_users/{tr
 
 });
 
-exports.appoitmentUpdate = functions.firestore.document('/regular_users/{traineeId}/appointments_updates/{docId}').onCreate((snap, context) => {
+exports.appointmnentCancelation = functions.firestore.document('/business_users/{trainerId}/appointments/{docId}').onDelete((snap, context) => {
+    const trainerId = context.params.trainerId;
+    const traineeId = snap.data().customer_id;
+    const year = snap.data().appointment_date.split(" ")[0];
+    const month = months[snap.data().appointment_date.split(" ")[1]];
+    const day = snap.data().appointment_date.split(" ")[2];
+    const time = snap.data().appointment_time.replace(" ",":");
+
+    return db.collection('regular_users').doc(traineeId).get().then((doc) => {
+       const trainee_name = doc.data().name;
+        // console.log(trainer_name);
+
+        let payload = {
+                notification: {
+                    title: 'Appointment cancelation',
+                    body: trainee_name + ' has canceled appointment on ' + year + " " + month + " " + day + " at " + time + '!',
+                    sound: "default"
+                },
+            };
+
+
+        //Create an options object that contains the time to live for the notification and the priority
+        const options = {
+            priority: "high",
+            timeToLive: 60 * 60 * 24
+        };
+
+        console.log(payload);
+        return admin.messaging().sendToTopic("appointment_canceletaion" + trainerId, payload, options);
+
+    }).catch(error => {
+
+        console.log(error);
+    });
+});
+
+
+exports.appointmnentUpdate = functions.firestore.document('/regular_users/{traineeId}/appointments_updates/{docId}').onCreate((snap, context) => {
     const traineeId = context.params.traineeId;
     const docId = context.params.docId;
     const trainerId = snap.data().trainerId;
