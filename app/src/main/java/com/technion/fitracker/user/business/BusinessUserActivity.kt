@@ -55,7 +55,6 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
     private lateinit var navController: NavController
     private lateinit var auth: FirebaseAuth
     private lateinit var firestore: FirebaseFirestore
-    private lateinit var mFirestorage: FirebaseStorage
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var viewModel: BusinessUserViewModel
 

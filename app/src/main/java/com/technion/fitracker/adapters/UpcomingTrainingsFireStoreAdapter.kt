@@ -66,6 +66,14 @@ class UpcomingTrainingsFireStoreAdapter(
                 }
                 fragment.setPlaceholder()
             }
+            is com.technion.fitracker.user.personal.HomeScreenFragment -> {
+                if (itemCount == 0) {
+                    fragment.upcoming_content_view.visibility = View.GONE
+                } else {
+                    fragment.upcoming_content_view.visibility = View.VISIBLE
+                }
+                fragment.setPlaceholder()
+            }
 
         }
 
@@ -78,7 +86,6 @@ class UpcomingTrainingsFireStoreAdapter(
         firestore.collection("regular_users").document(fModel.customer_id!!).get().addOnSuccessListener {
             if (it.exists()) {
                 val phone: String? = it.get("phone_number") as String?
-                Log.d("UPCOMIONG", phone.toString())
                 val picture_url: String? = it.get("photoURL") as String?
 
                 val imagePath = File(fragment.activity?.filesDir, "/")
@@ -104,7 +111,6 @@ class UpcomingTrainingsFireStoreAdapter(
                             .transform(CircleCrop()) //4\
                             .listener(object : RequestListener<Drawable> {
                                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                                    Log.d("GLIDE-ERROR", "Failed to load image")
                                     return true
                                 }
 
@@ -115,7 +121,6 @@ class UpcomingTrainingsFireStoreAdapter(
                                     dataSource: DataSource?,
                                     isFirstResource: Boolean
                                 ): Boolean {
-                                    Log.d("GLIDE-LOAD", "Loaded profile picture!")
                                     saveProfilePicture(resource?.toBitmap()!!, fModel.customer_id!!, picture_url!!)
                                     holder.image.setImageDrawable(resource)
                                     return true

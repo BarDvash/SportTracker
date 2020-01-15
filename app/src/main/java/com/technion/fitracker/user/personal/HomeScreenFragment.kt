@@ -28,10 +28,12 @@ import com.google.firebase.firestore.Query
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.MyTrainerFireStoreAdapter
 import com.technion.fitracker.adapters.RecentWorkoutsFireStoreAdapter
+import com.technion.fitracker.adapters.UpcomingTrainingsFireStoreAdapter
 import com.technion.fitracker.adapters.UserNotificationsFireStoreAdapter
 import com.technion.fitracker.databinding.FragmentHomeScreenBinding
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.models.PersonalTrainer
+import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 import com.technion.fitracker.user.personal.workout.WorkoutHistoryElementDetails
@@ -52,6 +54,10 @@ class HomeScreenFragment : Fragment() {
 
     lateinit var notifications_container: LinearLayout
     lateinit var notifications_content_view: MaterialCardView
+
+    lateinit var upcoming_container: LinearLayout
+    lateinit var upcoming_content_view: MaterialCardView
+
     lateinit var placeholder: TextView
     private var current_user_id: String? = null
 
@@ -85,6 +91,8 @@ class HomeScreenFragment : Fragment() {
         recentWorkoutsContainer = view.findViewById(R.id.recent_workouts_container)
         notifications_content_view = view.findViewById(R.id.user_notifications_card)
         notifications_container = view.findViewById(R.id.user_notifications_container)
+        upcoming_container = view.findViewById(R.id.user_upcoming_training_container)
+        upcoming_content_view = view.findViewById(R.id.user_upcoming_training_card)
         placeholder = view.findViewById(R.id.user_home_placeholder)
         fetchPersonalTrainerUID()
         val notifications_query =
@@ -153,7 +161,8 @@ class HomeScreenFragment : Fragment() {
 
         workoutsContentView.visibility = View.GONE
         personalTrainerContentView.visibility = View.GONE
-        notifications_container.visibility = View.GONE
+        notifications_content_view.visibility = View.GONE
+        upcoming_content_view.visibility = View.GONE
         crossfade()
     }
 
@@ -165,6 +174,7 @@ class HomeScreenFragment : Fragment() {
                 if (it.exists()) {
                     viewModel.personalTrainerUID = it.get("personal_trainer_uid") as String?
                     viewModel.personalTrainerUID?.let {
+                        initUpcomingWorkouts()
                         val queryPersonalTrainer = firebaseFirestore
                                 .collection("business_users")
                                 .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
@@ -183,6 +193,7 @@ class HomeScreenFragment : Fragment() {
             }.addOnFailureListener { Toast.makeText(activity, "Lost internet connection", Toast.LENGTH_LONG).show() }//lost internet connection TODO:!
         } else {
             viewModel.personalTrainerUID?.let {
+                initUpcomingWorkouts()
                 val queryPersonalTrainer = firebaseFirestore
                         .collection("business_users")
                         .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
@@ -204,6 +215,7 @@ class HomeScreenFragment : Fragment() {
                     if (viewModel.personalTrainerUID != trainer_UID) {
                         viewModel.personalTrainerUID = trainer_UID
                         if (viewModel.personalTrainerUID != null && viewModel.personalTrainerUID != "") {
+                            initUpcomingWorkouts()
                             val queryPersonalTrainer = firebaseFirestore
                                     .collection("business_users")
                                     .whereEqualTo(FieldPath.documentId(), viewModel.personalTrainerUID)
@@ -224,15 +236,40 @@ class HomeScreenFragment : Fragment() {
         }
     }
 
+    private fun initUpcomingWorkouts() {
+        val trainings_query =
+            firebaseFirestore.collection("business_users").document(viewModel.personalTrainerUID!!).collection("appointments")
+                    .whereEqualTo("customer_id", current_user_id)
+                    .orderBy("appointment_date", Query.Direction.ASCENDING).orderBy("appointment_time", Query.Direction.ASCENDING).limit(5)
+
+        val trainings_options =
+            FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>()
+                    .setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java)
+                    .build()
+
+        viewModel.upcomingWorkoutsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, this)
+        viewModel.upcomingWorkoutsRV = view?.findViewById<RecyclerView>(R.id.user_upcoming_recycler)?.apply {
+            addItemDecoration(
+                    RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
+            )
+            layoutManager = LinearLayoutManager(context)
+            adapter = viewModel.upcomingWorkoutsAdapter
+        }
+        viewModel.upcomingWorkoutsAdapter?.startListening()
+
+    }
+
 
     override fun onStart() {
         super.onStart()
         viewModel.homeRecentWorkoutsAdapter?.startListening()
         viewModel.notifications_adapter?.startListening()
+        viewModel.personalTrainerAdapter?.startListening()
+        viewModel.upcomingWorkoutsAdapter?.startListening()
     }
 
     fun setPlaceholder() {
-        if (notifications_content_view.isVisible || personalTrainerContentView.isVisible || workoutsContentView.isVisible) {
+        if (notifications_content_view.isVisible || personalTrainerContentView.isVisible || workoutsContentView.isVisible || upcoming_content_view.isVisible) {
             placeholder.visibility = View.GONE
         } else {
             placeholder.visibility = View.VISIBLE
@@ -240,7 +277,7 @@ class HomeScreenFragment : Fragment() {
     }
 
     private fun crossfade() {
-        workoutsContentView.apply {
+        notifications_content_view.apply {
             // Set the content view to 0% opacity but visible, so that it is visible
             // (but fully transparent) during the animation.
             alpha = 0f
@@ -266,53 +303,40 @@ class HomeScreenFragment : Fragment() {
                     .setDuration(shortAnimationDuration.toLong())
                     .setListener(null)
         }
+        upcoming_content_view.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+        workoutsContentView.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration.toLong())
+                    .setListener(null)
+        }
+
+
         // Animate the loading view to 0% opacity. After the animation ends,
         // set its visibility to GONE as an optimization step (it won't
         // participate in layout passes, etc.)
         // participate in layout passes, etc.)
-        notifications_container.apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            alpha = 0f
-            visibility = View.VISIBLE
 
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                    .alpha(1f)
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-        }
-        notifications_content_view.apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            alpha = 0f
-            visibility = View.VISIBLE
 
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                    .alpha(1f)
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-        }
-        // Animate the loading view to 0% opacity. After the animation ends,
-        // set its visibility to GONE as an optimization step (it won't
-        // participate in layout passes, etc.)
-        // participate in layout passes, etc.)
-        notifications_container.apply {
-            // Set the content view to 0% opacity but visible, so that it is visible
-            // (but fully transparent) during the animation.
-            alpha = 0f
-            visibility = View.VISIBLE
-
-            // Animate the content view to 100% opacity, and clear any animation
-            // listener set on the view.
-            animate()
-                    .alpha(1f)
-                    .setDuration(shortAnimationDuration.toLong())
-                    .setListener(null)
-        }
     }
 }
 

@@ -328,6 +328,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         viewModel.nutritionAdapter?.stopListening()
         viewModel.workoutsAdapter?.stopListening()
         viewModel.notifications_adapter?.stopListening()
+        viewModel.personalTrainerAdapter?.stopListening()
+        viewModel.upcomingWorkoutsAdapter?.stopListening()
     }
 
     private fun startLoginActivity() {
