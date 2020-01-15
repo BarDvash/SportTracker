@@ -1,13 +1,13 @@
 package com.technion.fitracker.adapters
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +27,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.technion.fitracker.R
 import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
@@ -82,7 +83,7 @@ class UpcomingTrainingsFireStoreAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, p1: Int, fModel: UpcomingTrainingFireStoreModel) {
-        when(fragment){
+        when (fragment) {
             is HomeScreenFragment -> {
                 val firestore = FirebaseFirestore.getInstance()
                 firestore.collection("regular_users").document(fModel.customer_id!!).get().addOnSuccessListener {
@@ -92,7 +93,7 @@ class UpcomingTrainingsFireStoreAdapter(
 
                         val imagePath = File(fragment.activity?.filesDir, "/")
                         val imageUserPath = File(imagePath, fModel.customer_id!!)
-                        if(!imagePath.exists()){
+                        if (!imagePath.exists()) {
                             imagePath.mkdir()
                         }
                         val imageFile = File(imageUserPath, "profile_picture.jpg")
@@ -112,7 +113,12 @@ class UpcomingTrainingsFireStoreAdapter(
                                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC) //3
                                     .transform(CircleCrop()) //4\
                                     .listener(object : RequestListener<Drawable> {
-                                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                                        override fun onLoadFailed(
+                                            e: GlideException?,
+                                            model: Any?,
+                                            target: Target<Drawable>?,
+                                            isFirstResource: Boolean
+                                        ): Boolean {
                                             return true
                                         }
 
@@ -187,23 +193,48 @@ class UpcomingTrainingsFireStoreAdapter(
                 val split_date = fModel.appointment_date!!.split(" ")
                 val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
                 holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
+                holder.itemView.setOnLongClickListener {
+                    val alertDialog: AlertDialog? = fragment.let { itHome ->
+                        val builder = AlertDialog.Builder(itHome.context)
+                        builder.apply {
+                            setPositiveButton(R.string.cancel, DialogInterface.OnClickListener { dialog, id ->
+                                val personalTrainerUID =
+                                    (fragment as com.technion.fitracker.user.personal.HomeScreenFragment).viewModel.personalTrainerUID!!
+                                FirebaseFirestore.getInstance().collection("business_users").document(personalTrainerUID)
+                                        .collection("appointments")
+                                        .whereEqualTo("customer_id", FirebaseAuth.getInstance().currentUser?.uid!!)
+                                        .whereEqualTo("appointment_date", fModel.appointment_date)
+                                        .whereEqualTo("appointment_time", fModel.appointment_time)
+                                        .limit(1).get().addOnSuccessListener {
+                                            it.first().reference.delete().addOnSuccessListener { Log.d("deleteD", "WORKOUT") }
+                                        }
+
+                            })
+                            setMessage(R.string.cancel_appointment)
+                            setTitle(R.string.cancel_appointment_title)
+                        }
+                        // Create the AlertDialog
+                        builder.create()
+                    }
+                    alertDialog?.show()
+                    true
+                }
             }
         }
 
 
-
     }
 
-    private fun checkPictureURL(uid:String, photoURL: String):Boolean {
+    private fun checkPictureURL(uid: String, photoURL: String): Boolean {
         val imagePath = File(fragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if(!imagePath.exists()){
+        if (!imagePath.exists()) {
             imagePath.mkdir()
         }
         val urlName = File(imageUserPath, "picture_url.txt")
-        return try{
+        return try {
             FileInputStream(urlName).readBytes().contentEquals(photoURL.toByteArray())
-        }catch (e: Throwable){
+        } catch (e: Throwable) {
             false
         }
     }
@@ -213,7 +244,7 @@ class UpcomingTrainingsFireStoreAdapter(
         // The bellow line return a directory in internal storage
         val imagePath = File(fragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if(!imagePath.exists()){
+        if (!imagePath.exists()) {
             imagePath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
@@ -228,7 +259,7 @@ class UpcomingTrainingsFireStoreAdapter(
             stream.flush()
             streamName.close()
             stream.close()
-        } catch (e: IOException){ // Catch the exception
+        } catch (e: IOException) { // Catch the exception
             e.printStackTrace()
         }
 
