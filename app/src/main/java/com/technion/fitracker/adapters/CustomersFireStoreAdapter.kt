@@ -108,31 +108,35 @@ class CustomersFireStoreAdapter(options: FirestoreRecyclerOptions<CustomersFireS
                         .into(holder.customer_image_view)
             }
         }
-
-        holder.whatsapp_image.setOnClickListener {
-            if (fModel.customer_phone_number != null) {
-                try {
-                    val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + fModel.customer_phone_number + "&text=")
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    holder.itemView.context.startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(customersFragment.context, "Whatsapp not installed in this device.", Toast.LENGTH_LONG).show()
+        if(!fModel.customer_phone_number.isNullOrEmpty()) {
+            holder.whatsapp_image.setOnClickListener {
+                if (fModel.customer_phone_number != null) {
+                    try {
+                        val uri = Uri.parse("https://api.whatsapp.com/send?phone=" + fModel.customer_phone_number + "&text=")
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        holder.itemView.context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(customersFragment.context, "Whatsapp not installed in this device.", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(customersFragment.context, fModel.customer_name + " didn't provide phone number", Toast.LENGTH_LONG).show()
                 }
-            } else {
-                Toast.makeText(customersFragment.context, fModel.customer_name + " didn't provide phone number", Toast.LENGTH_LONG).show()
             }
+            holder.phone_image.setOnClickListener {
+                if (fModel.customer_phone_number != null) {
+                    val uri = "tel:" + fModel.customer_phone_number
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse(uri)
+                    holder.itemView.context.startActivity(intent)
+                } else {
+                    Toast.makeText(customersFragment.context, fModel.customer_name + " didn't provide phone number", Toast.LENGTH_LONG).show()
+                }
+            }
+        }else{
+            holder.whatsapp_image.visibility = View.GONE
+            holder.phone_image.visibility = View.GONE
         }
 
-        holder.phone_image.setOnClickListener {
-            if (fModel.customer_phone_number != null) {
-                val uri = "tel:" + fModel.customer_phone_number
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse(uri)
-                holder.itemView.context.startActivity(intent)
-            } else {
-                Toast.makeText(customersFragment.context, fModel.customer_name + " didn't provide phone number", Toast.LENGTH_LONG).show()
-            }
-        }
 
         holder.itemView.setOnLongClickListener {
             val alertDialog: AlertDialog? = customersFragment.let {
