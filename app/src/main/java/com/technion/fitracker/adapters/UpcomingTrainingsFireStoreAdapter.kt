@@ -2,6 +2,7 @@ package com.technion.fitracker.adapters
 
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -37,6 +38,7 @@ import java.text.DateFormatSymbols
 
 class UpcomingTrainingsFireStoreAdapter(
     options: FirestoreRecyclerOptions<UpcomingTrainingFireStoreModel>,
+    private val context: Context,
     private val fragment: Fragment
 ) : FirestoreRecyclerAdapter<UpcomingTrainingFireStoreModel, UpcomingTrainingsFireStoreAdapter.ViewHolder>(options) {
 
@@ -83,13 +85,14 @@ class UpcomingTrainingsFireStoreAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, p1: Int, fModel: UpcomingTrainingFireStoreModel) {
+
         when (fragment) {
             is HomeScreenFragment -> {
                 val firestore = FirebaseFirestore.getInstance()
-                firestore.collection("regular_users").document(fModel.customer_id!!).get().addOnSuccessListener {
-                    if (it.exists()) {
-                        val phone: String? = it.get("phone_number") as String?
-                        val picture_url: String? = it.get("photoURL") as String?
+                firestore.collection("regular_users").document(fModel.customer_id!!).get().addOnSuccessListener { doc ->
+                    if (doc.exists()) {
+                        val phone: String? = doc.get("phone_number") as String?
+                        val picture_url: String? = doc.get("photoURL") as String?
 
                         val imagePath = File(fragment.activity?.filesDir, "/")
                         val imageUserPath = File(imagePath, fModel.customer_id!!)
@@ -98,14 +101,14 @@ class UpcomingTrainingsFireStoreAdapter(
                         }
                         val imageFile = File(imageUserPath, "profile_picture.jpg")
                         if (imageFile.exists() && checkPictureURL(fModel.customer_id!!, picture_url!!)) {
-                            Glide.with(fragment).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                            Glide.with(context).load(imageFile.path).placeholder(R.drawable.user_avatar)
                                     .error(R.drawable.user_avatar)
                                     .skipMemoryCache(true) //2
                                     .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                                     .transform(CircleCrop()) //4
                                     .into(holder.image)
                         } else {
-                            Glide.with(fragment) //1
+                            Glide.with(context) //1
                                     .load(picture_url)
                                     .placeholder(R.drawable.user_avatar)
                                     .error(R.drawable.user_avatar)
@@ -138,7 +141,7 @@ class UpcomingTrainingsFireStoreAdapter(
                                     .into(holder.image)
                         }
 
-                        holder.name.text = it.get("name") as String?
+                        holder.name.text = doc.get("name") as String?
 
                         phone?.let {
                             if (phone.length > 1) {
@@ -149,7 +152,7 @@ class UpcomingTrainingsFireStoreAdapter(
                                         val intent = Intent(Intent.ACTION_VIEW, uri)
                                         holder.itemView.context.startActivity(intent)
                                     } catch (e: Exception) {
-                                        Toast.makeText(fragment.context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(context, "Whatsapp not installed on this device.", Toast.LENGTH_LONG).show()
                                     }
                                 }
                                 holder.phone_image.visibility = View.VISIBLE
@@ -222,46 +225,50 @@ class UpcomingTrainingsFireStoreAdapter(
             }
         }
 
-
     }
 
     private fun checkPictureURL(uid: String, photoURL: String): Boolean {
-        val imagePath = File(fragment.activity?.filesDir, "/")
-        val imageUserPath = File(imagePath, uid)!!
-        if (!imagePath.exists()) {
-            imagePath.mkdir()
+        fragment.activity?.apply {
+            val imagePath = File(filesDir, "/")
+            val imageUserPath = File(imagePath, uid)!!
+            if (!imagePath.exists()) {
+                imagePath.mkdir()
+            }
+            val urlName = File(imageUserPath, "picture_url.txt")
+            return try {
+                FileInputStream(urlName).readBytes().contentEquals(photoURL.toByteArray())
+            } catch (e: Throwable) {
+                false
+            }
         }
-        val urlName = File(imageUserPath, "picture_url.txt")
-        return try {
-            FileInputStream(urlName).readBytes().contentEquals(photoURL.toByteArray())
-        } catch (e: Throwable) {
-            false
-        }
+        return false
     }
 
     private fun saveProfilePicture(bitmap: Bitmap, uid: String, photoURL: String?) {
         // Initializing a new file
         // The bellow line return a directory in internal storage
-        val imagePath = File(fragment.activity?.filesDir, "/")
-        val imageUserPath = File(imagePath, uid)!!
-        if (!imagePath.exists()) {
-            imagePath.mkdir()
+        fragment.activity?.apply {
+            val imagePath = File(filesDir, "/")
+            val imageUserPath = File(imagePath, uid)!!
+            if (!imagePath.exists()) {
+                imagePath.mkdir()
+            }
+            val imageFile = File(imageUserPath, "profile_picture.jpg")
+            val urlName = File(imageUserPath, "picture_url.txt")
+            try {
+                // Get the file output stream
+                val stream: OutputStream = FileOutputStream(imageFile)
+                val streamName: OutputStream = FileOutputStream(urlName)
+                streamName.write(photoURL?.toByteArray()!!)
+                bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                streamName.flush()
+                stream.flush()
+                streamName.close()
+                stream.close()
+            } catch (e: IOException) { // Catch the exception
+                e.printStackTrace()
+            }
         }
-        val imageFile = File(imageUserPath, "profile_picture.jpg")
-        val urlName = File(imageUserPath, "picture_url.txt")
-        try {
-            // Get the file output stream
-            val stream: OutputStream = FileOutputStream(imageFile)
-            val streamName: OutputStream = FileOutputStream(urlName)
-            streamName.write(photoURL?.toByteArray()!!)
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-            streamName.flush()
-            stream.flush()
-            streamName.close()
-            stream.close()
-        } catch (e: IOException) { // Catch the exception
-            e.printStackTrace()
-        }
-
     }
+
 }

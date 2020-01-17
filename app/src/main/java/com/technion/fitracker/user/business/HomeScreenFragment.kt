@@ -104,7 +104,7 @@ class HomeScreenFragment : Fragment() {
             FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java)
                     .build()
 
-        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, this)
+        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, context!!,this)
         viewModel.trainingsRV = view.findViewById<RecyclerView>(R.id.business_upcoming_recycler).apply {
             addItemDecoration(
                     RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)

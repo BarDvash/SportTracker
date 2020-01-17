@@ -249,7 +249,7 @@ class HomeScreenFragment : Fragment() {
                     .setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java)
                     .build()
 
-        viewModel.upcomingWorkoutsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, this)
+        viewModel.upcomingWorkoutsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, context!!, this)
         viewModel.upcomingWorkoutsRV = view?.findViewById<RecyclerView>(R.id.user_upcoming_recycler)?.apply {
             addItemDecoration(
                     RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)
