@@ -47,7 +47,7 @@ import java.io.OutputStream
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var navController: NavController
-    private var auth: FirebaseAuth =  FirebaseAuth.getInstance()
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var firestore: FirebaseFirestore
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var viewModel: BusinessUserViewModel
@@ -109,7 +109,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
     private fun getUserPhoto() {
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid!!)
-        if(!imageUserPath.exists()){
+        if (!imageUserPath.exists()) {
             imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
@@ -154,7 +154,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
     }
 
-    private fun saveProfilePicture(drawableId:Int) {
+    private fun saveProfilePicture(drawableId: Int) {
         // Get the image from drawable resource as drawable object
 
         val bitmap = findViewById<ImageView>(drawableId).drawToBitmap()
@@ -166,7 +166,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         // The bellow line return a directory in internal storage
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid!!)
-        if(!imageUserPath.exists()){
+        if (!imageUserPath.exists()) {
             imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
@@ -183,7 +183,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
             // Close stream
             stream.close()
-        } catch (e: IOException){ // Catch the exception
+        } catch (e: IOException) { // Catch the exception
             e.printStackTrace()
         }
 
@@ -195,7 +195,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
             val docRef = firestore.collection("business_users").document(auth.currentUser!!.uid)
             docRef.get().addOnSuccessListener { document ->
                 val user = document.toObject(User::class.java)
-                if(user?.photoURL != viewModel.user_photo_url){
+                if (user?.photoURL != viewModel.user_photo_url) {
                     val userAvatar = findViewById<ImageView>(R.id.business_user_avatar)
                     if (!user?.photoURL.isNullOrEmpty()) {
                         Glide.with(this) //1
@@ -222,11 +222,27 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        navController.popBackStack()
+        // fragment_business_home_screen, fragment_business_customers, fragment_business_schedule
+        val currentScreen = navController.currentDestination?.label
         when (menuItem.itemId) {
-            R.id.action_home -> navController.navigate(R.id.homeScreenFragment)
-            R.id.action_customers -> navController.navigate(R.id.customersFragment)
-            R.id.action_schedule -> navController.navigate(R.id.scheduleFragment)
+            R.id.action_home -> {
+                if (currentScreen != "fragment_business_home_screen") {
+                    navController.popBackStack()
+                    navController.navigate(R.id.homeScreenFragment)
+                }
+            }
+            R.id.action_customers -> {
+                if (currentScreen != "fragment_business_customers") {
+                    navController.popBackStack()
+                    navController.navigate(R.id.customersFragment)
+                }
+            }
+            R.id.action_schedule -> {
+                if (currentScreen != "fragment_business_schedule") {
+                    navController.popBackStack()
+                    navController.navigate(R.id.scheduleFragment)
+                }
+            }
         }
         return true
     }

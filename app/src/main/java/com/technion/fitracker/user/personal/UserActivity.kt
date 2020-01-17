@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -18,7 +16,6 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -228,28 +225,28 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        val dest = navController.currentDestination?.label
+        val currentScreen = navController.currentDestination?.label
         when (menuItem.itemId) {
             R.id.action_home -> {
-                if (dest == "HomeScreen") {
+                if (currentScreen == "HomeScreen") {
                     return true
                 }
                 startFragmentAndPop(R.id.homeScreenFragment)
             }
             R.id.action_workouts -> {
-                if (dest == "fragment_workouts") {
+                if (currentScreen == "fragment_workouts") {
                     return true
                 }
                 startFragmentAndPop(R.id.workoutsFragment)
             }
             R.id.action_nutrition -> {
-                if (dest == "fragment_nutrition") {
+                if (currentScreen == "fragment_nutrition") {
                     return true
                 }
                 startFragmentAndPop(R.id.nutritionFragment)
             }
             R.id.action_measurements -> {
-                if (dest == "fragment_measurements") {
+                if (currentScreen == "fragment_measurements") {
                     return true
                 }
                 startFragmentAndPop(R.id.measurementsFragment, true)
