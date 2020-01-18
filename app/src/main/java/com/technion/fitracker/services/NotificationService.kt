@@ -11,7 +11,7 @@ import com.technion.fitracker.R
 import com.technion.fitracker.login.FlashSignInActivity
 
 
-class MyService : FirebaseMessagingService() {
+class NotificationService : FirebaseMessagingService() {
     private val CHANNEL_ID: String = "M_CH_ID"
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

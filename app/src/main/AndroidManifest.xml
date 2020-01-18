@@ -103,7 +103,7 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".services.MyService"
+            android:name=".services.NotificationService"
             android:exported="false">
             <intent-filter>
                 <action
