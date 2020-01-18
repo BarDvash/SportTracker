@@ -10,7 +10,7 @@
     android:layout_marginRight="8dp">
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
@@ -18,25 +18,16 @@
         android:padding="4dp"
         app:srcCompat="@drawable/small_notification_icon" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/notification_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/primary_text_light"
-            android:textSize="18sp"
-            tools:text="notitfication" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/notification_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="5"
+        android:gravity="center_vertical"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="18sp"
+        tools:text="notitfication" />
 
 
 </LinearLayout>

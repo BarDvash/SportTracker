@@ -169,6 +169,13 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         if (!imageUserPath.exists()) {
             imageUserPath.mkdir()
         }
+        if(imageUserPath.exists()) {
+            for (f in imageUserPath.listFiles()) {
+                if (f != null) {
+                    Log.d("FILENAME:", f.name);
+                }
+            }
+        }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
 
         try {

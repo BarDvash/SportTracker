@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChoosePhotoActivity"></activity>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_strong" />
+        <activity android:name=".ChoosePhotoActivity" />
         <activity
             android:name=".user.personal.workout.WorkoutHistoryElementDetails"
             android:screenOrientation="portrait" />

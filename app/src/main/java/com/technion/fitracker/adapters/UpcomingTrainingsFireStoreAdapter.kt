@@ -48,6 +48,7 @@ class UpcomingTrainingsFireStoreAdapter(
         var date: TextView = view.findViewById(R.id.element_schedule_date)
         var name: TextView = view.findViewById(R.id.element_schedule_name)
         var image: ImageView = view.findViewById(R.id.element_schedule_imageView)
+        var divider: View = view.findViewById(R.id.user_upcoming_divider)
         var notes: TextView = view.findViewById(R.id.notes)
         var notes_container: LinearLayout = view.findViewById(R.id.notes_container)
         var whatsapp_image: ImageView = view.findViewById(R.id.element_schedule_whatsapp)
@@ -96,8 +97,8 @@ class UpcomingTrainingsFireStoreAdapter(
 
                         val imagePath = File(fragment.activity?.filesDir, "/")
                         val imageUserPath = File(imagePath, fModel.customer_id!!)
-                        if (!imagePath.exists()) {
-                            imagePath.mkdir()
+                        if (!imageUserPath.exists()) {
+                            imageUserPath.mkdir()
                         }
                         val imageFile = File(imageUserPath, "profile_picture.jpg")
                         if (imageFile.exists() && checkPictureURL(fModel.customer_id!!, picture_url!!)) {
@@ -196,6 +197,8 @@ class UpcomingTrainingsFireStoreAdapter(
                 val split_date = fModel.appointment_date!!.split(" ")
                 val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
                 holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
+                holder.date.textSize = 18.0F
+                holder.divider.visibility = View.VISIBLE
                 holder.itemView.setOnLongClickListener {
                     val alertDialog: AlertDialog? = fragment.let { itHome ->
                         val builder = AlertDialog.Builder(itHome.context)
@@ -231,8 +234,8 @@ class UpcomingTrainingsFireStoreAdapter(
         fragment.activity?.apply {
             val imagePath = File(filesDir, "/")
             val imageUserPath = File(imagePath, uid)!!
-            if (!imagePath.exists()) {
-                imagePath.mkdir()
+            if (!imageUserPath.exists()) {
+                imageUserPath.mkdir()
             }
             val urlName = File(imageUserPath, "picture_url.txt")
             return try {
@@ -250,8 +253,9 @@ class UpcomingTrainingsFireStoreAdapter(
         fragment.activity?.apply {
             val imagePath = File(filesDir, "/")
             val imageUserPath = File(imagePath, uid)!!
-            if (!imagePath.exists()) {
-                imagePath.mkdir()
+
+            if (!imageUserPath.exists()) {
+                imageUserPath.mkdir()
             }
             val imageFile = File(imageUserPath, "profile_picture.jpg")
             val urlName = File(imageUserPath, "picture_url.txt")

@@ -118,8 +118,8 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private fun getUserPhoto() {
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         if (imageFile.exists()) {
@@ -177,8 +177,15 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         // The bellow line return a directory in internal storage
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
+        }
+        if(imageUserPath.exists()) {
+            for (f in imageUserPath.listFiles()) {
+                if (f != null) {
+                    Log.d("FILENAME:", f.name);
+                }
+            }
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
 

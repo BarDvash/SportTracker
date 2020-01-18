@@ -65,8 +65,8 @@ class MyTrainerFireStoreAdapter(
         holder.trainerName.text = p2.name
         val imagePath = File(homeScreenFragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, p2.uid!!)
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         if (imageFile.exists() && checkPictureURL(p2.uid!!, p2.photoURL!!)) {
@@ -154,8 +154,8 @@ class MyTrainerFireStoreAdapter(
     private fun checkPictureURL(uid:String, photoURL: String):Boolean {
         val imagePath = File(homeScreenFragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
         }
         val urlName = File(imageUserPath, "picture_url.txt")
         return try{
@@ -170,8 +170,8 @@ class MyTrainerFireStoreAdapter(
         // The bellow line return a directory in internal storage
         val imagePath = File(homeScreenFragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         val urlName = File(imageUserPath, "picture_url.txt")

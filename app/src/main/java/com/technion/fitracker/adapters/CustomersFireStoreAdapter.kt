@@ -66,8 +66,8 @@ class CustomersFireStoreAdapter(options: FirestoreRecyclerOptions<CustomersFireS
         if (!fModel.customer_photo_url.isNullOrEmpty()) {
             val imagePath = File(customersFragment.activity?.filesDir, "/")
             val imageUserPath = File(imagePath, fModel.customer_id!!)
-            if(!imagePath.exists()){
-                imagePath.mkdir()
+            if(!imageUserPath.exists()){
+                imageUserPath.mkdir()
             }
             val imageFile = File(imageUserPath, "profile_picture.jpg")
             if (imageFile.exists() && checkPictureURL(fModel.customer_id!!, fModel.customer_photo_url!!)) {
@@ -160,8 +160,8 @@ class CustomersFireStoreAdapter(options: FirestoreRecyclerOptions<CustomersFireS
     private fun checkPictureURL(uid:String, photoURL: String):Boolean {
         val imagePath = File(customersFragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
         }
         val urlName = File(imageUserPath, "picture_url.txt")
         return try{
@@ -176,8 +176,8 @@ class CustomersFireStoreAdapter(options: FirestoreRecyclerOptions<CustomersFireS
         // The bellow line return a directory in internal storage
         val imagePath = File(customersFragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if (!imagePath.exists()) {
-            imagePath.mkdir()
+        if (!imageUserPath.exists()) {
+            imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         val urlName = File(imageUserPath, "picture_url.txt")

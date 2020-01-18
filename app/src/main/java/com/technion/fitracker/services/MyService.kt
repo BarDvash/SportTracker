@@ -2,6 +2,7 @@ package com.technion.fitracker.services
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -30,18 +31,23 @@ class MyService : FirebaseMessagingService() {
 //            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody())
             notification_title = remoteMessage.notification!!.title
             notification_body = remoteMessage.notification!!.body
+
         } else {
             return
         }
 
+        var bigTextStyle = NotificationCompat.BigTextStyle();
+        bigTextStyle.bigText(notification_body)
+        bigTextStyle.setBigContentTitle(notification_title)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle(notification_title)
-                .setContentText(notification_body)
+                .setSmallIcon(R.drawable.ic_strong)
+
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
+                .setStyle(bigTextStyle)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+
 
 
         val notificationId = 1 //TODO: default id for now, if it important change it maybe according to the notification kind

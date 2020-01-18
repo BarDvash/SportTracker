@@ -105,19 +105,19 @@ class FirebaseScheduleAdapter(
             holder.customerName.text = it.getString("name")
             val imagePath = File(fragment.activity?.filesDir, "/")
             val imageUserPath = File(imagePath, uid)
-            if(!imagePath.exists()){
-                imagePath.mkdir()
+            if(!imageUserPath.exists()){
+                imageUserPath.mkdir()
             }
             val imageFile = File(imageUserPath, "profile_picture.jpg")
             if (imageFile.exists() && checkPictureURL(uid, photoURL)) {
-                Glide.with(fragment).load(imageFile.path).placeholder(R.drawable.user_avatar)
+                Glide.with(context).load(imageFile.path).placeholder(R.drawable.user_avatar)
                         .error(R.drawable.user_avatar)
                         .skipMemoryCache(true) //2
                         .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                         .transform(CircleCrop()) //4
                         .into(holder.customerImageView)
             } else {
-                Glide.with(fragment) //1
+                Glide.with(context) //1
                         .load(photoURL)
                         .placeholder(R.drawable.user_avatar)
                         .error(R.drawable.user_avatar)
@@ -174,8 +174,8 @@ class FirebaseScheduleAdapter(
     private fun checkPictureURL(uid:String, photoURL: String):Boolean {
         val imagePath = File(fragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if(!imagePath.exists()){
-            imagePath.mkdir()
+        if(!imageUserPath.exists()){
+            imageUserPath.mkdir()
         }
         val urlName = File(imageUserPath, "picture_url.txt")
         return try{
@@ -190,8 +190,8 @@ class FirebaseScheduleAdapter(
         // The bellow line return a directory in internal storage
         val imagePath = File(fragment.activity?.filesDir, "/")
         val imageUserPath = File(imagePath, uid)!!
-        if (!imagePath.exists()) {
-            imagePath.mkdir()
+        if (!imageUserPath.exists()) {
+            imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
         val urlName = File(imageUserPath, "picture_url.txt")
