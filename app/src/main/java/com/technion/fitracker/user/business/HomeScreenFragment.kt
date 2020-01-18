@@ -27,6 +27,8 @@ import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.models.NotificationsModel
 import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class HomeScreenFragment : Fragment() {
@@ -96,15 +98,21 @@ class HomeScreenFragment : Fragment() {
             adapter = viewModel.notifications_adapter
         }
 
-        val trainings_query =
+        val dateFormat = SimpleDateFormat("yyyy MM dd")
+        val calendar = Calendar.getInstance()
+        val currentDate = dateFormat.format(calendar.time)
+        val trainingsQuery =
             firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments")
-                    .orderBy("appointment_date", Query.Direction.ASCENDING).orderBy("appointment_time", Query.Direction.ASCENDING).limit(5)
+                    .orderBy("appointment_date", Query.Direction.ASCENDING)
+                    .orderBy("appointment_time", Query.Direction.ASCENDING)
+                    .whereGreaterThan("appointment_date", currentDate)
+                    .limit(5)
 
-        val trainings_options =
-            FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainings_query, UpcomingTrainingFireStoreModel::class.java)
+        val trainingsOptions =
+            FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>().setQuery(trainingsQuery, UpcomingTrainingFireStoreModel::class.java)
                     .build()
 
-        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainings_options, context!!,this)
+        viewModel.trainingsAdapter = UpcomingTrainingsFireStoreAdapter(trainingsOptions, context!!, this)
         viewModel.trainingsRV = view.findViewById<RecyclerView>(R.id.business_upcoming_recycler).apply {
             addItemDecoration(
                     RecyclerCustomItemDecorator(context, DividerItemDecoration.VERTICAL)

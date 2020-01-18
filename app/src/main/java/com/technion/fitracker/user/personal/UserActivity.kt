@@ -41,10 +41,7 @@ import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
 import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.user.User
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 
 
 class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -118,7 +115,7 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private fun getUserPhoto() {
         val imagePath = File(this.filesDir, "/")
         val imageUserPath = File(imagePath, auth.currentUser?.uid)!!
-        if(!imageUserPath.exists()){
+        if(!imageUserPath.exists() && checkPictureURL(auth.currentUser?.uid!!, viewModel.user_photo_url)){
             imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
@@ -205,6 +202,23 @@ class UserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             e.printStackTrace()
         }
 
+    }
+
+    private fun checkPictureURL(uid: String, photoURL: String?): Boolean {
+        if(photoURL == null){
+            return false
+        }
+        val imagePath = File(filesDir, "/")
+        val imageUserPath = File(imagePath, uid)!!
+        if (!imageUserPath.exists()) {
+            imageUserPath.mkdir()
+        }
+        val urlName = File(imageUserPath, "picture_url.txt")
+        return try {
+            FileInputStream(urlName).readBytes().contentEquals(photoURL.toByteArray())
+        } catch (e: Throwable) {
+            false
+        }
     }
 
     override fun onResume() {

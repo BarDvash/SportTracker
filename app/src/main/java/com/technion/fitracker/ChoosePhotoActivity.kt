@@ -179,14 +179,12 @@ class ChoosePhotoActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             var file = data?.data
             if (file != null) {
-                val path = Environment.getRootDirectory().absolutePath
                 val PathHolder: Uri? = data?.data
-                val fileInputStream: FileInputStream? = null
-                val text = StringBuilder()
+                val inputStream: InputStream? = contentResolver.openInputStream(PathHolder!!)
+                val imagePath = File(this.filesDir, "/")
+                val imageUserPath = File(imagePath, mAuth.currentUser?.uid!!)
                 try {
-                    val inputStream: InputStream? = contentResolver.openInputStream(PathHolder!!)
-                    val imagePath = File(this.filesDir, "/")
-                    val imageUserPath = File(imagePath, mAuth.currentUser?.uid!!)
+
                     if(!imageUserPath.exists()){
                         imageUserPath.mkdir()
                     }
@@ -220,8 +218,16 @@ class ChoosePhotoActivity : AppCompatActivity() {
                         val downloadUri = task.result
                         if (downloadUri != null) {
                             updatePhotoURL(downloadUri.toString())
+                            val urlName = File(imageUserPath, "picture_url.txt")
+                            try {
+                                FileOutputStream(urlName).apply {
+                                    write(downloadUri.toString().toByteArray())
+                                    flush()
+                                    close()
+                                }
+                            }catch (e:Throwable){
 
-
+                            }
                         }
                     } else {
                         pickImageButton.text = getString(R.string.pick_photo)

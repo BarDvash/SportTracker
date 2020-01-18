@@ -39,10 +39,7 @@ import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.user.User
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -113,13 +110,21 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
             imageUserPath.mkdir()
         }
         val imageFile = File(imageUserPath, "profile_picture.jpg")
-        if (imageFile.exists()) {
+        if (imageUserPath.exists()) {
+            for (f in imageUserPath.listFiles()) {
+                if (f != null) {
+                    Log.d("FILENAME:", f.name + " size: " + f.totalSpace);
+                }
+            }
+        }
+        val profilePicture = findViewById<ImageView>(R.id.business_user_avatar)
+        if (imageFile.exists() && checkPictureURL(auth.currentUser?.uid!!, viewModel.user_photo_url)) {
             Glide.with(this).load(imageFile.path).placeholder(R.drawable.user_avatar)
                     .error(R.drawable.user_avatar)
                     .skipMemoryCache(true) //2
                     .diskCacheStrategy(DiskCacheStrategy.NONE) //3
                     .transform(CircleCrop()) //4
-                    .into(findViewById(R.id.business_user_avatar))
+                    .into(profilePicture)
         } else {
             if (!viewModel.user_photo_url.isNullOrEmpty()) {
                 Glide.with(this) //1
@@ -143,18 +148,19 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                                 isFirstResource: Boolean
                             ): Boolean {
                                 Log.d("GLIDE-LOAD", "Loaded profile picture!")
-                                saveProfilePicture(R.id.business_user_avatar)
+                                saveProfilePicture(R.id.business_user_avatar,viewModel.user_photo_url)
+                                profilePicture.setImageDrawable(resource)
                                 return true
                             }
 
                         })
-                        .into(findViewById(R.id.business_user_avatar))
+                        .into(profilePicture)
             }
         }
 
     }
 
-    private fun saveProfilePicture(drawableId: Int) {
+    private fun saveProfilePicture(drawableId: Int,photoURL: String?) {
         // Get the image from drawable resource as drawable object
 
         val bitmap = findViewById<ImageView>(drawableId).drawToBitmap()
@@ -169,27 +175,24 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
         if (!imageUserPath.exists()) {
             imageUserPath.mkdir()
         }
-        if(imageUserPath.exists()) {
-            for (f in imageUserPath.listFiles()) {
-                if (f != null) {
-                    Log.d("FILENAME:", f.name);
-                }
-            }
-        }
-        val imageFile = File(imageUserPath, "profile_picture.jpg")
 
+        val imageFile = File(imageUserPath, "profile_picture.jpg")
+        val urlName = File(imageUserPath, "picture_url.txt")
         try {
             // Get the file output stream
             val stream: OutputStream = FileOutputStream(imageFile)
-
+            val streamName: OutputStream = FileOutputStream(urlName)
+            streamName.write(photoURL?.toByteArray()!!)
             // Compress bitmap
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
 
             // Flush the stream
             stream.flush()
+            streamName.flush()
 
             // Close stream
             stream.close()
+            streamName.close()
         } catch (e: IOException) { // Catch the exception
             e.printStackTrace()
         }
@@ -227,6 +230,22 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
 
     }
 
+    private fun checkPictureURL(uid: String, photoURL: String?): Boolean {
+        if(photoURL == null){
+            return false
+        }
+        val imagePath = File(filesDir, "/")
+        val imageUserPath = File(imagePath, uid)!!
+        if (!imageUserPath.exists()) {
+            imageUserPath.mkdir()
+        }
+        val urlName = File(imageUserPath, "picture_url.txt")
+        return try {
+            FileInputStream(urlName).readBytes().contentEquals(photoURL.toByteArray())
+        } catch (e: Throwable) {
+            false
+        }
+    }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         // fragment_business_home_screen, fragment_business_customers, fragment_business_schedule

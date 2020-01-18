@@ -38,6 +38,10 @@ import com.technion.fitracker.models.UserViewModel
 import com.technion.fitracker.models.workouts.RecentWorkoutFireStoreModel
 import com.technion.fitracker.user.personal.workout.WorkoutHistoryElementDetails
 import com.technion.fitracker.utils.RecyclerCustomItemDecorator
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class HomeScreenFragment : Fragment() {
@@ -239,10 +243,16 @@ class HomeScreenFragment : Fragment() {
     }
 
     private fun initUpcomingWorkouts() {
+        val dateFormat = SimpleDateFormat("yyyy MM dd")
+        val calendar = Calendar.getInstance()
+        val currentDate = dateFormat.format(calendar.time)
         val trainings_query =
             firebaseFirestore.collection("business_users").document(viewModel.personalTrainerUID!!).collection("appointments")
                     .whereEqualTo("customer_id", current_user_id)
-                    .orderBy("appointment_date", Query.Direction.ASCENDING).orderBy("appointment_time", Query.Direction.ASCENDING).limit(5)
+                    .orderBy("appointment_date", Query.Direction.ASCENDING)
+                    .orderBy("appointment_time", Query.Direction.ASCENDING)
+                    .whereGreaterThan("appointment_date", currentDate)
+                    .limit(5)
 
         val trainings_options =
             FirestoreRecyclerOptions.Builder<UpcomingTrainingFireStoreModel>()

@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -181,7 +182,7 @@ class UpcomingTrainingsFireStoreAdapter(
                 }
                 val split_date = fModel.appointment_date!!.split(" ")
                 val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
-                holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
+                holder.date.text = month + " " + split_date[2] + " at " + fModel.appointment_time!!.replace(" ", ":")
             }
             is com.technion.fitracker.user.personal.HomeScreenFragment -> {
                 holder.phone_image.visibility = View.GONE
@@ -196,7 +197,7 @@ class UpcomingTrainingsFireStoreAdapter(
                 }
                 val split_date = fModel.appointment_date!!.split(" ")
                 val month = DateFormatSymbols().months[split_date[1].toInt() - 1]
-                holder.date.text = month + " " + split_date[1] + " at " + fModel.appointment_time!!.replace(" ", ":")
+                holder.date.text = month + " " + split_date[2] + " at " + fModel.appointment_time!!.replace(" ", ":")
                 holder.date.textSize = 18.0F
                 holder.divider.visibility = View.VISIBLE
                 holder.itemView.setOnLongClickListener {
