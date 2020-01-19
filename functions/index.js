@@ -210,40 +210,53 @@ exports.nutrition_menu_update = functions.firestore.document('/regular_users/{tr
 
 });
 
-exports.appointmnentCancelation = functions.firestore.document('/business_users/{trainerId}/appointments/{docId}').onDelete((snap, context) => {
+exports.appointmnentCancelation = functions.firestore.document('/business_users/{trainerId}/appointment_cancellations/{docId}').onCreate((snap, context) => {
     const trainerId = context.params.trainerId;
+    const docId = context.params.docId;
     const traineeId = snap.data().customer_id;
-    const year = snap.data().appointment_date.split(" ")[0];
-    const month = months[snap.data().appointment_date.split(" ")[1]];
-    const day = snap.data().appointment_date.split(" ")[2];
-    const time = snap.data().appointment_time.replace(" ",":");
+    const date = snap.data().appointment_date;
+    const time = snap.data().appointment_time;
 
-    return db.collection('regular_users').doc(traineeId).get().then((doc) => {
-       const trainee_name = doc.data().name;
-        // console.log(trainer_name);
+    return db.collection('business_users/'+trainerId+'/appointments').where("customer_id", "==", traineeId)
+        .where("appointment_date", "==", date)
+        .where("appointment_time", "==", time).limit(1).get().then((docs) => {
+            // eslint-disable-next-line promise/no-nesting
+            return db.collection('regular_users').doc(traineeId).get().then((doc) => {
 
-        let payload = {
-                notification: {
-                    title: 'Appointment cancelation',
-                    body: trainee_name + ' has canceled appointment on ' + year + " " + month + " " + day + " at " + time + '!',
-                    sound: "default"
-                },
-            };
+                const trainee_name = doc.data().name;
+                const year = snap.data().appointment_date.split(" ")[0];
+                const month = months[snap.data().appointment_date.split(" ")[1]];
+                const day = snap.data().appointment_date.split(" ")[2];
+                const time = snap.data().appointment_time.replace(" ",":");
+                // console.log(trainer_name);
+
+                let payload = {
+                    notification: {
+                        title: 'Appointment cancelation',
+                        body: trainee_name + ' has canceled appointment on ' + year + " " + month + " " + day + " at " + time + '!',
+                        sound: "default"
+                    },
+                };
 
 
-        //Create an options object that contains the time to live for the notification and the priority
-        const options = {
-            priority: "high",
-            timeToLive: 60 * 60 * 24
-        };
+                //Create an options object that contains the time to live for the notification and the priority
+                const options = {
+                    priority: "high",
+                    timeToLive: 60 * 60 * 24
+                };
 
-        console.log(payload);
-        return admin.messaging().sendToTopic("appointment_canceletaion" + trainerId, payload, options);
+                console.log(payload);
+                let deleteDoc = db.collection('business_users').doc(trainerId).collection('appointment_cancellations').doc(docId).delete();
+                docs.forEach(innerDoc => {
+                    db.collection('business_users/'+trainerId+'/appointments').doc(innerDoc.id).delete();
+                });
+                return admin.messaging().sendToTopic("appointment_canceletaion" + trainerId, payload, options);
 
-    }).catch(error => {
+            }).catch(error => {
 
-        console.log(error);
-    });
+                console.log(error);
+            });
+        });
 });
 
 
