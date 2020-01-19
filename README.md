@@ -1,5 +1,5 @@
 # FITRACKER
-![logo](https://i.ibb.co/9ctC1cM/facebook-cover-photo-2.png)
+![logo](https://i.ibb.co/pJKqMng/Untitled.png)
 ## Project Description
 Android app written in Kotlin, developed on Android Studio environment. This is a project for the course "Project in Software - Android Application" (236503), taught at the Technion - Israel Institute of Technology.
 
