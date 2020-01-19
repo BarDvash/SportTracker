@@ -80,13 +80,11 @@ class FirebaseScheduleAdapter(
         holder.date.text = "$dateString at $timeString"
         holder.customerId = item.customer_id
         holder.notes = item.notes
-        db.collection("regular_users").document(item.customer_id!!).get(Source.CACHE).addOnCompleteListener {
-            if (it.result != null) {
-                initCustomerInfo(holder, it.result!!,item.customer_id!!)
+        db.collection("regular_users").document(item.customer_id!!).get(Source.CACHE).addOnSuccessListener {
+                initCustomerInfo(holder, it,item.customer_id!!)
                 db.collection("regular_users").document(item.customer_id!!).get().addOnSuccessListener { innerIt ->
                     initCustomerInfo(holder, innerIt, item.customer_id!!)
-                }
-            } else {
+            }.addOnFailureListener{
                 db.collection("regular_users").document(item.customer_id!!).get().addOnSuccessListener { innerIt ->
                     initCustomerInfo(holder, innerIt, item.customer_id!!)
                 }

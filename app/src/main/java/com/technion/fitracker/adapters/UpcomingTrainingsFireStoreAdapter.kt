@@ -32,6 +32,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.technion.fitracker.R
+import com.technion.fitracker.models.AppointmentCancelationModel
 import com.technion.fitracker.models.UpcomingTrainingFireStoreModel
 import com.technion.fitracker.user.business.HomeScreenFragment
 import java.io.*
@@ -207,14 +208,12 @@ class UpcomingTrainingsFireStoreAdapter(
                             setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, id ->
                                 val personalTrainerUID =
                                     (fragment as com.technion.fitracker.user.personal.HomeScreenFragment).viewModel.personalTrainerUID!!
+                                val notificationPackage = AppointmentCancelationModel(FirebaseAuth.getInstance().currentUser?.uid!!,
+                                                                                      fModel.appointment_date,
+                                                                                      fModel.appointment_time)
                                 FirebaseFirestore.getInstance().collection("business_users").document(personalTrainerUID)
-                                        .collection("appointments")
-                                        .whereEqualTo("customer_id", FirebaseAuth.getInstance().currentUser?.uid!!)
-                                        .whereEqualTo("appointment_date", fModel.appointment_date)
-                                        .whereEqualTo("appointment_time", fModel.appointment_time)
-                                        .limit(1).get().addOnSuccessListener {
-                                            it.first().reference.delete().addOnSuccessListener { Log.d("deleteD", "WORKOUT") }
-                                        }
+                                        .collection("appointment_cancellations").add(notificationPackage).addOnSuccessListener {  }
+                                        .addOnFailureListener {  }
 
                             })
                             setMessage(R.string.cancel_appointment)
