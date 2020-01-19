@@ -105,7 +105,7 @@ class HomeScreenFragment : Fragment() {
             firebaseFirestore.collection("business_users").document(current_user_id!!).collection("appointments")
                     .orderBy("appointment_date", Query.Direction.ASCENDING)
                     .orderBy("appointment_time", Query.Direction.ASCENDING)
-                    .whereGreaterThan("appointment_date", currentDate)
+                    .whereGreaterThanOrEqualTo("appointment_date", currentDate)
                     .limit(5)
 
         val trainingsOptions =

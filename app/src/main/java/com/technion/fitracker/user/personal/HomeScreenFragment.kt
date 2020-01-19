@@ -251,7 +251,7 @@ class HomeScreenFragment : Fragment() {
                     .whereEqualTo("customer_id", current_user_id)
                     .orderBy("appointment_date", Query.Direction.ASCENDING)
                     .orderBy("appointment_time", Query.Direction.ASCENDING)
-                    .whereGreaterThan("appointment_date", currentDate)
+                    .whereGreaterThanOrEqualTo("appointment_date", currentDate)
                     .limit(5)
 
         val trainings_options =
