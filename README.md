@@ -23,8 +23,10 @@ In response to this evolving need, countless professionals, personal trainers, n
 * The ability of an organization such as a gym to add content that will be displayed to the user by the app when the user uses the device   to scan NFC tags placed on devices in the gym.
 
 ## Built with
-Firebase - https://firebase.google.com/
-Glide - https://github.com/bumptech/glide
+* [Firebase](https://firebase.google.com/)
+* [Glide](https://github.com/bumptech/glide)
+* [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+* [Material Calendar View](https://github.com/prolificinteractive/material-calendarview)
 
 ## Authors
 Vladimir Parakhin, Alexey Barbotchenko and Bar Dvash.
