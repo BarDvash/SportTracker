@@ -30,4 +30,4 @@ Glide - https://github.com/bumptech/glide
 Vladimir Parakhin, Alexey Barbotchenko and Bar Dvash.
 
 ## Link to Google Play Store
-
+# [FiTracker](https://play.google.com/store/apps/details?id=com.technion.fitracker)
