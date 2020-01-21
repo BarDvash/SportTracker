@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.viewPages.TabsFragmentPagerAdapter
 import com.technion.fitracker.databinding.ActivityAddExerciseBinding
+import com.technion.fitracker.models.exercise.ExerciseDBModel
 import com.technion.fitracker.models.nutrition.jsonDBModel
 import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import kotlinx.android.synthetic.main.activity_add_exercise.*
@@ -78,14 +79,14 @@ class AddExerciseActivity : AppCompatActivity() {
     }
 
     private fun initDB() {
-        val stream = this.assets.open("exercises.json")
+        val stream = this.assets.open("exercises_with_gifs.json")
         val s = Scanner(stream).useDelimiter("\\A")
         val json = if (s.hasNext()) {
             s.next()
         } else {
             ""
         }
-        viewModel.exerciseDB = Gson().fromJson(json, jsonDBModel::class.java).array
+        viewModel.exerciseDB = Gson().fromJson(json, ExerciseDBModel::class.java).array
     }
 
     private fun checkIfDataExist(): Boolean {

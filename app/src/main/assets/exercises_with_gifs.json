@@ -1,0 +1,122 @@
+{
+    "array": {
+        "Chest": [
+            {
+                "name": "Bench Press",
+                "gif_url": "https://musclewiki.org/media/uploads/BenchPress-Side-021316.gif"
+            },
+            {
+                "name": "Incline Dumbbell Press",
+                "gif_url": "https://musclewiki.org/media/uploads/DumbellCP-Front-021316.gif"
+            },
+            {
+                "name": "Dips",
+                "gif_url": "https://musclewiki.org/media/uploads/ChestDips-Side-021316.gif"
+            },
+            {
+                "name": "Dumbbell Flys",
+                "gif_url": "https://musclewiki.org/media/uploads/Flyes-Front-021316.gif"
+            }
+        ],
+        "Legs": [
+            {
+                "name": "Squat",
+                "gif_url": "https://musclewiki.org/media/uploads/Squats-Front-021316.gif"
+            },
+            {
+                "name": "Leg Press",
+                "gif_url": "https://musclewiki.org/media/uploads/LegPress-Front-021316.gif"
+            },
+            {
+              "name": "Leg Extension",
+              "gif_url": "https://musclewiki.org/media/uploads/LegExtension-Front-021316.gif"  
+            },
+            {
+                "name": "Goblet Squat",
+                "gif_url": "https://musclewiki.org/media/uploads/GoblinSquat-Front-021316.gif"
+            }
+        ],
+        "Back": [
+            {
+                "name":"Deadlift",
+                "gif_url": "https://musclewiki.org/media/uploads/Deadlifts-Front-0213161.gif"
+            },
+            {
+                "name": "Dumbbell Row",
+                "gif_url": "https://musclewiki.org/media/uploads/DumbbellRow-Front-021316.gif"
+            },
+            {
+                "name": "Seated Cable Row",
+                "gif_url": "https://musclewiki.org/media/uploads/SeatedCableRow-Front-021316.gif"
+            },
+            {
+                "name": "Bent Over Barbell Row",
+                "gif_url": "https://musclewiki.org/media/uploads/Male-bent-over-barbell-row-front_jwFqqeH.gif"
+            }
+        ],
+        "ABS": [
+            {
+                "name": "Crunches",
+                "gif_url": "https://musclewiki.org/media/uploads/Crunch-Side-021316.gif"
+            },
+            {
+                "name": "Roll-Outs",
+                "gif_url": "https://musclewiki.org/media/uploads/AbRoller-Side-021316.gif"
+            },
+            {
+                "name": "Forearm Plank",
+                "gif_url": "https://musclewiki.org/media/uploads/plank-static.gif"
+            },
+            {
+                "name": "Laying Leg Raises",
+                "gif_url": "https://musclewiki.org/media/uploads/LegRaises-Side-021316.gif"
+            }
+        ],
+        "Biceps": [
+            {
+                "name": "Barbell Curl",
+                "gif_url": "https://musclewiki.org/media/uploads/Male-Barbell-BicepCurl-side.gif"
+            },
+            {
+                "name": "Dumbbell Curl",
+                "gif_url": "https://musclewiki.org/media/uploads/BicepCurl-Front-021316.gif"
+            },
+            {
+                "name": "Hammer Curl",
+                "gif_url": "https://musclewiki.org/media/uploads/BicepHC-Front-021316.gif"
+            }
+        ],
+        "Triceps": [
+            {
+                "name": "Seated Triceps Extensions",
+                "gif_url": "https://musclewiki.org/media/uploads/TricepExtensions-Side-021316.gif"
+            },
+            {
+                "name": "Dips",
+                "gif_url": "https://musclewiki.org/media/uploads/DipsNarrow-Side-021316.gif"
+            },
+            {
+                "name": "Cable Push Downs",
+                "gif_url": "https://musclewiki.org/media/uploads/CablePulldowns-Side-021316.gif"
+            },
+            {
+                "name": "Bench Dips",
+                "gif_url": "https://musclewiki.org/media/uploads/male-bench-tricep-dip-side.gif"
+            }
+        ],
+        "Shoulders": [
+            {
+                "name": "Seated Dumbbell Shoulder Press",
+                "gif_url": "https://musclewiki.org/media/uploads/ShoulderPress-Front-021316_TPQKWgi.gif"
+            },
+            {
+                "name": "Side Lateral Raises",
+                "gif_url": "https://musclewiki.org/media/uploads/SideLateralRaise-Side-021316_dXMKKnp.gif"
+            },
+            {
+                "name": "Bent-Over Rear Delt Raise",
+                "gif_url": "https://musclewiki.org/media/uploads/RearDF-Side-021316.gif"
+            }
+        ]
+    }
+}

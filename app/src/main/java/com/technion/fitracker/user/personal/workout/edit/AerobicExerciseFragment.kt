@@ -43,10 +43,6 @@ class AerobicExerciseFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         addExercise = view.findViewById(R.id.aerobic_done_fab)
         addExercise.setOnClickListener(this)
-        val nameEditText = view.findViewById<AutoCompleteTextView>(R.id.aerobic_name_input)
-        val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
-        nameEditText.setAdapter(adapter)
-        nameEditText.threshold = 1
     }
 
 
