@@ -39,6 +39,7 @@ import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.user.User
+import kotlinx.android.synthetic.main.activity_business_user.*
 import java.io.*
 
 class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {

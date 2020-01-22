@@ -1,17 +1,24 @@
 package com.technion.fitracker.user.personal.workout.edit
 
 
+import android.content.DialogInterface
+import android.content.DialogInterface.OnShowListener
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import android.view.Window
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.technion.fitracker.R
 import com.technion.fitracker.databinding.FragmentWeightExerciseBinding
@@ -22,6 +29,7 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
     lateinit var addExercise: FloatingActionButton
     lateinit var viewModel: CreateNewExerciseViewModel
     lateinit var nameEditText: AutoCompleteTextView
+    lateinit var gifViewButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +53,39 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         addExercise = view.findViewById(R.id.weight_done_fab)
         addExercise.setOnClickListener(this)
         nameEditText = view.findViewById(R.id.weight_name_input)
-        val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        gifViewButton = view.findViewById(R.id.show_gif_button)
+        var a: List<String> = viewModel.exerciseDB.values.map{ it.map { it.name }}.flatten()
+        val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, a)
         nameEditText.setAdapter(adapter)
         nameEditText.threshold = 1
+        nameEditText.doAfterTextChanged {
+            if(viewModel.findExercise(viewModel.weight_name.value!!).type.isNullOrEmpty()){
+                gifViewButton.visibility = View.GONE
+                viewModel.weight_gif_url = null
+            }
+        }
+        nameEditText.setOnItemClickListener{ parent, view, position, id ->
+            adapter.getItem(position)?.let{
+                var exercise = viewModel.findExercise(it)
+                viewModel.weight_muscle_category.set(exercise.type)
+                gifViewButton.visibility = View.VISIBLE
+                viewModel.weight_gif_url = exercise.gif_url
+                gifViewButton.setOnClickListener{
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(activity!!)
+                    val dialog: AlertDialog = builder.create()
+                    val inflater = layoutInflater
+                    val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
+                    dialog.setView(dialogLayout)
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setOnShowListener{
+                        val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
+                        Glide.with(activity!!).load(exercise.gif_url)
+                                .into(image)
+                    }
+                    dialog.show()
+                }
+            }
+        }
     }
 
     override fun onClick(v: View?) {
@@ -68,6 +106,8 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
     private fun createIntentWithData(): Intent {
         return Intent().apply {
             putExtra("name", viewModel.weight_name.value)
+            putExtra("muscle_category", viewModel.weight_muscle_category.get())
+            putExtra("gif_url", viewModel.weight_gif_url)
             putExtra("weight", viewModel.weight_weight.value)
             putExtra("sets", viewModel.weight_sets.value)
             putExtra("repetitions", viewModel.weight_repetitions.value)

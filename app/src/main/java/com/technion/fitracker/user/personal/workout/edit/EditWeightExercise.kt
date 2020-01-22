@@ -5,17 +5,24 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.technion.fitracker.R
 import com.technion.fitracker.databinding.ActivityEditWeightExerciseBinding
+import com.technion.fitracker.models.exercise.ExerciseDBModel
 import com.technion.fitracker.models.nutrition.jsonDBModel
 import com.technion.fitracker.models.workouts.CreateNewExerciseViewModel
 import java.util.*
@@ -25,6 +32,8 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
     private var index = 0
     private var cachedViewModel: Map<String, String?>? = null
     private lateinit var weightEditDoneFab: FloatingActionButton
+    lateinit var gifViewButton: MaterialButton
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +46,41 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.title = "Edit exercise"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         initDB()
+        gifViewButton = findViewById(R.id.show_gif_button)
         val nameEditText = findViewById<AutoCompleteTextView>(R.id.weight_edit_name_input)
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, viewModel.exerciseDB)
+        var a: List<String> = viewModel.exerciseDB.values.map{ it.map { it.name }}.flatten()
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, a)
         nameEditText.setAdapter(adapter)
+        nameEditText.threshold = 1
+        nameEditText.doAfterTextChanged {
+            if(viewModel.findExercise(viewModel.weight_name.value!!).type.isNullOrEmpty()){
+                gifViewButton.visibility = View.GONE
+                viewModel.weight_gif_url = null
+            }
+        }
+        nameEditText.setOnItemClickListener{ parent, view, position, id ->
+            adapter.getItem(position)?.let{
+                var exercise = viewModel.findExercise(it)
+                viewModel.weight_muscle_category.set(exercise.type)
+                viewModel.weight_sets.value = 3.toString()
+                gifViewButton.visibility = View.VISIBLE
+                gifViewButton.setOnClickListener{
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                    val dialog: AlertDialog = builder.create()
+                    val inflater = layoutInflater
+                    val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
+                    dialog.setView(dialogLayout)
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setOnShowListener{
+                        val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
+                        Glide.with(this).load(exercise.gif_url)
+                                .into(image)
+                    }
+                    viewModel.weight_gif_url = exercise.gif_url
+                    dialog.show()
+                }
+            }
+        }
         intent.apply {
             viewModel.weight_name.value = getStringExtra("name")
             viewModel.weight_weight.value = getStringExtra("weight")
@@ -47,23 +88,41 @@ class EditWeightExercise : AppCompatActivity(), View.OnClickListener {
             viewModel.weight_repetitions.value = getStringExtra("repetitions")
             viewModel.weight_rest.value = getStringExtra("rest")
             viewModel.weight_notes.value = getStringExtra("notes")
+            viewModel.weight_gif_url = getStringExtra("gif_url")
+            viewModel.weight_muscle_category.set(getStringExtra("muscle_category"))
             index = getIntExtra("index", 0)
         }
-
         cacheViewModelValues()
         weightEditDoneFab = findViewById(R.id.weight_edit_done_fab)
+        if(!viewModel.weight_gif_url.isNullOrEmpty()){
+            gifViewButton.visibility = View.VISIBLE
+            gifViewButton.setOnClickListener{
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+                val dialog: AlertDialog = builder.create()
+                val inflater = layoutInflater
+                val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
+                dialog.setView(dialogLayout)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog.setOnShowListener{
+                    val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
+                    Glide.with(this).load(viewModel.weight_gif_url)
+                            .into(image)
+                }
+                dialog.show()
+            }
+        }
         weightEditDoneFab.setOnClickListener(this)
     }
 
     private fun initDB() {
-        val stream = this.assets.open("exercises.json")
+        val stream = this.assets.open("exercises_with_gifs.json")
         val s = Scanner(stream).useDelimiter("\\A")
         val json = if (s.hasNext()) {
             s.next()
         } else {
             ""
         }
-        viewModel.exerciseDB = Gson().fromJson(json, jsonDBModel::class.java).array
+        viewModel.exerciseDB = Gson().fromJson(json, ExerciseDBModel::class.java).array
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

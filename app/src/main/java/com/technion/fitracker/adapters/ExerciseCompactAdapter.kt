@@ -4,11 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.technion.fitracker.R
 import com.technion.fitracker.models.exercise.AerobicExerciseModel
@@ -32,6 +35,7 @@ class ExerciseCompactAdapter(
         var doneImage: ImageView = view.findViewById(R.id.exerciseDoneImage)
         var weightBodyLayout: LinearLayout = view.findViewById(R.id.weight_workout_body)
         var name: TextView = view.findViewById(R.id.weight_element_name)
+        var muscle: TextView = view.findViewById(R.id.weight_element_muscle)
         var weight: TextView = view.findViewById(R.id.weight_element_weight)
         var sets: TextView = view.findViewById(R.id.weight_element_sets)
         var repetitions: TextView = view.findViewById(R.id.weight_element_repetitions)
@@ -111,11 +115,31 @@ class ExerciseCompactAdapter(
             val weightElement = myDataset[position].downcastToWeight()
             val weightHolder = (holder as WeightViewHolder)
             setViewHolderElement(weightHolder.name, weightElement?.name)
+            setViewHolderElement(weightHolder.muscle, weightElement?.muscle_category)
             setViewHolderElement(weightHolder.weight, weightElement?.weight)
             setViewHolderElement(weightHolder.sets, weightElement?.sets)
             setViewHolderElement(weightHolder.repetitions, weightElement?.repetitions)
             setViewHolderElement(weightHolder.rest, weightElement?.rest)
-            weightHolder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
+            if (!weightElement?.gif_url.isNullOrEmpty()) {
+                weightHolder.doneImage.setImageResource(R.drawable.ic_brand)
+                weightHolder.doneImage.visibility = View.VISIBLE
+                weightHolder.doneImage.setOnClickListener {
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+                    val dialog: AlertDialog = builder.create()
+                    val inflater = LayoutInflater.from(mContext)
+                    val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
+                    dialog.setView(dialogLayout)
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setOnShowListener {
+                        val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
+                        Glide.with(mContext).load(weightElement?.gif_url)
+                                .into(image)
+                    }
+                    dialog.show()
+                }
+            } else {
+                weightHolder.doneImage.setOnClickListener {}
+            }
         }
 
     }

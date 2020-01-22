@@ -90,6 +90,8 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                     intent.putExtra("rest", model.rest)
                     intent.putExtra("notes", model.notes)
                     intent.putExtra("index", viewHolder.adapterPosition)
+                    intent.putExtra("gif_url", model.gif_url)
+                    intent.putExtra("muscle_category", model.muscle_category)
                     startActivityForResult(intent, WEIGHT_EDIT.ordinal)
                 }
             }
@@ -244,7 +246,9 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                 data?.getStringExtra("sets"),
                 data?.getStringExtra("repetitions"),
                 data?.getStringExtra("rest"),
-                data?.getStringExtra("notes")
+                data?.getStringExtra("notes"),
+                data?.getStringExtra("gif_url"),
+                data?.getStringExtra("muscle_category")
         )
     }
 
@@ -399,7 +403,9 @@ class CreateNewWorkoutActivity : AppCompatActivity(), View.OnClickListener {
                                                             exercise["sets"],
                                                             exercise["repetitions"],
                                                             exercise["rest"],
-                                                            exercise["notes"]
+                                                            exercise["notes"],
+                                                            exercise["muscle_category"],
+                                                            exercise["gif_url"]
                                                     ) as ExerciseBaseModel
                                             )
                                         }
