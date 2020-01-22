@@ -9,7 +9,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginTop="8dp"
     android:layout_marginRight="8dp"
-    android:minHeight="100dp">
+    android:minHeight="75dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout12"
@@ -226,16 +226,17 @@
             android:id="@+id/play_gif_button"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
-            android:tint="@color/primaryColor"
             android:layout_marginRight="8dp"
+            android:contentDescription="gif_play"
+            android:tint="@color/primaryColor"
             android:visibility="gone"
-            tools:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout13"
             app:srcCompat="@drawable/ic_brand"
-            android:contentDescription="gif_play" />
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

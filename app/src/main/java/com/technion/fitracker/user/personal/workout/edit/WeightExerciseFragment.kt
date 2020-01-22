@@ -1,19 +1,18 @@
 package com.technion.fitracker.user.personal.workout.edit
 
 
-import android.content.DialogInterface
-import android.content.DialogInterface.OnShowListener
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -54,33 +53,32 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         addExercise.setOnClickListener(this)
         nameEditText = view.findViewById(R.id.weight_name_input)
         gifViewButton = view.findViewById(R.id.show_gif_button)
-        var a: List<String> = viewModel.exerciseDB.values.map{ it.map { it.name }}.flatten()
+        var a: List<String> = viewModel.exerciseDB.values.map { it.map { it.name } }.flatten()
         val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, a)
         nameEditText.setAdapter(adapter)
         nameEditText.threshold = 1
         nameEditText.doAfterTextChanged {
-            if(viewModel.findExercise(viewModel.weight_name.value!!).type.isNullOrEmpty()){
+            if (viewModel.findExercise(viewModel.weight_name.value!!).type.isNullOrEmpty()) {
                 gifViewButton.visibility = View.GONE
                 viewModel.weight_gif_url = null
             }
         }
-        nameEditText.setOnItemClickListener{ parent, view, position, id ->
-            adapter.getItem(position)?.let{
+        nameEditText.setOnItemClickListener { parent, view, position, id ->
+            adapter.getItem(position)?.let {
                 var exercise = viewModel.findExercise(it)
                 viewModel.weight_muscle_category.set(exercise.type)
                 gifViewButton.visibility = View.VISIBLE
                 viewModel.weight_gif_url = exercise.gif_url
-                gifViewButton.setOnClickListener{
+                gifViewButton.setOnClickListener {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(activity!!)
                     val dialog: AlertDialog = builder.create()
                     val inflater = layoutInflater
                     val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
                     dialog.setView(dialogLayout)
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                    dialog.setOnShowListener{
+                    dialog.setOnShowListener {
                         val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
-                        Glide.with(activity!!).load(exercise.gif_url)
-                                .into(image)
+                        Glide.with(activity!!).load(exercise.gif_url).into(image)
                     }
                     dialog.show()
                 }

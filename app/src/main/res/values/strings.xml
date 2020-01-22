@@ -144,4 +144,5 @@
     <string name="exercise_name">Exercise name</string>
     <string name="muscle_category">Muscle Category</string>
     <string name="muscle">Muscle</string>
+    <string name="exercise_gif">exercise_gif</string>
 </resources>
