@@ -31,6 +31,7 @@ class AddExerciseActivity : AppCompatActivity() {
         val binding = DataBindingUtil.setContentView<ActivityAddExerciseBinding>(this, R.layout.activity_add_exercise)
         binding.lifecycleOwner = this
         binding.myViewModel = viewModel
+
         initDB()
         viewPager = findViewById(R.id.exerciseChooseViewPager)
         setSupportActionBar(findViewById(R.id.toolbar))

@@ -29,6 +29,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>, val m
         var weight: TextView = view.findViewById(R.id.weight_element_weight)
         var sets: TextView = view.findViewById(R.id.weight_element_sets)
         var repetitions: TextView = view.findViewById(R.id.weight_element_repetitions)
+        var muscleCategory: TextView = view.findViewById(R.id.weight_element_muscle_category)
         var rest: TextView = view.findViewById(R.id.weight_element_rest)
         var notes: TextView = view.findViewById(R.id.weight_element_notes)
 
@@ -101,6 +102,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>, val m
             setViewHolderElement(weightHolder.sets, weightElement?.sets)
             setViewHolderElement(weightHolder.repetitions, weightElement?.repetitions)
             setViewHolderElement(weightHolder.rest, weightElement?.rest)
+            setViewHolderElement(weightHolder.muscleCategory, weightElement?.muscle_category)
             setViewHolderElement(weightHolder.notes, weightElement?.notes)
             weightHolder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         }

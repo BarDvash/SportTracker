@@ -7,5 +7,8 @@ data class WeightExerciseModel(
     var sets: String? = null,
     var repetitions: String? = null,
     var rest: String? = null,
-    var notes: String? = null
+    var notes: String? = null,
+    var gif_url: String? = null,
+    var muscle_category: String? = null
+
 ) : ExerciseBaseModel("Weight")

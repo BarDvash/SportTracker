@@ -130,7 +130,9 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
                                                             exercise["sets"],
                                                             exercise["repetitions"],
                                                             exercise["rest"],
-                                                            exercise["notes"]
+                                                            exercise["notes"],
+                                                            exercise["gif_url"],
+                                                            exercise["muscle_category"]
                                                     ) as ExerciseBaseModel
                                             )
                                         }

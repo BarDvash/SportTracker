@@ -3,12 +3,11 @@ package com.technion.fitracker.user.personal.workout
 
 import android.os.Bundle
 import android.os.SystemClock
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.Chronometer
+import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -18,11 +17,13 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.technion.fitracker.R
 import com.technion.fitracker.adapters.ExerciseCompactAdapter
 import com.technion.fitracker.databinding.FragmentWorkoutInProgressBinding
+import com.technion.fitracker.models.exercise.WeightExerciseModel
 import com.technion.fitracker.models.workouts.WorkoutStartViewModel
 
 class WorkoutInProgress : Fragment(), View.OnClickListener {
@@ -67,7 +68,9 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                 it.done = !it.done
                 if (it.done) {
                     if (it.type == "Weight") {
-                        (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.VISIBLE
+                        (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.setImageResource(R.drawable.ic_tick_inside_circle)
+                        viewHolder.doneImage.setOnClickListener { null }
+                        viewHolder.doneImage.visibility = View.VISIBLE
                         viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
                         viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide) //
                         viewHolder.weightBodyLayout.visibility = View.GONE
@@ -80,10 +83,34 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                     model.time_done = chrono.text.toString()
                 } else {
                     if (it.type == "Weight") {
-                        (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.GONE
-                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
-                        viewHolder.weightBodyLayout.visibility = View.VISIBLE
-                        viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
+                        val weightExerciseModel = it as WeightExerciseModel
+                        if(!weightExerciseModel.gif_url.isNullOrEmpty()) {
+                            (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.setImageResource(R.drawable.ic_brand)
+                            viewHolder.doneImage.setOnClickListener {
+                                val builder: AlertDialog.Builder = AlertDialog.Builder(context!!)
+                                val dialog: AlertDialog = builder.create()
+                                val inflater = LayoutInflater.from(context!!)
+                                val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
+                                dialog.setView(dialogLayout)
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                                dialog.setOnShowListener {
+                                    val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
+                                    Glide.with(context!!).load(weightExerciseModel.gif_url)
+                                            .into(image)
+                                }
+                                dialog.show()
+                            }
+                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
+                            viewHolder.weightBodyLayout.visibility = View.VISIBLE
+                            viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
+                        }else{
+                            (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.GONE
+                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
+                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
+                            viewHolder.weightBodyLayout.visibility = View.VISIBLE
+                            viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
+                        }
+
                     } else {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.GONE
                         viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)

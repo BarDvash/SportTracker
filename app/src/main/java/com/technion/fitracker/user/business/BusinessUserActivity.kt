@@ -39,6 +39,7 @@ import com.technion.fitracker.SettingsActivity
 import com.technion.fitracker.login.LoginActivity
 import com.technion.fitracker.models.BusinessUserViewModel
 import com.technion.fitracker.user.User
+import kotlinx.android.synthetic.main.activity_business_user.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -144,6 +145,7 @@ class BusinessUserActivity : AppCompatActivity(), BottomNavigationView.OnNavigat
                             ): Boolean {
                                 Log.d("GLIDE-LOAD", "Loaded profile picture!")
                                 saveProfilePicture(R.id.business_user_avatar)
+                                business_user_avatar.setImageDrawable(resource)
                                 return true
                             }
 
