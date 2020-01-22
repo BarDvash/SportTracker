@@ -4,10 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.technion.fitracker.R
 import com.technion.fitracker.models.exercise.AerobicExerciseModel
@@ -27,6 +31,7 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>, val m
         var container: MaterialCardView = view.findViewById(R.id.weight_ele_container)
         var name: TextView = view.findViewById(R.id.weight_element_name)
         var weight: TextView = view.findViewById(R.id.weight_element_weight)
+        var gifPlay: ImageView = view.findViewById(R.id.play_gif_button)
         var sets: TextView = view.findViewById(R.id.weight_element_sets)
         var repetitions: TextView = view.findViewById(R.id.weight_element_repetitions)
         var muscleCategory: TextView = view.findViewById(R.id.weight_element_muscle_category)
@@ -104,6 +109,26 @@ class ExerciseAdapter(private val myDataset: ArrayList<ExerciseBaseModel>, val m
             setViewHolderElement(weightHolder.rest, weightElement?.rest)
             setViewHolderElement(weightHolder.muscleCategory, weightElement?.muscle_category)
             setViewHolderElement(weightHolder.notes, weightElement?.notes)
+            if (!weightElement?.gif_url.isNullOrEmpty()) {
+                weightHolder.gifPlay.visibility = View.VISIBLE
+                weightHolder.gifPlay.setOnClickListener {
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
+                    val dialog: AlertDialog = builder.create()
+                    val inflater = LayoutInflater.from(mContext)
+                    val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
+                    dialog.setView(dialogLayout)
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                    dialog.setOnShowListener {
+                        val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
+                        Glide.with(mContext).load(weightElement?.gif_url)
+                                .into(image)
+                    }
+                    dialog.show()
+                }
+            } else {
+                weightHolder.gifPlay.visibility = View.GONE
+                weightHolder.gifPlay.setOnClickListener { }
+            }
             weightHolder.container.animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_in_card)
         }
 
