@@ -67,7 +67,7 @@ class FlashSignInActivity : AppCompatActivity() {
         val userHome = Intent(this, BusinessUserActivity::class.java)
         startActivity(userHome)
         finish()
-S
+
     }
 
 

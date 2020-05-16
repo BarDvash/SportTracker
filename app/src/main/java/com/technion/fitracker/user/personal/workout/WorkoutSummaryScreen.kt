@@ -119,7 +119,7 @@ class WorkoutSummaryScreen : Fragment(), View.OnClickListener {
                 }
             }
             R.id.workout_summary_discard -> {
-                MaterialAlertDialogBuilder(activity).setTitle("Warning").setMessage("Discard workout result?")
+                MaterialAlertDialogBuilder(requireContext()).setTitle("Warning").setMessage("Discard workout result?")
                         .setPositiveButton(
                                 "Yes"
                         ) { _, _ ->

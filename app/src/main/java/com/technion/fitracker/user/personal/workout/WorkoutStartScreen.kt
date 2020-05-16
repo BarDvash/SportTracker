@@ -68,7 +68,7 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
         setHasOptionsMenu(true)
         viewManager = LinearLayoutManager(activity)
         val exercises = viewModel.workoutExercises.value
-        viewAdapter = ExerciseAdapter(exercises!!, context!!)
+        viewAdapter = ExerciseAdapter(exercises!!, requireContext())
         recyclerView = activity?.findViewById<RecyclerView>(R.id.workouts_rec_view)?.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -161,7 +161,7 @@ class WorkoutStartScreen : Fragment(), View.OnClickListener {
                 startActivityForResult(intent, 0)
             }
             R.id.start_workout_delete_item -> {
-                MaterialAlertDialogBuilder(activity).setTitle("Warning").setMessage("Data will be lost, continue?")
+                MaterialAlertDialogBuilder(requireContext()).setTitle("Warning").setMessage("Data will be lost, continue?")
                         .setPositiveButton(
                                 "Yes"
                         ) { _, _ ->

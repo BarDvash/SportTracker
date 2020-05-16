@@ -87,35 +87,35 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                         if(!weightExerciseModel.gif_url.isNullOrEmpty()) {
                             (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.setImageResource(R.drawable.ic_brand)
                             viewHolder.doneImage.setOnClickListener {
-                                val builder: AlertDialog.Builder = AlertDialog.Builder(context!!)
+                                val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
                                 val dialog: AlertDialog = builder.create()
-                                val inflater = LayoutInflater.from(context!!)
+                                val inflater = LayoutInflater.from(requireContext())
                                 val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
                                 dialog.setView(dialogLayout)
                                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                 dialog.setOnShowListener {
                                     val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
-                                    Glide.with(context!!).load(weightExerciseModel.gif_url)
+                                    Glide.with(requireContext()).load(weightExerciseModel.gif_url)
                                             .into(image)
                                 }
                                 dialog.show()
                             }
-                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.reveal)
+                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.reveal)
                             viewHolder.weightBodyLayout.visibility = View.VISIBLE
-                            viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
+                            viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_in_card)
                         }else{
                             (viewHolder as ExerciseCompactAdapter.WeightViewHolder).doneImage.visibility = View.GONE
-                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
-                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
+                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.hide)
+                            viewHolder.doneImage.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.hide)
                             viewHolder.weightBodyLayout.visibility = View.VISIBLE
-                            viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
+                            viewHolder.weightBodyLayout.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_in_card)
                         }
 
                     } else {
                         (viewHolder as ExerciseCompactAdapter.AerobicViewHolder).doneImage.visibility = View.GONE
-                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(context!!, R.anim.hide)
+                        viewHolder.doneImage.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.hide)
                         viewHolder.aerobicBodyLayout.visibility = View.VISIBLE
-                        viewHolder.aerobicBodyLayout.animation = AnimationUtils.loadAnimation(context!!, R.anim.scale_in_card)
+                        viewHolder.aerobicBodyLayout.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_in_card)
                     }
                     model.time_done = null
                 }
@@ -123,7 +123,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
 
         }
         val exercises = viewModel.workoutExercises.value
-        viewAdapter = ExerciseCompactAdapter(exercises!!, context!!).apply {
+        viewAdapter = ExerciseCompactAdapter(exercises!!, requireContext()).apply {
             mOnItemClickListener = onItemClickListener
         }
         recyclerView = activity?.findViewById<RecyclerView>(R.id.workout_in_progress_recycle)?.apply {
@@ -202,7 +202,7 @@ class WorkoutInProgress : Fragment(), View.OnClickListener {
                     viewModel.timeElapsed.value = chrono.text.toString()
                     startFragmentAndPop(R.id.workoutSummaryScreen)
                 } else {
-                    MaterialAlertDialogBuilder(activity)
+                    MaterialAlertDialogBuilder(requireContext())
                             .setTitle("Warning")
                             .setMessage("You haven't finished all exercises, finish the workout anyway?")
                             .setPositiveButton(

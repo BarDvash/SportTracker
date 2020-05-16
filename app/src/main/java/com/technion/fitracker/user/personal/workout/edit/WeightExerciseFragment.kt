@@ -54,7 +54,7 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
         nameEditText = view.findViewById(R.id.weight_name_input)
         gifViewButton = view.findViewById(R.id.show_gif_button)
         var a: List<String> = viewModel.exerciseDB.values.map { it.map { it.name } }.flatten()
-        val adapter = ArrayAdapter<String>(context!!, android.R.layout.simple_dropdown_item_1line, a)
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line, a)
         nameEditText.setAdapter(adapter)
         nameEditText.threshold = 1
         nameEditText.doAfterTextChanged {
@@ -70,7 +70,7 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
                 gifViewButton.visibility = View.VISIBLE
                 viewModel.weight_gif_url = exercise.gif_url
                 gifViewButton.setOnClickListener {
-                    val builder: AlertDialog.Builder = AlertDialog.Builder(activity!!)
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(requireActivity())
                     val dialog: AlertDialog = builder.create()
                     val inflater = layoutInflater
                     val dialogLayout: View = inflater.inflate(R.layout.gif_layout, null)
@@ -78,7 +78,7 @@ class WeightExerciseFragment : Fragment(), View.OnClickListener {
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                     dialog.setOnShowListener {
                         val image = dialog.findViewById<ImageView>(R.id.gif_view) as ImageView
-                        Glide.with(activity!!).load(exercise.gif_url).into(image)
+                        Glide.with(requireActivity()).load(exercise.gif_url).into(image)
                     }
                     dialog.show()
                 }
