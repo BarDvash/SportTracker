@@ -1,4 +1,4 @@
-# 2020a-FiTracker
+# 2020a-SportTracker
 
 ## Elevator Pitch
 Nowadays, there is a growing trend across all levels of society on adopting an active lifestyle which includes fitness activity and proper nutrition.Those factors lead to an enormous growth in the number of individuals that are doing workouts weekly and trying to maintain a healthy lifestyle.Those individuals usually more healthy and feel comfortable with how they look. Another benefit of adopting an active lifestyle is that it helps an individual to relieve stress and enjoy a new hobby.
