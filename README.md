@@ -1,11 +1,11 @@
-# FITRACKER
+# SportTracker
 <p align="center"> 
 <img src="https://i.ibb.co/pJKqMng/Untitled.png">
 </p>
 ## Project Description
 Android app written in Kotlin, developed on Android Studio environment. This is a project for the course "Project in Software - Android Application" (236503), taught at the Technion - Israel Institute of Technology.
 
-## What is FITRACKER ?
+## What is SportTracker ?
 Nowadays, there is a growing trend across all levels of society on adopting an active lifestyle which includes fitness activity and proper nutrition.Those factors lead to an enormous growth in the number of individuals that are doing workouts weekly and trying to maintain a healthy lifestyle.Those individuals usually more healthy and feel comfortable with how they look. Another benefit of adopting an active lifestyle is that it helps an individual to relieve stress and enjoy a new hobby.
 
 In response to this evolving need, countless professionals, personal trainers, nutritionists, organizations (such as gyms or pilates, etc.) are emerging. Everyone is engaged in training or providing the tools for the individual to fulfil their desire to develop such a lifestyle. Therefore, there is a real need for a platform that will facilitate the personal trainee's program management in a simple and  effective way and will create an easy two-way communication between the former and the professionals.
@@ -30,6 +30,3 @@ In response to this evolving need, countless professionals, personal trainers, n
 
 ## Authors
 Vladimir Parakhin, Alexey Barbotchenko and Bar Dvash.
-
-## Link to Google Play Store
-# [FiTracker](https://play.google.com/store/apps/details?id=com.technion.fitracker)
